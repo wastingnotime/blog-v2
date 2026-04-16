@@ -1,90 +1,60 @@
-# MRL Starter
+# blog-v2
 
 ## Purpose
 
-This repository is a starter template for the Model Refinement Lab.
+`blog-v2` is the next version of the `../blog` site.
 
-Use it to begin a new repository that follows the MRL loop:
+The first architectural reset in this repository is explicit:
 
-```text
-extract -> refine -> build -> egd -> release -> expose -> living -> extract
-```
+- publish as a static site on GitHub Pages
+- remove any dependency on a same-origin `/api` path
+- stop assuming AWS deploy infrastructure is part of the blog runtime
 
-This starter separates:
+The previous `../blog` repository evolved toward an AWS-hosted container plus
+an analytics ingestion pipeline routed through `https://wastingnotime.org/api`.
+This repository intentionally starts from the opposite direction: static output
+first, direct browser rendering, and optional third-party analytics that do not
+require first-party API infrastructure.
 
-- MRL core: the artifact-driven refinement loop and workflow
-- implementation packs: selectable language and architecture defaults
-
-The repository currently includes `python_ddd_monolith` as the example selected pack. If you want another shape such as Go, TypeScript, event sourcing, or a multi-runtime client/server system, keep the MRL core and replace the pack guidance intentionally.
-
-One of the repository's main characteristics is that pre-defined packs can be used to scaffold new MRL projects. That lets adopters keep the same refinement workflow while starting from a language and architecture shape that already fits their context.
-
-MRL itself is AI-agent-friendly rather than tool-specific, but this starter is currently optimized for Codex-style repository workflows. It can still be used well with other AI coding agents when they operate from explicit repository artifacts instead of conversational memory.
-
----
-
-## Getting Started
-
-Clone the starter into the new repository name you want:
+## Commands
 
 ```bash
-git clone <starter-url> my-new-project
-cd my-new-project
+pip install -e .
+pytest
+python -m src.app.interfaces.cli.run_scenario
 ```
 
-The preferred way to start a new project is to use this repository as a GitHub template, not as a fork. Forking is more appropriate when working on the starter itself or maintaining a derivative starter.
+The scenario runner generates a minimal static site into `dist/`.
 
-Then read these files first:
+## Current Slice
 
-- `docs/operating/mrl_reference.md`
-- `docs/operating/skills_workflow.md`
-- `docs/operating/packs.md`
-- `docs/operating/best_practices.md`
-- `docs/session_metrics.md`
-- `architecture.md`
-- `groundrules.md`
-- `docs/building/project_structure.md`
+The current implemented slice is a bootstrap for static deployment:
 
-Before writing substantial project-specific code, decide whether the adopting repository will keep the starter's default license or intentionally replace it with another license or a split-license model. Record that choice clearly in the root `LICENSE` and `decisions.md`.
+- a Python builder renders `dist/index.html`
+- analytics are disabled by default
+- when analytics are enabled, the generated HTML uses a direct external script
+  instead of a same-origin `/api` endpoint
+- a GitHub Actions workflow deploys the generated `dist/` folder to GitHub
+  Pages
 
-Then start the loop:
+## Environment
 
-1. run `extract` to build the first semantic baseline in `docs/semantics/`
-2. run `refine` to define the first slice in `docs/slices/`
-3. run `build` to implement one vertical slice
-4. run `egd` to review the built behavior
+Build-time configuration is optional:
 
-The semantic placeholders in `docs/semantics/` are intentionally empty. They are meant to be filled by the `extract` phase, not by copying domain content from this starter.
-Preserve original evidence in `work/sources/` before extraction or refinement artifacts are produced elsewhere.
+- `SITE_TITLE`
+- `SITE_DESCRIPTION`
+- `SITE_BASE_URL`
+- `ANALYTICS_PROVIDER`
+- `PLAUSIBLE_DOMAIN`
+- `PLAUSIBLE_SCRIPT_URL`
+- `PLAUSIBLE_API_HOST`
 
-For repositories that expect to use `expose`, released artifacts should normally be packaged in a portable runtime form, with a container image as the default. That packaging rule belongs to MRL operating guidance rather than to any specific adopting repository's domain semantics.
+If analytics variables are omitted, the site is built with analytics disabled.
 
----
+## Migration Context
 
-## Starter Layout
+The repository artifacts for this migration are:
 
-```text
-.agents/skills/            # repo-local MRL skills
-/docs/operating/           # MRL model and workflow docs
-/docs/packs/               # implementation pack definitions
-/docs/building/            # structure and bootstrap guidance
-/docs/evaluation/          # expectation-gap evaluation guidance
-/docs/semantics/           # domain-specific meaning created by extract
-/docs/slices/              # one slice document per increment
-/work/sources/             # canonical folder for curated raw evidence and original source material
-/work/changes/             # request, impact, and implementation artifacts
-/src/                      # implementation root shaped by the selected pack
-/tests/                    # executable specification
-```
-
----
-
-## Notes
-
-- Treat this repository as a template, not as a finished application.
-- Keep domain specifics out of the starter and in the adopting repository.
-- Keep the MRL loop generic and move language or architecture assumptions into packs.
-- Make licensing an explicit adoption choice; the starter can be reused under one license or adapted into a split-license repository when process material and implementation code need different terms.
-- Treat `work/` as repository memory, not scratch space; preserve original evidence in `work/sources/` before downstream artifacts are created.
-- Use `docs/session_metrics.md` if you want lightweight tracking of session productivity and token efficiency while the repository evolves.
-- Prefer one small slice over broad scaffolding.
+- [work/changes/2026-04-16-gh-pages-reset/request.md](/home/henrique/repos/github/wastingnotime/blog-v2/work/changes/2026-04-16-gh-pages-reset/request.md)
+- [work/changes/2026-04-16-gh-pages-reset/impact_analysis.md](/home/henrique/repos/github/wastingnotime/blog-v2/work/changes/2026-04-16-gh-pages-reset/impact_analysis.md)
+- [docs/slices/2026-04-16-gh-pages-reset.md](/home/henrique/repos/github/wastingnotime/blog-v2/docs/slices/2026-04-16-gh-pages-reset.md)

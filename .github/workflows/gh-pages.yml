@@ -1,0 +1,54 @@
+name: deploy-gh-pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: install
+        run: pip install -e .
+
+      - name: test
+        run: pytest
+
+      - name: build static site
+        env:
+          SITE_BASE_URL: https://wastingnotime.org/
+        run: python -m src.app.interfaces.cli.run_scenario
+
+      - name: configure pages
+        uses: actions/configure-pages@v5
+
+      - name: upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

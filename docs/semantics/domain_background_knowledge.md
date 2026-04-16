@@ -1,21 +1,40 @@
 # Domain Background Knowledge
 
-## Purpose
+## Static Site Expectations
 
-This document captures broad background knowledge about the target domain.
+Users expect a personal blog to load as ordinary pages and links even when no
+application server is running behind the domain. GitHub Pages reinforces this
+expectation because it serves static files and does not provide arbitrary
+backend endpoints under the same origin.
 
-It is not the repository's extracted glossary. It is reference material distilled from books, articles, standards, external systems, or other domain sources.
+## Analytics Expectations
 
-Use it mainly during expectation-gap detection.
+Client-side analytics on static sites usually follow one of these patterns:
 
----
+- disabled entirely
+- direct script integration with the analytics provider
+- provider-hosted proxy endpoints that are not implemented by the site itself
 
-## Fill This In
+What does not fit GitHub Pages is an architecture that depends on the blog
+origin exposing custom runtime routes like `/api/event`.
 
-Capture:
+## Migration Knowledge From `../blog`
 
-- common concepts in the domain
-- external expectations users may bring
-- standard artifacts or outputs the domain usually implies
-- industry language worth preserving
-- likely omissions to watch for during evaluation
+The previous repository contains two separate concerns that should not be
+conflated:
+
+- static page generation for the blog itself
+- AWS-backed analytics ingestion through API Gateway, Lambda, SQS, and a
+  consumer feeding Plausible
+
+That AWS flow was a deployment choice, not a core requirement of rendering a
+blog page.
+
+## Evaluation Risks To Watch
+
+- generated HTML accidentally containing references to `/api`
+- deployment workflows drifting back toward container or AWS assumptions
+- analytics configuration appearing enabled but depending on unavailable
+  runtime infrastructure
+- loss of deterministic builds because environment-specific behavior leaks into
+  the generated output

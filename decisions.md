@@ -106,3 +106,37 @@ Keep `.codex` as a first-class part of the repository workflow immediately. This
 
 ### Notes
 If future evidence shows that MRL depends on stable capabilities from a specific AI tool, record a follow-up decision describing the required coupling, why generic artifacts were insufficient, and which tool-specific assets should become part of the repository.
+
+## DEC-0004 - Target Static GitHub Pages Deployment For `blog-v2`
+
+- Date: 2026-04-16
+- Status: accepted
+- Owners: both
+
+### Context
+The predecessor `../blog` repository currently deploys through AWS-backed
+container infrastructure and includes a first-party `/api` path for analytics
+ingestion. The intended direction for `blog-v2` is to simplify the runtime back
+to static hosting and remove the dependency on that first-party backend path.
+
+### Decision
+`blog-v2` will treat GitHub Pages as the primary deployment target for the
+site's initial slices. The generated site must remain valid when served as
+static files only. Analytics, if enabled, must use direct third-party endpoints
+or stay disabled; the blog must not require its own same-origin `/api`.
+
+### Consequences
+The early implementation can optimize for deterministic static output and a
+simple deployment workflow. AWS infrastructure material from `../infrastructure`
+is retained only as migration context and reference, not as the target runtime
+for the site itself.
+
+### Alternatives considered
+Continue the AWS container plus API ingestion path as the default for `v2`.
+This was rejected because it carries runtime complexity that is not required to
+publish the blog and conflicts with the desired GitHub Pages deployment shape.
+
+### Notes
+If a future slice reintroduces server-side capabilities, that should be
+documented as a new decision rather than silently undoing the static-site
+assumption.
