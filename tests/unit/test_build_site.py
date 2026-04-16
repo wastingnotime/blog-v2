@@ -1,5 +1,5 @@
 from src.app.application.use_cases.build_site import build_static_site
-from src.app.domain.models.content import ContentCatalog, Episode, Page, Saga
+from src.app.domain.models.content import Arc, ContentCatalog, Episode, Page, Saga
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
 
 
@@ -34,7 +34,25 @@ def test_build_static_site_renders_direct_plausible_configuration() -> None:
 def test_build_static_site_orders_recent_content_by_date_desc() -> None:
     html = build_static_site(_site_config(), _catalog())["index.html"]
 
-    assert html.index("[episode] New Episode") < html.index("[page] About")
+    assert html.index("[episode] Second Iteration") < html.index("[page] About")
+
+
+def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    arc_html = pages["sagas/hireflow/the-origin-blueprint/index.html"]
+    first_episode_html = pages[
+        "sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"
+    ]
+    second_episode_html = pages[
+        "sagas/hireflow/the-origin-blueprint/second-iteration/index.html"
+    ]
+
+    assert "[Ep 01] The First Brick" in arc_html
+    assert "[Ep 02] Second Iteration" in arc_html
+    assert "HireFlow</a> /" in first_episode_html
+    assert "Ep 02 Second Iteration" in first_episode_html
+    assert "Ep 01 The First Brick" in second_episode_html
 
 
 def _site_config() -> SiteConfig:
@@ -65,10 +83,20 @@ def _catalog() -> ContentCatalog:
                 status="in-progress",
             ),
         ),
+        arcs=(
+            Arc(
+                title="The Origin Blueprint",
+                slug="the-origin-blueprint",
+                summary="How the saga starts.",
+                date="2026-04-11",
+                saga_slug="hireflow",
+                saga_title="HireFlow",
+            ),
+        ),
         episodes=(
             Episode(
-                title="New Episode",
-                slug="new-episode",
+                title="The First Brick",
+                slug="the-first-brick",
                 summary="Recent work.",
                 date="2026-04-12",
                 saga_slug="hireflow",
@@ -77,6 +105,18 @@ def _catalog() -> ContentCatalog:
                 arc_title="The Origin Blueprint",
                 number=1,
                 body_markdown="Episode body.",
+            ),
+            Episode(
+                title="Second Iteration",
+                slug="second-iteration",
+                summary="Follow-up work.",
+                date="2026-04-13",
+                saga_slug="hireflow",
+                saga_title="HireFlow",
+                arc_slug="the-origin-blueprint",
+                arc_title="The Origin Blueprint",
+                number=2,
+                body_markdown="More episode body.",
             ),
         ),
     )

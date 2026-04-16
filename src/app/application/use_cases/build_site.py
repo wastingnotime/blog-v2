@@ -4,16 +4,24 @@ import html
 import re
 
 from src.app.domain.models.content import (
+    ArcView,
     ContentCatalog,
     Episode,
     Page,
     RecentContent,
     Saga,
+    SagaView,
 )
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
+from src.app.application.use_cases.project_narrative_navigation import (
+    project_arc_views,
+    project_saga_views,
+)
 
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
+    arc_views = project_arc_views(catalog)
+    saga_views = project_saga_views(catalog, arc_views)
     pages = {
         "index.html": build_homepage(config, catalog),
     }
@@ -22,12 +30,22 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         pages[f"{page.slug}/index.html"] = build_content_page(config, page)
 
     for saga in catalog.sagas:
-        pages[f"sagas/{saga.slug}/index.html"] = build_saga_page(config, saga)
+        pages[f"sagas/{saga.slug}/index.html"] = build_saga_page(
+            config,
+            saga_views[saga.slug],
+        )
+
+    for arc in catalog.arcs:
+        pages[f"sagas/{arc.saga_slug}/{arc.slug}/index.html"] = build_arc_page(
+            config,
+            arc_views[(arc.saga_slug, arc.slug)],
+        )
 
     for episode in catalog.episodes:
         pages[episode.permalink.strip("/") + "/index.html"] = build_episode_page(
             config,
             episode,
+            arc_views[(episode.saga_slug, episode.arc_slug)],
         )
 
     return pages
@@ -164,10 +182,23 @@ def build_content_page(config: SiteConfig, page: Page) -> str:
     )
 
 
-def build_episode_page(config: SiteConfig, episode: Episode) -> str:
+def build_episode_page(config: SiteConfig, episode: Episode, arc_view: ArcView) -> str:
     metadata = (
         f"{episode.date} · {episode.saga_title} / {episode.arc_title} · "
         f"Episode {episode.number}"
+    )
+    parent_navigation = (
+        f'        <nav class="breadcrumbs"><a href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/")}">'
+        f"{html.escape(episode.saga_title)}</a> / "
+        f'<a href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">'
+        f"{html.escape(episode.arc_title)}</a></nav>"
+    )
+    previous_episode = arc_view.previous_episode[episode.slug]
+    next_episode = arc_view.next_episode[episode.slug]
+    adjacent_navigation = _render_adjacent_navigation(
+        previous_episode=previous_episode,
+        next_episode=next_episode,
+        base_url=config.base_url,
     )
     return _render_document(
         config=config,
@@ -178,21 +209,73 @@ def build_episode_page(config: SiteConfig, episode: Episode) -> str:
         heading=episode.title,
         summary=episode.summary,
         metadata=metadata,
-        body_html=_render_markdown(episode.body_markdown),
+        body_html="\n".join(
+            [parent_navigation, _render_markdown(episode.body_markdown), adjacent_navigation]
+        ),
     )
 
 
-def build_saga_page(config: SiteConfig, saga: Saga) -> str:
+def build_saga_page(config: SiteConfig, saga_view: SagaView) -> str:
+    arc_markup = "\n".join(
+        _render_arc_summary(arc, base_url=config.base_url) for arc in saga_view.arcs
+    )
+    timeline_markup = "\n".join(
+        _render_timeline_entry(entry, base_url=config.base_url)
+        for entry in saga_view.timeline
+    )
     return _render_document(
         config=config,
-        title=saga.title,
-        description=saga.summary,
-        canonical_path=saga.permalink,
+        title=saga_view.saga.title,
+        description=saga_view.saga.summary,
+        canonical_path=saga_view.saga.permalink,
         eyebrow="Saga",
-        heading=saga.title,
-        summary=saga.summary,
-        metadata=f"{saga.date} · {saga.status}",
-        body_html=f"        <p>{html.escape(saga.summary)}</p>",
+        heading=saga_view.saga.title,
+        summary=saga_view.saga.summary,
+        metadata=f"{saga_view.saga.date} · {saga_view.saga.status}",
+        body_html=(
+            "        <section>\n"
+            "          <h2>Arcs</h2>\n"
+            "          <ul>\n"
+            f"{arc_markup}\n"
+            "          </ul>\n"
+            "        </section>\n"
+            "        <section>\n"
+            "          <h2>Timeline</h2>\n"
+            "          <ul>\n"
+            f"{timeline_markup}\n"
+            "          </ul>\n"
+            "        </section>"
+        ),
+    )
+
+
+def build_arc_page(config: SiteConfig, arc_view: ArcView) -> str:
+    episode_markup = "\n".join(
+        _render_arc_episode(episode, base_url=config.base_url)
+        for episode in arc_view.episodes
+    )
+    breadcrumb = (
+        f'        <nav class="breadcrumbs"><a href="{_absolute_url(config.base_url, arc_view.arc.permalink[:-len(arc_view.arc.slug)-1])}">'
+        f"{html.escape(arc_view.arc.saga_title)}</a></nav>"
+    )
+    return _render_document(
+        config=config,
+        title=arc_view.arc.title,
+        description=arc_view.arc.summary,
+        canonical_path=arc_view.arc.permalink,
+        eyebrow="Arc",
+        heading=arc_view.arc.title,
+        summary=arc_view.arc.summary,
+        metadata=f"{arc_view.arc.date} · {arc_view.arc.saga_title}",
+        body_html=(
+            f"{breadcrumb}\n"
+            "        <section>\n"
+            "          <h2>Episodes</h2>\n"
+            "          <ul>\n"
+            f"{episode_markup}\n"
+            "          </ul>\n"
+            "        </section>"
+        ),
     )
 
 
@@ -258,6 +341,18 @@ def _render_document(
       }}
       .meta, .summary {{
         color: var(--muted);
+      }}
+      .breadcrumbs {{
+        margin-bottom: 1rem;
+        color: var(--muted);
+      }}
+      .nav-grid {{
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--line);
       }}
       article {{
         margin-top: 2rem;
@@ -348,6 +443,58 @@ def _render_saga_item(saga: Saga, *, base_url: str) -> str:
         f"            <p>{html.escape(saga.summary)}</p>\n"
         "          </li>"
     )
+
+
+def _render_arc_summary(arc: object, *, base_url: str) -> str:
+    last_release = arc.last_release_date or "n/a"
+    return (
+        "            <li>\n"
+        f'              <a href="{_absolute_url(base_url, arc.permalink)}">{html.escape(arc.title)}</a>\n'
+        f"              <small>{arc.episode_count} episodes · last {html.escape(last_release)}</small>\n"
+        "            </li>"
+    )
+
+
+def _render_timeline_entry(entry: object, *, base_url: str) -> str:
+    return (
+        "            <li>\n"
+        f'              <a href="{_absolute_url(base_url, entry.permalink)}">[Ep {entry.number:02d}] {html.escape(entry.title)}</a>\n'
+        f"              <small>{html.escape(entry.arc_title)} · {html.escape(entry.date)}</small>\n"
+        "            </li>"
+    )
+
+
+def _render_arc_episode(episode: Episode, *, base_url: str) -> str:
+    return (
+        "            <li>\n"
+        f'              <a href="{_absolute_url(base_url, episode.permalink)}">[Ep {episode.number:02d}] {html.escape(episode.title)}</a>\n'
+        f"              <small>{html.escape(episode.date)}</small>\n"
+        "            </li>"
+    )
+
+
+def _render_adjacent_navigation(
+    *,
+    previous_episode: object,
+    next_episode: object,
+    base_url: str,
+) -> str:
+    previous_markup = "<span></span>"
+    next_markup = "<span></span>"
+
+    if previous_episode is not None:
+        previous_markup = (
+            f'<a href="{_absolute_url(base_url, previous_episode.permalink)}">'
+            f"&larr; Ep {previous_episode.number:02d} {html.escape(previous_episode.title)}</a>"
+        )
+
+    if next_episode is not None:
+        next_markup = (
+            f'<a href="{_absolute_url(base_url, next_episode.permalink)}">'
+            f"Ep {next_episode.number:02d} {html.escape(next_episode.title)} &rarr;</a>"
+        )
+
+    return f'        <nav class="nav-grid">{previous_markup}{next_markup}</nav>'
 
 
 def _absolute_url(base_url: str, path: str) -> str:

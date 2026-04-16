@@ -30,6 +30,20 @@ class Saga:
 
 
 @dataclass(frozen=True)
+class Arc:
+    title: str
+    slug: str
+    summary: str
+    date: str
+    saga_slug: str
+    saga_title: str
+
+    @property
+    def permalink(self) -> str:
+        return f"/sagas/{self.saga_slug}/{self.slug}/"
+
+
+@dataclass(frozen=True)
 class Episode:
     title: str
     slug: str
@@ -59,8 +73,47 @@ class RecentContent:
 
 
 @dataclass(frozen=True)
+class EpisodeNavigation:
+    title: str
+    permalink: str
+    number: int
+
+
+@dataclass(frozen=True)
+class ArcNavigation:
+    title: str
+    permalink: str
+    episode_count: int
+    last_release_date: str | None
+
+
+@dataclass(frozen=True)
+class SagaTimelineEntry:
+    title: str
+    permalink: str
+    number: int
+    date: str
+    arc_title: str
+
+
+@dataclass(frozen=True)
+class ArcView:
+    arc: Arc
+    episodes: tuple[Episode, ...]
+    previous_episode: dict[str, EpisodeNavigation | None]
+    next_episode: dict[str, EpisodeNavigation | None]
+
+
+@dataclass(frozen=True)
+class SagaView:
+    saga: Saga
+    arcs: tuple[ArcNavigation, ...]
+    timeline: tuple[SagaTimelineEntry, ...]
+
+
+@dataclass(frozen=True)
 class ContentCatalog:
     pages: tuple[Page, ...]
     sagas: tuple[Saga, ...]
+    arcs: tuple[Arc, ...]
     episodes: tuple[Episode, ...]
-

@@ -1,22 +1,16 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 
-from src.app.domain.models.content import ContentCatalog, Episode, Page, Saga
-
-
-@dataclass(frozen=True)
-class ArcMetadata:
-    title: str
+from src.app.domain.models.content import Arc, ContentCatalog, Episode, Page, Saga
 
 
 class MarkdownContentLoader:
     def load(self, content_root: Path) -> ContentCatalog:
         pages = []
         sagas = []
+        arcs = []
         episodes = []
-        saga_titles: dict[str, str] = {}
         arc_titles: dict[tuple[str, str], str] = {}
 
         pages_root = content_root / "pages"
@@ -52,22 +46,28 @@ class MarkdownContentLoader:
                     status=_require_string(frontmatter, "status", saga_index),
                 )
                 sagas.append(saga)
-                saga_titles[saga.slug] = saga.title
                 _ = body
 
                 for arc_dir in sorted(path for path in saga_dir.iterdir() if path.is_dir()):
                     arc_index = arc_dir / "index.md"
-                    if arc_index.exists():
-                        arc_frontmatter, arc_body = _parse_frontmatter(
-                            arc_index.read_text(encoding="utf-8"),
-                        )
-                        _require_type(arc_index, arc_frontmatter, expected="arc")
-                        arc_titles[(saga.slug, arc_dir.name)] = _require_string(
-                            arc_frontmatter,
-                            "title",
-                            arc_index,
-                        )
-                        _ = arc_body
+                    if not arc_index.exists():
+                        raise ValueError(f"missing arc index: {arc_index}")
+
+                    arc_frontmatter, arc_body = _parse_frontmatter(
+                        arc_index.read_text(encoding="utf-8"),
+                    )
+                    _require_type(arc_index, arc_frontmatter, expected="arc")
+                    arc = Arc(
+                        title=_require_string(arc_frontmatter, "title", arc_index),
+                        slug=arc_dir.name,
+                        summary=_require_string(arc_frontmatter, "summary", arc_index),
+                        date=_require_string(arc_frontmatter, "date", arc_index),
+                        saga_slug=saga.slug,
+                        saga_title=saga.title,
+                    )
+                    arcs.append(arc)
+                    arc_titles[(saga.slug, arc_dir.name)] = arc.title
+                    _ = arc_body
 
                     for episode_path in sorted(arc_dir.glob("*.md")):
                         if episode_path.name == "index.md":
@@ -101,6 +101,7 @@ class MarkdownContentLoader:
         return ContentCatalog(
             pages=tuple(sorted(pages, key=lambda page: page.slug)),
             sagas=tuple(sorted(sagas, key=lambda saga: saga.slug)),
+            arcs=tuple(sorted(arcs, key=lambda arc: (arc.saga_slug, arc.slug))),
             episodes=tuple(
                 sorted(
                     episodes,

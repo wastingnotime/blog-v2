@@ -65,6 +65,7 @@ date: "2026-04-12"
 
     assert catalog.pages[0].title == "About"
     assert catalog.sagas[0].title == "HireFlow"
+    assert catalog.arcs[0].title == "The Origin Blueprint"
     assert catalog.episodes[0].arc_title == "The Origin Blueprint"
     assert catalog.episodes[0].permalink == (
         "/sagas/hireflow/the-origin-blueprint/the-first-brick/"
