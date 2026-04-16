@@ -122,6 +122,19 @@ class LibraryCatalog:
 
 
 @dataclass(frozen=True)
+class SagaSummary:
+    title: str
+    permalink: str
+    summary: str
+    start_permalink: str | None
+
+
+@dataclass(frozen=True)
+class SagasIndex:
+    sagas: tuple[SagaSummary, ...]
+
+
+@dataclass(frozen=True)
 class ArcView:
     arc: Arc
     episodes: tuple[Episode, ...]

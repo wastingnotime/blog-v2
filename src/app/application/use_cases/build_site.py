@@ -11,6 +11,7 @@ from src.app.domain.models.content import (
     Page,
     RecentContent,
     Saga,
+    SagasIndex,
     SagaView,
     TopicEntry,
     TopicPage,
@@ -21,15 +22,19 @@ from src.app.application.use_cases.project_narrative_navigation import (
     project_saga_views,
 )
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
+from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
     arc_views = project_arc_views(catalog)
     saga_views = project_saga_views(catalog, arc_views)
     topic_catalog = project_topic_catalog(catalog)
+    sagas_index = project_sagas_index(saga_views, arc_views)
     pages = {
         "index.html": build_homepage(config, catalog),
         "library/index.html": build_library_page(config, topic_catalog),
+        "sagas/index.html": build_sagas_index_page(config, sagas_index),
+        "studio/index.html": build_studio_page(config),
     }
 
     for page in catalog.pages:
@@ -173,6 +178,7 @@ def build_homepage(config: SiteConfig, catalog: ContentCatalog) -> str:
         <ul>
 {saga_markup}
         </ul>
+        <a href="{_absolute_url(config.base_url, '/sagas/')}">Browse all sagas</a>
       </section>
       <section>
         <h2>Library</h2>
@@ -344,6 +350,56 @@ def build_topic_page(config: SiteConfig, topic_page: TopicPage) -> str:
             "          <ul>\n"
             f"{entry_markup}\n"
             "          </ul>\n"
+            "        </section>"
+        ),
+    )
+
+
+def build_sagas_index_page(config: SiteConfig, sagas_index: SagasIndex) -> str:
+    saga_markup = "\n".join(
+        _render_saga_summary(summary, base_url=config.base_url)
+        for summary in sagas_index.sagas
+    )
+    return _render_document(
+        config=config,
+        title="Sagas",
+        description="Browse active sagas and jump into the first episode.",
+        canonical_path="/sagas/",
+        eyebrow="Sagas",
+        heading="Sagas",
+        summary="Long-running efforts, grouped into readable narrative threads.",
+        metadata=f"{len(sagas_index.sagas)} active sagas",
+        body_html=(
+            "        <section>\n"
+            "          <h2>Active sagas</h2>\n"
+            "          <ul>\n"
+            f"{saga_markup}\n"
+            "          </ul>\n"
+            "        </section>"
+        ),
+    )
+
+
+def build_studio_page(config: SiteConfig) -> str:
+    return _render_document(
+        config=config,
+        title="Studio",
+        description="A section hub for the main spaces in the site.",
+        canonical_path="/studio/",
+        eyebrow="Studio",
+        heading="Studio",
+        summary="The publication is organized around ongoing work and topic-based navigation.",
+        metadata="section hub",
+        body_html=(
+            "        <section>\n"
+            "          <h2>Wasting No Time</h2>\n"
+            "          <p>Architecture, integration, performance, and the discipline of focus.</p>\n"
+            f'          <p>See active sagas -> <a href="{_absolute_url(config.base_url, "/sagas/")}">/sagas/</a></p>\n'
+            f'          <p>Explore topics -> <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a></p>\n'
+            "        </section>\n"
+            "        <section>\n"
+            "          <h2>Experiments</h2>\n"
+            "          <p>Prototypes and explorations that may become products, or simply clarify an idea.</p>\n"
             "        </section>"
         ),
     )
@@ -587,6 +643,20 @@ def _render_topic_entry(entry: TopicEntry, *, base_url: str) -> str:
         f'              <a href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
         f"              <small>{html.escape(entry.date)}{context_markup}</small>\n"
         f"              <p>{html.escape(entry.summary)}</p>\n"
+        "            </li>"
+    )
+
+
+def _render_saga_summary(summary: object, *, base_url: str) -> str:
+    start_link = ""
+    if summary.start_permalink:
+        start_link = (
+            f'\n              <small><a href="{_absolute_url(base_url, summary.start_permalink)}">start reading</a></small>'
+        )
+    return (
+        "            <li>\n"
+        f'              <a href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+        f"              <p>{html.escape(summary.summary)}</p>{start_link}\n"
         "            </li>"
     )
 

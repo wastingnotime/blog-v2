@@ -68,6 +68,19 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "HireFlow / The Origin Blueprint" in topic_html
 
 
+def test_build_static_site_generates_section_hub_pages() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    sagas_html = pages["sagas/index.html"]
+    studio_html = pages["studio/index.html"]
+
+    assert "Active sagas" in sagas_html
+    assert "HireFlow" in sagas_html
+    assert "start reading" in sagas_html
+    assert "/library/" in studio_html
+    assert "/sagas/" in studio_html
+
+
 def _site_config() -> SiteConfig:
     return SiteConfig(
         title="Example",
