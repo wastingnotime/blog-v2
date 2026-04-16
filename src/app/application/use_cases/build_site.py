@@ -21,6 +21,10 @@ from src.app.application.use_cases.project_narrative_navigation import (
     project_arc_views,
     project_saga_views,
 )
+from src.app.application.use_cases.project_navigation_state import (
+    NavigationLink,
+    project_navigation_state,
+)
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
@@ -78,117 +82,41 @@ def build_homepage(config: SiteConfig, catalog: ContentCatalog) -> str:
         _render_saga_item(saga, base_url=config.base_url) for saga in catalog.sagas
     )
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{config.title}</title>
-    <meta name="description" content="{config.description}" />
-    <link rel="canonical" href="{config.base_url}" />
-    <style>
-      :root {{
-        color-scheme: light;
-        --ink: #111827;
-        --muted: #4b5563;
-        --line: #d1d5db;
-        --paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);
-        --accent: #0f766e;
-      }}
-      * {{ box-sizing: border-box; }}
-      body {{
-        margin: 0;
-        min-height: 100vh;
-        font-family: Georgia, "Times New Roman", serif;
-        color: var(--ink);
-        background: var(--paper);
-      }}
-      main {{
-        width: min(56rem, calc(100vw - 3rem));
-        margin: 0 auto;
-        padding: 5rem 0 4rem;
-      }}
-      .eyebrow {{
-        display: inline-block;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 0.35rem 0.75rem;
-        color: var(--muted);
-        font-size: 0.85rem;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }}
-      h1 {{
-        margin: 1.5rem 0 1rem;
-        font-size: clamp(2.5rem, 7vw, 4.75rem);
-        line-height: 0.95;
-      }}
-      p {{
-        max-width: 42rem;
-        color: var(--muted);
-        font-size: 1.1rem;
-        line-height: 1.7;
-      }}
-      .card {{
-        margin-top: 2.5rem;
-        padding: 1.25rem 1.5rem;
-        border-left: 4px solid var(--accent);
-        background: rgba(255, 255, 255, 0.72);
-        box-shadow: 0 1rem 2rem rgba(17, 24, 39, 0.06);
-      }}
-      code {{
-        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        font-size: 0.95em;
-      }}
-      ul {{
-        list-style: none;
-        padding: 0;
-      }}
-      li + li {{
-        margin-top: 1.25rem;
-      }}
-      a {{
-        color: var(--ink);
-      }}
-      small {{
-        display: block;
-        margin-top: 0.35rem;
-        color: var(--muted);
-      }}
-    </style>
-{analytics_snippet}  </head>
-  <body>
-    <main>
-      <span class="eyebrow">blog-v2 content bootstrap</span>
-      <h1>{config.title}</h1>
-      <p>{config.description}</p>
-      <section class="card">
-        <strong>Deployment target:</strong> GitHub Pages static files.<br />
-        <strong>API dependency:</strong> none on <code>/api</code>.<br />
-        <strong>Base URL:</strong> <code>{config.base_url}</code>
-      </section>
-      <section>
-        <h2>Recent</h2>
-        <ul>
-{recent_markup}
-        </ul>
-      </section>
-      <section>
-        <h2>Sagas</h2>
-        <ul>
-{saga_markup}
-        </ul>
-        <a href="{_absolute_url(config.base_url, '/sagas/')}">Browse all sagas</a>
-      </section>
-      <section>
-        <h2>Library</h2>
-        <p>Browse ideas and implementation threads by topic.</p>
-        <a href="{_absolute_url(config.base_url, '/library/')}">Explore the library</a>
-      </section>
-    </main>
-  </body>
-</html>
-"""
+    return _render_document(
+        config=config,
+        title=config.title,
+        description=config.description,
+        canonical_path="/",
+        eyebrow="Home",
+        heading=config.title,
+        summary=config.description,
+        metadata="static publication",
+        body_html=(
+            "        <section class=\"card\">\n"
+            "          <strong>Deployment target:</strong> GitHub Pages static files.<br />\n"
+            "          <strong>API dependency:</strong> none on <code>/api</code>.<br />\n"
+            f"          <strong>Base URL:</strong> <code>{html.escape(config.base_url)}</code>\n"
+            "        </section>\n"
+            "        <section>\n"
+            "          <h2>Recent</h2>\n"
+            "          <ul>\n"
+            f"{recent_markup}\n"
+            "          </ul>\n"
+            "        </section>\n"
+            "        <section>\n"
+            "          <h2>Sagas</h2>\n"
+            "          <ul>\n"
+            f"{saga_markup}\n"
+            "          </ul>\n"
+            f'          <a href="{_absolute_url(config.base_url, "/sagas/")}">Browse all sagas</a>\n'
+            "        </section>\n"
+            "        <section>\n"
+            "          <h2>Library</h2>\n"
+            "          <p>Browse ideas and implementation threads by topic.</p>\n"
+            f'          <a href="{_absolute_url(config.base_url, "/library/")}">Explore the library</a>\n'
+            "        </section>"
+        ),
+    )
 
 
 def build_content_page(config: SiteConfig, page: Page) -> str:
@@ -419,6 +347,10 @@ def _render_document(
 ) -> str:
     analytics_snippet = _render_analytics(config.analytics)
     canonical_url = _absolute_url(config.base_url, canonical_path)
+    navigation_markup = _render_navigation(
+        project_navigation_state(canonical_path),
+        base_url=config.base_url,
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -468,6 +400,28 @@ def _render_document(
       .meta, .summary {{
         color: var(--muted);
       }}
+      .site-frame {{
+        width: min(64rem, calc(100vw - 3rem));
+        margin: 0 auto;
+        padding: 2rem 0 5rem;
+      }}
+      .site-nav {{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        margin-bottom: 2.25rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--line);
+      }}
+      .site-nav a {{
+        color: var(--muted);
+        text-decoration: none;
+      }}
+      .site-nav a.active {{
+        color: var(--ink);
+        font-weight: 600;
+        text-decoration: underline;
+      }}
       .breadcrumbs {{
         margin-bottom: 1rem;
         color: var(--muted);
@@ -503,8 +457,11 @@ def _render_document(
     </style>
 {analytics_snippet}  </head>
   <body>
-    <main>
-      <a href="{html.escape(config.base_url)}">Home</a>
+    <div class="site-frame">
+      <nav class="site-nav">
+{navigation_markup}
+      </nav>
+      <main>
       <div class="eyebrow">{html.escape(eyebrow)}</div>
       <h1>{html.escape(heading)}</h1>
       <p class="summary">{html.escape(summary)}</p>
@@ -512,7 +469,8 @@ def _render_document(
       <article>
 {body_html}
       </article>
-    </main>
+      </main>
+    </div>
   </body>
 </html>
 """
@@ -658,6 +616,21 @@ def _render_saga_summary(summary: object, *, base_url: str) -> str:
         f'              <a href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
         f"              <p>{html.escape(summary.summary)}</p>{start_link}\n"
         "            </li>"
+    )
+
+
+def _render_navigation(
+    links: tuple[NavigationLink, ...],
+    *,
+    base_url: str,
+) -> str:
+    return "\n".join(
+        (
+            "        "
+            f'<a href="{_absolute_url(base_url, link.path)}"'
+            f' class="{"active" if link.is_active else ""}">{html.escape(link.label)}</a>'
+        )
+        for link in links
     )
 
 

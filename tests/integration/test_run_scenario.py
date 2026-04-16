@@ -66,24 +66,30 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     ).read_text(encoding="utf-8")
 
     assert "Recent" in homepage_html
+    assert 'class="active">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/about/"' in homepage_html
     assert 'href="https://wastingnotime.org/library/"' in homepage_html
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
     assert "Topics" in library_html
+    assert 'class="active">Library</a>' in library_html
     assert "architecture" in library_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
     assert "Active sagas" in sagas_index_html
+    assert 'class="active">Sagas</a>' in sagas_index_html
     assert "start reading" in sagas_index_html
     assert "Timeline" in saga_html
+    assert 'class="active">Sagas</a>' in saga_html
     assert "The Origin Blueprint" in saga_html
     assert "Episodes" in arc_html
     assert "[Ep 01] The First Brick" in arc_html
     assert "Why this site exists" in about_html
+    assert 'class="active">About</a>' in about_html
     assert "/sagas/" in studio_html
     assert "/library/" in studio_html
+    assert 'class="active">Studio</a>' in studio_html
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "Ep 02 Second Iteration" in episode_html
     assert "/api/event" not in episode_html
