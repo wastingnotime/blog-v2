@@ -68,7 +68,7 @@ project_root/
       egd/
       release/
       expose/
-      living/
+      feedback/
 
   docs/
     operating/

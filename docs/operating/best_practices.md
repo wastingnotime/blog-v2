@@ -135,15 +135,3 @@ This affects:
 - whether frontend and backend should stay closely coupled during construction
 
 ---
-
-## Session Productivity
-
-If a repository wants lightweight operational feedback on how MRL work is progressing, track session metrics alongside normal artifact review.
-
-Use `docs/session_metrics.md` as the starter pattern for:
-
-- token-efficiency tracking
-- historical session snapshots
-- simple investigation thresholds when sessions become expensive or drift-prone
-
-These metrics should guide inspection of session shape, not replace review of slice quality, model quality, or delivered behavior.

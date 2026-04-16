@@ -59,7 +59,7 @@ Repository-scoped skills should live under `.agents/skills/` with one folder per
     SKILL.md
   expose/
     SKILL.md
-  living/
+  feedback/
     SKILL.md
 ```
 
@@ -290,7 +290,7 @@ Notes:
 - be confused with release itself
 - assume source code alone is the exposure artifact when a portable runtime artifact should exist
 
-### 7. Living
+### 7. Feedback
 
 **Goal**
 
@@ -406,7 +406,7 @@ extract
   -> egd
   -> release
   -> expose
-  -> living
+  -> feedback
   -> extract
 ```
 

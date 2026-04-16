@@ -34,7 +34,7 @@ MRL is a refinement loop.
 ## Canonical Loop
 
 ```text
-extract -> refine -> build -> egd -> release -> expose -> living -> extract
+extract -> refine -> build -> egd -> release -> expose -> feedback -> extract
 ```
 
 ### `extract`
@@ -61,7 +61,7 @@ Default operating rule:
 - the default portable form is a container image unless the adopting repository has a better justified deployment artifact
 - packaging for `expose` is a lifecycle concern, not a domain-semantics concern
 
-### `living`
+### `feedback`
 Capture the feedback, friction, surprises, and drift created by exposure.
 
 ---
@@ -121,8 +121,6 @@ To make MRL portable to a fresh repository, keep the framework generic and move 
 
 Use `docs/operating/mrl_starter.md` as the starter layout for new repositories. Use `docs/operating/best_practices.md` for practical guidance such as architecture timing and phase discipline.
 Use `docs/evaluation/validation_modes.md` when the repository needs to decide whether slices are mainly validated headlessly, through interaction assistance, or through lived interaction.
-Use `docs/session_metrics.md` when the repository wants a lightweight way to track session productivity and token efficiency over time.
-
 MRL portability does not require one implementation language or one architecture.
 
 The portable part is:

@@ -1,5 +1,5 @@
 ---
-name: living
+name: feedback
 description: Capture post-exposure evidence for the MRL loop. Use when an exposed slice has begun generating real feedback, surprises, friction, or drift and the next step is to turn those signals into explicit artifacts that feed back into extract.
 ---
 

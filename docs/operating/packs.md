@@ -85,6 +85,7 @@ This metadata keeps the semantic model shared while making implementation placem
 ## Suggested Initial Packs
 
 - `python_ddd_monolith`
+- `terraform_aws_environment`
 - `typescript_application`
 - `go_service`
 - `event_sourced_domain`
