@@ -91,6 +91,26 @@ class HomepageSurface:
 
 
 @dataclass(frozen=True)
+class FeedEntry:
+    title: str
+    summary: str
+    date: str
+    permalink: str
+
+
+@dataclass(frozen=True)
+class SitemapEntry:
+    permalink: str
+    last_modified: str | None
+
+
+@dataclass(frozen=True)
+class PublicationMetadata:
+    feed_entries: tuple[FeedEntry, ...]
+    sitemap_entries: tuple[SitemapEntry, ...]
+
+
+@dataclass(frozen=True)
 class EpisodeNavigation:
     title: str
     permalink: str

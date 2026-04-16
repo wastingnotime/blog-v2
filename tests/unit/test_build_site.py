@@ -90,6 +90,22 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "/sagas/" in studio_html
 
 
+def test_build_static_site_generates_feed_and_sitemap() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    feed_xml = pages["feed.xml"]
+    sitemap_xml = pages["sitemap.xml"]
+
+    assert "<rss version=\"2.0\">" in feed_xml
+    assert "<title>Second Iteration</title>" in feed_xml
+    assert "<link>https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
+    assert "Fri, 11 Apr 2026" not in feed_xml
+    assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
+    assert "<loc>https://example.com/library/</loc>" in sitemap_xml
+    assert "<loc>https://example.com/sagas/hireflow/</loc>" in sitemap_xml
+    assert "<lastmod>2026-04-13</lastmod>" in sitemap_xml
+
+
 def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     pages = build_static_site(_site_config(), _catalog())
 

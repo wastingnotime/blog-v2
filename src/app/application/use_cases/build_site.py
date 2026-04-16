@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
+from email.utils import format_datetime
 import html
 import re
 
@@ -7,13 +9,16 @@ from src.app.domain.models.content import (
     ArcView,
     ContentCatalog,
     Episode,
+    FeedEntry,
     HomepageSagaSummary,
     HomepageSurface,
     LibraryCatalog,
     Page,
+    PublicationMetadata,
     RecentContent,
     SagasIndex,
     SagaView,
+    SitemapEntry,
     TopicEntry,
     TopicPage,
 )
@@ -29,6 +34,9 @@ from src.app.application.use_cases.project_navigation_state import (
 from src.app.application.use_cases.project_homepage_surface import (
     project_homepage_surface,
 )
+from src.app.application.use_cases.project_publication_metadata import (
+    project_publication_metadata,
+)
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
@@ -38,12 +46,20 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
     saga_views = project_saga_views(catalog, arc_views)
     homepage_surface = project_homepage_surface(catalog, saga_views, arc_views)
     topic_catalog = project_topic_catalog(catalog)
+    publication_metadata = project_publication_metadata(
+        catalog,
+        saga_views,
+        arc_views,
+        topic_catalog.pages,
+    )
     sagas_index = project_sagas_index(saga_views, arc_views)
     pages = {
         "index.html": build_homepage(config, homepage_surface),
         "library/index.html": build_library_page(config, topic_catalog),
         "sagas/index.html": build_sagas_index_page(config, sagas_index),
         "studio/index.html": build_studio_page(config),
+        "feed.xml": build_feed(config, publication_metadata),
+        "sitemap.xml": build_sitemap(config, publication_metadata),
     }
 
     for page in catalog.pages:
@@ -75,6 +91,43 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         )
 
     return pages
+
+
+def build_feed(config: SiteConfig, publication_metadata: PublicationMetadata) -> str:
+    items_markup = "\n".join(
+        _render_feed_item(entry, base_url=config.base_url)
+        for entry in publication_metadata.feed_entries
+    )
+    last_build_date = _format_rfc2822(
+        publication_metadata.feed_entries[0].date
+        if publication_metadata.feed_entries
+        else None
+    )
+    return (
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        "<rss version=\"2.0\">\n"
+        "  <channel>\n"
+        f"    <title>{html.escape(config.title)}</title>\n"
+        f"    <link>{html.escape(_absolute_url(config.base_url, '/'))}</link>\n"
+        f"    <description>{html.escape(config.description)}</description>\n"
+        f"    <lastBuildDate>{html.escape(last_build_date)}</lastBuildDate>\n"
+        f"{items_markup}\n"
+        "  </channel>\n"
+        "</rss>\n"
+    )
+
+
+def build_sitemap(config: SiteConfig, publication_metadata: PublicationMetadata) -> str:
+    entries_markup = "\n".join(
+        _render_sitemap_entry(entry, base_url=config.base_url)
+        for entry in publication_metadata.sitemap_entries
+    )
+    return (
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n"
+        f"{entries_markup}\n"
+        "</urlset>\n"
+    )
 
 
 def build_homepage(config: SiteConfig, homepage_surface: HomepageSurface) -> str:
@@ -503,6 +556,31 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
     )
 
 
+def _render_feed_item(entry: FeedEntry, *, base_url: str) -> str:
+    absolute_url = _absolute_url(base_url, entry.permalink)
+    return (
+        "    <item>\n"
+        f"      <title>{html.escape(entry.title)}</title>\n"
+        f"      <link>{html.escape(absolute_url)}</link>\n"
+        f"      <guid>{html.escape(absolute_url)}</guid>\n"
+        f"      <pubDate>{html.escape(_format_rfc2822(entry.date))}</pubDate>\n"
+        f"      <description>{html.escape(entry.summary)}</description>\n"
+        "    </item>"
+    )
+
+
+def _render_sitemap_entry(entry: SitemapEntry, *, base_url: str) -> str:
+    lastmod_markup = ""
+    if entry.last_modified:
+        lastmod_markup = f"\n    <lastmod>{html.escape(entry.last_modified)}</lastmod>"
+    return (
+        "  <url>\n"
+        f"    <loc>{html.escape(_absolute_url(base_url, entry.permalink))}</loc>"
+        f"{lastmod_markup}\n"
+        "  </url>"
+    )
+
+
 def _render_homepage_saga_summary(
     summary: HomepageSagaSummary,
     *,
@@ -522,6 +600,13 @@ def _render_homepage_saga_summary(
         f"            <p>{html.escape(summary.summary)}</p>\n"
         "          </li>"
     )
+
+
+def _format_rfc2822(date: str | None) -> str:
+    if date is None:
+        return format_datetime(datetime(1970, 1, 1, tzinfo=timezone.utc))
+    parsed = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    return format_datetime(parsed)
 
 
 def _render_arc_summary(arc: object, *, base_url: str) -> str:

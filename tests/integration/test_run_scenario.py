@@ -21,6 +21,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     expected_paths = {
         output_dir / "index.html",
+        output_dir / "feed.xml",
+        output_dir / "sitemap.xml",
         output_dir / "about" / "index.html",
         output_dir / "library" / "index.html",
         output_dir / "library" / "architecture" / "index.html",
@@ -53,6 +55,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         output_dir / "sagas" / "hireflow" / "the-origin-blueprint" / "index.html"
     ).read_text(encoding="utf-8")
     about_html = (output_dir / "about" / "index.html").read_text(encoding="utf-8")
+    feed_xml = (output_dir / "feed.xml").read_text(encoding="utf-8")
+    sitemap_xml = (output_dir / "sitemap.xml").read_text(encoding="utf-8")
     studio_html = (
         output_dir / "studio" / "index.html"
     ).read_text(encoding="utf-8")
@@ -76,6 +80,14 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
     assert "Deployment target:" not in homepage_html
+    assert "<rss version=\"2.0\">" in feed_xml
+    assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
+    assert "<title>About</title>" in feed_xml
+    assert "/api/event" not in feed_xml
+    assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
+    assert "<loc>https://wastingnotime.org/</loc>" in sitemap_xml
+    assert "<loc>https://wastingnotime.org/library/architecture/</loc>" in sitemap_xml
+    assert "<lastmod>2025-11-15</lastmod>" in sitemap_xml
     assert "Topics" in library_html
     assert 'class="active">Library</a>' in library_html
     assert "architecture" in library_html
