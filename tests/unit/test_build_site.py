@@ -37,6 +37,15 @@ def test_build_static_site_orders_recent_content_by_date_desc() -> None:
     assert html.index("[episode] Second Iteration") < html.index("[page] About")
 
 
+def test_build_static_site_limits_homepage_recent_entries() -> None:
+    html = build_static_site(_site_config(), _catalog_with_extra_page())["index.html"]
+
+    assert "[episode] Second Iteration" in html
+    assert "[episode] The First Brick" in html
+    assert "[page] Notes" in html
+    assert "[page] About" not in html
+
+
 def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
@@ -93,6 +102,17 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'class="active">About</a>' in about_html
     assert 'class="active">Sagas</a>' in saga_html
     assert 'href="https://example.com/library/"' in saga_html
+
+
+def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -> None:
+    html = build_static_site(_site_config(), _catalog())["index.html"]
+
+    assert "In Public" in html
+    assert "This site tracks architecture decisions" in html
+    assert "Active Sagas" in html
+    assert "2 episodes · last release 2026-04-13 · in-progress" in html
+    assert "Deployment target:" not in html
+
 
 
 def _site_config() -> SiteConfig:
@@ -162,4 +182,24 @@ def _catalog() -> ContentCatalog:
                 tags=("architecture",),
             ),
         ),
+    )
+
+
+def _catalog_with_extra_page() -> ContentCatalog:
+    base_catalog = _catalog()
+    return ContentCatalog(
+        pages=base_catalog.pages
+        + (
+            Page(
+                title="Notes",
+                slug="notes",
+                summary="Newest standalone page.",
+                date="2026-04-14",
+                body_markdown="Notes body.",
+                tags=("writing",),
+            ),
+        ),
+        sagas=base_catalog.sagas,
+        arcs=base_catalog.arcs,
+        episodes=base_catalog.episodes,
     )

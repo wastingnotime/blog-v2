@@ -75,6 +75,22 @@ class RecentContent:
 
 
 @dataclass(frozen=True)
+class HomepageSagaSummary:
+    title: str
+    permalink: str
+    summary: str
+    status: str
+    episode_count: int
+    last_release_date: str | None
+
+
+@dataclass(frozen=True)
+class HomepageSurface:
+    recent_entries: tuple[RecentContent, ...]
+    saga_summaries: tuple[HomepageSagaSummary, ...]
+
+
+@dataclass(frozen=True)
 class EpisodeNavigation:
     title: str
     permalink: str

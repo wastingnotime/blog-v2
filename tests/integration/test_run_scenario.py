@@ -65,13 +65,17 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         / "index.html"
     ).read_text(encoding="utf-8")
 
-    assert "Recent" in homepage_html
+    assert "In Public" in homepage_html
+    assert "This site tracks architecture decisions" in homepage_html
     assert 'class="active">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/about/"' in homepage_html
     assert 'href="https://wastingnotime.org/library/"' in homepage_html
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
+    assert "3 recent entries shown" in homepage_html
+    assert "2 episodes · last release 2025-11-15 · in-progress" in homepage_html
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
+    assert "Deployment target:" not in homepage_html
     assert "Topics" in library_html
     assert 'class="active">Library</a>' in library_html
     assert "architecture" in library_html

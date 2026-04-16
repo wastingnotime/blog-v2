@@ -7,10 +7,11 @@ from src.app.domain.models.content import (
     ArcView,
     ContentCatalog,
     Episode,
+    HomepageSagaSummary,
+    HomepageSurface,
     LibraryCatalog,
     Page,
     RecentContent,
-    Saga,
     SagasIndex,
     SagaView,
     TopicEntry,
@@ -25,6 +26,9 @@ from src.app.application.use_cases.project_navigation_state import (
     NavigationLink,
     project_navigation_state,
 )
+from src.app.application.use_cases.project_homepage_surface import (
+    project_homepage_surface,
+)
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
@@ -32,10 +36,11 @@ from src.app.application.use_cases.project_section_hubs import project_sagas_ind
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
     arc_views = project_arc_views(catalog)
     saga_views = project_saga_views(catalog, arc_views)
+    homepage_surface = project_homepage_surface(catalog, saga_views, arc_views)
     topic_catalog = project_topic_catalog(catalog)
     sagas_index = project_sagas_index(saga_views, arc_views)
     pages = {
-        "index.html": build_homepage(config, catalog),
+        "index.html": build_homepage(config, homepage_surface),
         "library/index.html": build_library_page(config, topic_catalog),
         "sagas/index.html": build_sagas_index_page(config, sagas_index),
         "studio/index.html": build_studio_page(config),
@@ -72,14 +77,19 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
     return pages
 
 
-def build_homepage(config: SiteConfig, catalog: ContentCatalog) -> str:
-    analytics_snippet = _render_analytics(config.analytics)
-    recent_items = _build_recent_items(catalog)
+def build_homepage(config: SiteConfig, homepage_surface: HomepageSurface) -> str:
+    recent_items = homepage_surface.recent_entries
     recent_markup = "\n".join(
         _render_recent_item(item, base_url=config.base_url) for item in recent_items
     )
     saga_markup = "\n".join(
-        _render_saga_item(saga, base_url=config.base_url) for saga in catalog.sagas
+        _render_homepage_saga_summary(summary, base_url=config.base_url)
+        for summary in homepage_surface.saga_summaries
+    )
+    recent_metadata = (
+        f"{len(recent_items)} recent entries shown"
+        if recent_items
+        else "no recent entries yet"
     )
 
     return _render_document(
@@ -89,13 +99,13 @@ def build_homepage(config: SiteConfig, catalog: ContentCatalog) -> str:
         canonical_path="/",
         eyebrow="Home",
         heading=config.title,
-        summary=config.description,
-        metadata="static publication",
+        summary="Architecture, systems thinking, and long-running software work made legible in public.",
+        metadata=recent_metadata,
         body_html=(
-            "        <section class=\"card\">\n"
-            "          <strong>Deployment target:</strong> GitHub Pages static files.<br />\n"
-            "          <strong>API dependency:</strong> none on <code>/api</code>.<br />\n"
-            f"          <strong>Base URL:</strong> <code>{html.escape(config.base_url)}</code>\n"
+            "        <section>\n"
+            "          <h2>In Public</h2>\n"
+            "          <p>This site tracks architecture decisions, evolving systems, and the writing that falls out of shipping them.</p>\n"
+            "          <p>Read the latest work, then follow the longer arcs through the saga index and library.</p>\n"
             "        </section>\n"
             "        <section>\n"
             "          <h2>Recent</h2>\n"
@@ -104,7 +114,7 @@ def build_homepage(config: SiteConfig, catalog: ContentCatalog) -> str:
             "          </ul>\n"
             "        </section>\n"
             "        <section>\n"
-            "          <h2>Sagas</h2>\n"
+            "          <h2>Active Sagas</h2>\n"
             "          <ul>\n"
             f"{saga_markup}\n"
             "          </ul>\n"
@@ -476,32 +486,6 @@ def _render_document(
 """
 
 
-def _build_recent_items(catalog: ContentCatalog) -> list[RecentContent]:
-    items: list[RecentContent] = [
-        RecentContent(
-            title=page.title,
-            kind="page",
-            summary=page.summary,
-            date=page.date,
-            permalink=page.permalink,
-        )
-        for page in catalog.pages
-    ]
-    items.extend(
-        RecentContent(
-            title=episode.title,
-            kind="episode",
-            summary=episode.summary,
-            date=episode.date,
-            permalink=episode.permalink,
-            saga_title=episode.saga_title,
-            arc_title=episode.arc_title,
-        )
-        for episode in catalog.episodes
-    )
-    return sorted(items, key=lambda item: item.date, reverse=True)
-
-
 def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
     context = ""
     if item.saga_title:
@@ -519,12 +503,23 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
     )
 
 
-def _render_saga_item(saga: Saga, *, base_url: str) -> str:
+def _render_homepage_saga_summary(
+    summary: HomepageSagaSummary,
+    *,
+    base_url: str,
+) -> str:
+    status_parts = [
+        f"{summary.episode_count} episodes",
+        summary.status,
+    ]
+    if summary.last_release_date:
+        status_parts.insert(1, f"last release {summary.last_release_date}")
+
     return (
         "          <li>\n"
-        f'            <a href="{_absolute_url(base_url, saga.permalink)}">{html.escape(saga.title)}</a>\n'
-        f"            <small>{html.escape(saga.date)} · {html.escape(saga.status)}</small>\n"
-        f"            <p>{html.escape(saga.summary)}</p>\n"
+        f'            <a href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+        f"            <small>{html.escape(' · '.join(status_parts))}</small>\n"
+        f"            <p>{html.escape(summary.summary)}</p>\n"
         "          </li>"
     )
 
