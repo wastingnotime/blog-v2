@@ -10,6 +10,7 @@ class Page:
     summary: str
     date: str
     body_markdown: str
+    tags: tuple[str, ...] = ()
 
     @property
     def permalink(self) -> str:
@@ -55,6 +56,7 @@ class Episode:
     arc_title: str
     number: int
     body_markdown: str
+    tags: tuple[str, ...] = ()
 
     @property
     def permalink(self) -> str:
@@ -94,6 +96,29 @@ class SagaTimelineEntry:
     number: int
     date: str
     arc_title: str
+
+
+@dataclass(frozen=True)
+class TopicEntry:
+    title: str
+    kind: str
+    summary: str
+    date: str
+    permalink: str
+    saga_title: str | None = None
+    arc_title: str | None = None
+
+
+@dataclass(frozen=True)
+class TopicPage:
+    tag: str
+    entries: tuple[TopicEntry, ...]
+
+
+@dataclass(frozen=True)
+class LibraryCatalog:
+    tags: tuple[str, ...]
+    pages: tuple[TopicPage, ...]
 
 
 @dataclass(frozen=True)

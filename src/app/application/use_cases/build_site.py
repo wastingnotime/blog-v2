@@ -7,23 +7,29 @@ from src.app.domain.models.content import (
     ArcView,
     ContentCatalog,
     Episode,
+    LibraryCatalog,
     Page,
     RecentContent,
     Saga,
     SagaView,
+    TopicEntry,
+    TopicPage,
 )
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
 from src.app.application.use_cases.project_narrative_navigation import (
     project_arc_views,
     project_saga_views,
 )
+from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
 
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
     arc_views = project_arc_views(catalog)
     saga_views = project_saga_views(catalog, arc_views)
+    topic_catalog = project_topic_catalog(catalog)
     pages = {
         "index.html": build_homepage(config, catalog),
+        "library/index.html": build_library_page(config, topic_catalog),
     }
 
     for page in catalog.pages:
@@ -46,6 +52,12 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
             config,
             episode,
             arc_views[(episode.saga_slug, episode.arc_slug)],
+        )
+
+    for topic_page in topic_catalog.pages:
+        pages[f"library/{topic_page.tag}/index.html"] = build_topic_page(
+            config,
+            topic_page,
         )
 
     return pages
@@ -162,6 +174,11 @@ def build_homepage(config: SiteConfig, catalog: ContentCatalog) -> str:
 {saga_markup}
         </ul>
       </section>
+      <section>
+        <h2>Library</h2>
+        <p>Browse ideas and implementation threads by topic.</p>
+        <a href="{_absolute_url(config.base_url, '/library/')}">Explore the library</a>
+      </section>
     </main>
   </body>
 </html>
@@ -273,6 +290,59 @@ def build_arc_page(config: SiteConfig, arc_view: ArcView) -> str:
             "          <h2>Episodes</h2>\n"
             "          <ul>\n"
             f"{episode_markup}\n"
+            "          </ul>\n"
+            "        </section>"
+        ),
+    )
+
+
+def build_library_page(config: SiteConfig, library_catalog: LibraryCatalog) -> str:
+    tag_markup = "\n".join(
+        _render_library_tag(tag, base_url=config.base_url) for tag in library_catalog.tags
+    )
+    body_html = (
+        "        <section>\n"
+        "          <h2>Topics</h2>\n"
+        "          <ul>\n"
+        f"{tag_markup}\n"
+        "          </ul>\n"
+        "        </section>"
+        if library_catalog.tags
+        else "        <p>No tags available yet.</p>"
+    )
+    return _render_document(
+        config=config,
+        title="Library",
+        description="Browse topics derived from repository-authored content.",
+        canonical_path="/library/",
+        eyebrow="Library",
+        heading="Library",
+        summary="Browse the site by topic instead of chronology alone.",
+        metadata=f"{len(library_catalog.tags)} topics",
+        body_html=body_html,
+    )
+
+
+def build_topic_page(config: SiteConfig, topic_page: TopicPage) -> str:
+    entry_markup = "\n".join(
+        _render_topic_entry(entry, base_url=config.base_url) for entry in topic_page.entries
+    )
+    return _render_document(
+        config=config,
+        title=f"#{topic_page.tag}",
+        description=f"Entries tagged with {topic_page.tag}.",
+        canonical_path=f"/library/{topic_page.tag}/",
+        eyebrow="Topic",
+        heading=f"#{topic_page.tag}",
+        summary="A topic view across standalone pages and saga episodes.",
+        metadata=f"{len(topic_page.entries)} entries",
+        body_html=(
+            "        <nav class=\"breadcrumbs\">"
+            f"<a href=\"{_absolute_url(config.base_url, '/library/')}\">Library</a></nav>\n"
+            "        <section>\n"
+            "          <h2>Entries</h2>\n"
+            "          <ul>\n"
+            f"{entry_markup}\n"
             "          </ul>\n"
             "        </section>"
         ),
@@ -495,6 +565,30 @@ def _render_adjacent_navigation(
         )
 
     return f'        <nav class="nav-grid">{previous_markup}{next_markup}</nav>'
+
+
+def _render_library_tag(tag: str, *, base_url: str) -> str:
+    return (
+        "            <li>\n"
+        f'              <a href="{_absolute_url(base_url, f"/library/{tag}/")}">{html.escape(tag)}</a>\n'
+        "            </li>"
+    )
+
+
+def _render_topic_entry(entry: TopicEntry, *, base_url: str) -> str:
+    context = ""
+    if entry.saga_title:
+        context = f"{entry.saga_title}"
+        if entry.arc_title:
+            context += f" / {entry.arc_title}"
+    context_markup = f" · {html.escape(context)}" if context else ""
+    return (
+        "            <li>\n"
+        f'              <a href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
+        f"              <small>{html.escape(entry.date)}{context_markup}</small>\n"
+        f"              <p>{html.escape(entry.summary)}</p>\n"
+        "            </li>"
+    )
 
 
 def _absolute_url(base_url: str, path: str) -> str:

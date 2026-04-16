@@ -5,6 +5,9 @@ arc: "The Origin Blueprint"
 summary: "The second pass gives the saga explicit navigation instead of isolated pages."
 number: 2
 date: "2025-11-15"
+tags:
+  - architecture
+  - static-sites
 ---
 
 ### Second Iteration

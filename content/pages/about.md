@@ -3,6 +3,9 @@ title: "About"
 type: "page"
 summary: "Why this site exists, what you will find here, and how to reach me."
 date: "2025-10-25"
+tags:
+  - architecture
+  - writing
 ---
 
 Wasting No Time is a place to make architecture and software thinking visible.

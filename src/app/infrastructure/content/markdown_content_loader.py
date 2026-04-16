@@ -24,6 +24,7 @@ class MarkdownContentLoader:
                     summary=_require_string(frontmatter, "summary", path),
                     date=_require_string(frontmatter, "date", path),
                     body_markdown=body.strip(),
+                    tags=_optional_tags(frontmatter, path),
                 )
                 pages.append(page)
 
@@ -95,6 +96,7 @@ class MarkdownContentLoader:
                                 ),
                                 number=_require_int(frontmatter, "number", episode_path),
                                 body_markdown=body.strip(),
+                                tags=_optional_tags(frontmatter, episode_path),
                             ),
                         )
 
@@ -189,3 +191,14 @@ def _require_int(frontmatter: dict[str, object], key: str, path: Path) -> int:
     if not isinstance(value, int):
         raise ValueError(f"{path} is missing an integer for {key!r}")
     return value
+
+
+def _optional_tags(frontmatter: dict[str, object], path: Path) -> tuple[str, ...]:
+    value = frontmatter.get("tags")
+    if value is None:
+        return ()
+    if not isinstance(value, list) or not all(
+        isinstance(item, str) and item.strip() for item in value
+    ):
+        raise ValueError(f"{path} declares invalid 'tags' metadata")
+    return tuple(item.strip() for item in value)

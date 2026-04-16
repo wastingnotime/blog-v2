@@ -16,6 +16,8 @@ title: "About"
 type: "page"
 summary: "About this site."
 date: "2026-04-10"
+tags:
+  - architecture
 ---
 
 Hello world.
@@ -55,6 +57,9 @@ arc: "The Origin Blueprint"
 summary: "Episode summary."
 number: 1
 date: "2026-04-12"
+tags:
+  - architecture
+  - writing
 ---
 
 ### The First Brick
@@ -64,9 +69,11 @@ date: "2026-04-12"
     catalog = MarkdownContentLoader().load(content_root)
 
     assert catalog.pages[0].title == "About"
+    assert catalog.pages[0].tags == ("architecture",)
     assert catalog.sagas[0].title == "HireFlow"
     assert catalog.arcs[0].title == "The Origin Blueprint"
     assert catalog.episodes[0].arc_title == "The Origin Blueprint"
+    assert catalog.episodes[0].tags == ("architecture", "writing")
     assert catalog.episodes[0].permalink == (
         "/sagas/hireflow/the-origin-blueprint/the-first-brick/"
     )

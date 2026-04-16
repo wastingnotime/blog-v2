@@ -5,6 +5,9 @@ arc: "The Origin Blueprint"
 summary: "We explore why HireFlow exists, what it will simulate, and how the architecture will emerge through iterative design."
 number: 1
 date: "2025-11-14"
+tags:
+  - architecture
+  - distributed-systems
 ---
 
 ### The First Brick

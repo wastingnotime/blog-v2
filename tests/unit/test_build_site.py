@@ -55,6 +55,19 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     assert "Ep 01 The First Brick" in second_episode_html
 
 
+def test_build_static_site_generates_library_and_topic_pages() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    library_html = pages["library/index.html"]
+    topic_html = pages["library/architecture/index.html"]
+
+    assert "Topics" in library_html
+    assert "architecture" in library_html
+    assert "[page] About" in topic_html
+    assert "[episode] Second Iteration" in topic_html
+    assert "HireFlow / The Origin Blueprint" in topic_html
+
+
 def _site_config() -> SiteConfig:
     return SiteConfig(
         title="Example",
@@ -72,6 +85,7 @@ def _catalog() -> ContentCatalog:
                 summary="What this site is about.",
                 date="2026-04-10",
                 body_markdown="About body.",
+                tags=("architecture",),
             ),
         ),
         sagas=(
@@ -105,6 +119,7 @@ def _catalog() -> ContentCatalog:
                 arc_title="The Origin Blueprint",
                 number=1,
                 body_markdown="Episode body.",
+                tags=("architecture", "writing"),
             ),
             Episode(
                 title="Second Iteration",
@@ -117,6 +132,7 @@ def _catalog() -> ContentCatalog:
                 arc_title="The Origin Blueprint",
                 number=2,
                 body_markdown="More episode body.",
+                tags=("architecture",),
             ),
         ),
     )
