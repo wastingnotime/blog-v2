@@ -1,17 +1,53 @@
 from pathlib import Path
 
+from src.app.application.use_cases.load_content_catalog import load_content_catalog
 from src.app.interfaces.cli.run_scenario import load_site_config
 from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilder
+from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
 
 
-def test_static_site_builder_writes_index_html(tmp_path: Path) -> None:
+def test_static_site_builder_generates_static_routes_from_markdown(
+    tmp_path: Path,
+) -> None:
     output_dir = tmp_path / "dist"
+    content_root = Path(__file__).resolve().parents[2] / "content"
     builder = StaticSiteBuilder(output_dir=output_dir)
+    catalog = load_content_catalog(
+        loader=MarkdownContentLoader(),
+        content_root=content_root,
+    )
 
-    homepage_path = builder.build(load_site_config())
+    written_paths = builder.build(load_site_config(), catalog)
 
-    assert homepage_path == output_dir / "index.html"
-    assert homepage_path.exists()
-    html = homepage_path.read_text(encoding="utf-8")
-    assert "GitHub Pages static files" in html
-    assert "/api/event" not in html
+    expected_paths = {
+        output_dir / "index.html",
+        output_dir / "about" / "index.html",
+        output_dir / "sagas" / "hireflow" / "index.html",
+        output_dir
+        / "sagas"
+        / "hireflow"
+        / "the-origin-blueprint"
+        / "the-first-brick"
+        / "index.html",
+    }
+
+    assert expected_paths.issubset(set(written_paths))
+
+    homepage_html = (output_dir / "index.html").read_text(encoding="utf-8")
+    about_html = (output_dir / "about" / "index.html").read_text(encoding="utf-8")
+    episode_html = (
+        output_dir
+        / "sagas"
+        / "hireflow"
+        / "the-origin-blueprint"
+        / "the-first-brick"
+        / "index.html"
+    ).read_text(encoding="utf-8")
+
+    assert "Recent" in homepage_html
+    assert 'href="https://wastingnotime.org/about/"' in homepage_html
+    assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
+    assert "/api/event" not in homepage_html
+    assert "Why this site exists" in about_html
+    assert "HireFlow / The Origin Blueprint" in episode_html
+    assert "/api/event" not in episode_html

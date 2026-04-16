@@ -1,10 +1,47 @@
 from __future__ import annotations
 
+import html
+import re
+
+from src.app.domain.models.content import (
+    ContentCatalog,
+    Episode,
+    Page,
+    RecentContent,
+    Saga,
+)
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
 
 
-def build_homepage(config: SiteConfig) -> str:
+def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
+    pages = {
+        "index.html": build_homepage(config, catalog),
+    }
+
+    for page in catalog.pages:
+        pages[f"{page.slug}/index.html"] = build_content_page(config, page)
+
+    for saga in catalog.sagas:
+        pages[f"sagas/{saga.slug}/index.html"] = build_saga_page(config, saga)
+
+    for episode in catalog.episodes:
+        pages[episode.permalink.strip("/") + "/index.html"] = build_episode_page(
+            config,
+            episode,
+        )
+
+    return pages
+
+
+def build_homepage(config: SiteConfig, catalog: ContentCatalog) -> str:
     analytics_snippet = _render_analytics(config.analytics)
+    recent_items = _build_recent_items(catalog)
+    recent_markup = "\n".join(
+        _render_recent_item(item, base_url=config.base_url) for item in recent_items
+    )
+    saga_markup = "\n".join(
+        _render_saga_item(saga, base_url=config.base_url) for saga in catalog.sagas
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -68,11 +105,26 @@ def build_homepage(config: SiteConfig) -> str:
         font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         font-size: 0.95em;
       }}
+      ul {{
+        list-style: none;
+        padding: 0;
+      }}
+      li + li {{
+        margin-top: 1.25rem;
+      }}
+      a {{
+        color: var(--ink);
+      }}
+      small {{
+        display: block;
+        margin-top: 0.35rem;
+        color: var(--muted);
+      }}
     </style>
 {analytics_snippet}  </head>
   <body>
     <main>
-      <span class="eyebrow">blog-v2 bootstrap</span>
+      <span class="eyebrow">blog-v2 content bootstrap</span>
       <h1>{config.title}</h1>
       <p>{config.description}</p>
       <section class="card">
@@ -80,10 +132,313 @@ def build_homepage(config: SiteConfig) -> str:
         <strong>API dependency:</strong> none on <code>/api</code>.<br />
         <strong>Base URL:</strong> <code>{config.base_url}</code>
       </section>
+      <section>
+        <h2>Recent</h2>
+        <ul>
+{recent_markup}
+        </ul>
+      </section>
+      <section>
+        <h2>Sagas</h2>
+        <ul>
+{saga_markup}
+        </ul>
+      </section>
     </main>
   </body>
 </html>
 """
+
+
+def build_content_page(config: SiteConfig, page: Page) -> str:
+    return _render_document(
+        config=config,
+        title=page.title,
+        description=page.summary,
+        canonical_path=page.permalink,
+        eyebrow="Page",
+        heading=page.title,
+        summary=page.summary,
+        metadata=page.date,
+        body_html=_render_markdown(page.body_markdown),
+    )
+
+
+def build_episode_page(config: SiteConfig, episode: Episode) -> str:
+    metadata = (
+        f"{episode.date} · {episode.saga_title} / {episode.arc_title} · "
+        f"Episode {episode.number}"
+    )
+    return _render_document(
+        config=config,
+        title=episode.title,
+        description=episode.summary,
+        canonical_path=episode.permalink,
+        eyebrow="Episode",
+        heading=episode.title,
+        summary=episode.summary,
+        metadata=metadata,
+        body_html=_render_markdown(episode.body_markdown),
+    )
+
+
+def build_saga_page(config: SiteConfig, saga: Saga) -> str:
+    return _render_document(
+        config=config,
+        title=saga.title,
+        description=saga.summary,
+        canonical_path=saga.permalink,
+        eyebrow="Saga",
+        heading=saga.title,
+        summary=saga.summary,
+        metadata=f"{saga.date} · {saga.status}",
+        body_html=f"        <p>{html.escape(saga.summary)}</p>",
+    )
+
+
+def _render_document(
+    *,
+    config: SiteConfig,
+    title: str,
+    description: str,
+    canonical_path: str,
+    eyebrow: str,
+    heading: str,
+    summary: str,
+    metadata: str,
+    body_html: str,
+) -> str:
+    analytics_snippet = _render_analytics(config.analytics)
+    canonical_url = _absolute_url(config.base_url, canonical_path)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{html.escape(title)} | {html.escape(config.title)}</title>
+    <meta name="description" content="{html.escape(description)}" />
+    <link rel="canonical" href="{html.escape(canonical_url)}" />
+    <style>
+      :root {{
+        color-scheme: light;
+        --ink: #111827;
+        --muted: #4b5563;
+        --line: #d1d5db;
+        --paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);
+        --accent: #0f766e;
+      }}
+      * {{ box-sizing: border-box; }}
+      body {{
+        margin: 0;
+        min-height: 100vh;
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--ink);
+        background: var(--paper);
+      }}
+      main {{
+        width: min(46rem, calc(100vw - 3rem));
+        margin: 0 auto;
+        padding: 4rem 0 5rem;
+      }}
+      .eyebrow {{
+        display: inline-block;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }}
+      h1 {{
+        margin: 1.25rem 0 0.75rem;
+        font-size: clamp(2.2rem, 6vw, 4rem);
+        line-height: 1;
+      }}
+      .meta, .summary {{
+        color: var(--muted);
+      }}
+      article {{
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--line);
+      }}
+      article p, article li, article blockquote {{
+        font-size: 1.08rem;
+        line-height: 1.75;
+      }}
+      article h2, article h3 {{
+        margin-top: 2rem;
+      }}
+      article blockquote {{
+        margin-left: 0;
+        padding-left: 1rem;
+        border-left: 4px solid var(--accent);
+      }}
+      article code {{
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }}
+    </style>
+{analytics_snippet}  </head>
+  <body>
+    <main>
+      <a href="{html.escape(config.base_url)}">Home</a>
+      <div class="eyebrow">{html.escape(eyebrow)}</div>
+      <h1>{html.escape(heading)}</h1>
+      <p class="summary">{html.escape(summary)}</p>
+      <p class="meta">{html.escape(metadata)}</p>
+      <article>
+{body_html}
+      </article>
+    </main>
+  </body>
+</html>
+"""
+
+
+def _build_recent_items(catalog: ContentCatalog) -> list[RecentContent]:
+    items: list[RecentContent] = [
+        RecentContent(
+            title=page.title,
+            kind="page",
+            summary=page.summary,
+            date=page.date,
+            permalink=page.permalink,
+        )
+        for page in catalog.pages
+    ]
+    items.extend(
+        RecentContent(
+            title=episode.title,
+            kind="episode",
+            summary=episode.summary,
+            date=episode.date,
+            permalink=episode.permalink,
+            saga_title=episode.saga_title,
+            arc_title=episode.arc_title,
+        )
+        for episode in catalog.episodes
+    )
+    return sorted(items, key=lambda item: item.date, reverse=True)
+
+
+def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
+    context = ""
+    if item.saga_title:
+        context = f" · {item.saga_title}"
+        if item.arc_title:
+            context += f" / {item.arc_title}"
+
+    return (
+        "          <li>\n"
+        f'            <a href="{_absolute_url(base_url, item.permalink)}">[{html.escape(item.kind)}] '
+        f"{html.escape(item.title)}</a>\n"
+        f"            <small>{html.escape(item.date)}{html.escape(context)}</small>\n"
+        f"            <p>{html.escape(item.summary)}</p>\n"
+        "          </li>"
+    )
+
+
+def _render_saga_item(saga: Saga, *, base_url: str) -> str:
+    return (
+        "          <li>\n"
+        f'            <a href="{_absolute_url(base_url, saga.permalink)}">{html.escape(saga.title)}</a>\n'
+        f"            <small>{html.escape(saga.date)} · {html.escape(saga.status)}</small>\n"
+        f"            <p>{html.escape(saga.summary)}</p>\n"
+        "          </li>"
+    )
+
+
+def _absolute_url(base_url: str, path: str) -> str:
+    return base_url.rstrip("/") + path
+
+
+def _render_markdown(markdown_text: str) -> str:
+    lines = markdown_text.splitlines()
+    output: list[str] = []
+    paragraph: list[str] = []
+    list_items: list[str] = []
+    in_blockquote = False
+    blockquote_lines: list[str] = []
+
+    def flush_paragraph() -> None:
+        nonlocal paragraph
+        if paragraph:
+            text = " ".join(part.strip() for part in paragraph)
+            output.append(f"        <p>{_render_inline(text)}</p>")
+            paragraph = []
+
+    def flush_list() -> None:
+        nonlocal list_items
+        if list_items:
+            output.append("        <ul>")
+            output.extend(f"          <li>{item}</li>" for item in list_items)
+            output.append("        </ul>")
+            list_items = []
+
+    def flush_blockquote() -> None:
+        nonlocal blockquote_lines, in_blockquote
+        if blockquote_lines:
+            text = " ".join(line.strip() for line in blockquote_lines)
+            output.append(f"        <blockquote>{_render_inline(text)}</blockquote>")
+            blockquote_lines = []
+        in_blockquote = False
+
+    for raw_line in lines:
+        line = raw_line.rstrip()
+        stripped = line.strip()
+
+        if not stripped:
+            flush_paragraph()
+            flush_list()
+            flush_blockquote()
+            continue
+
+        if stripped.startswith("### "):
+            flush_paragraph()
+            flush_list()
+            flush_blockquote()
+            output.append(f"        <h3>{_render_inline(stripped[4:])}</h3>")
+            continue
+
+        if stripped.startswith("## "):
+            flush_paragraph()
+            flush_list()
+            flush_blockquote()
+            output.append(f"        <h2>{_render_inline(stripped[3:])}</h2>")
+            continue
+
+        if stripped.startswith("> "):
+            flush_paragraph()
+            flush_list()
+            in_blockquote = True
+            blockquote_lines.append(stripped[2:])
+            continue
+
+        if in_blockquote:
+            flush_blockquote()
+
+        if stripped.startswith("- "):
+            flush_paragraph()
+            list_items.append(_render_inline(stripped[2:]))
+            continue
+
+        flush_list()
+        paragraph.append(stripped)
+
+    flush_paragraph()
+    flush_list()
+    flush_blockquote()
+    return "\n".join(output)
+
+
+def _render_inline(text: str) -> str:
+    escaped = html.escape(text)
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+    escaped = re.sub(r"\*(.+?)\*", r"<em>\1</em>", escaped)
+    escaped = re.sub(r"`(.+?)`", r"<code>\1</code>", escaped)
+    return escaped
 
 
 def _render_analytics(config: AnalyticsConfig | None) -> str:

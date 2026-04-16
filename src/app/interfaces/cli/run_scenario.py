@@ -3,14 +3,22 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from src.app.application.use_cases.load_content_catalog import load_content_catalog
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
 from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilder
+from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
 
 
 def main() -> None:
-    builder = StaticSiteBuilder(output_dir=Path("dist"))
-    homepage_path = builder.build(load_site_config())
-    print(f"generated {homepage_path}")
+    output_dir = Path(_getenv("OUTPUT_DIR", default="dist"))
+    content_root = Path(_getenv("CONTENT_ROOT", default="content"))
+    builder = StaticSiteBuilder(output_dir=output_dir)
+    catalog = load_content_catalog(
+        loader=MarkdownContentLoader(),
+        content_root=content_root,
+    )
+    written_paths = builder.build(load_site_config(), catalog)
+    print(f"generated {len(written_paths)} files under {output_dir}")
 
 
 def load_site_config() -> SiteConfig:
