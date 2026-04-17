@@ -698,6 +698,8 @@ def build_studio_page(
             "          <h2>Navigate</h2>\n"
             f'          <p>See active sagas -> <a href="{_absolute_url(config.base_url, "/sagas/")}">/sagas/</a></p>\n'
             f'          <p>Explore topics -> <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a></p>\n'
+            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
+            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
             "        </section>"
         ),
     )

@@ -219,6 +219,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/favicon-32x32.png"' in about_html
     assert "/sagas/" in studio_html
     assert "/library/" in studio_html
+    assert "/archives/" in studio_html
+    assert "/search/" in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
     assert 'class="active">Studio</a>' in studio_html
     assert "HireFlow / The Origin Blueprint" in episode_html

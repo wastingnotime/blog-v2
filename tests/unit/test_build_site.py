@@ -112,6 +112,8 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "start reading" in sagas_html
     assert "/library/" in studio_html
     assert "/sagas/" in studio_html
+    assert "/archives/" in studio_html
+    assert "/search/" in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
 
 
