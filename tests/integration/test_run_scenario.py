@@ -103,9 +103,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "[Ep 01] The First Brick" in arc_html
     assert "Why this site exists" in about_html
     assert 'class="active">About</a>' in about_html
+    assert "1 min read" in about_html
+    assert 'href="https://wastingnotime.org/library/architecture/"' in about_html
     assert "/sagas/" in studio_html
     assert "/library/" in studio_html
     assert 'class="active">Studio</a>' in studio_html
     assert "HireFlow / The Origin Blueprint" in episode_html
+    assert "1 min read" in episode_html
+    assert 'href="https://wastingnotime.org/library/distributed-systems/"' in episode_html
     assert "Ep 02 Second Iteration" in episode_html
     assert "/api/event" not in episode_html

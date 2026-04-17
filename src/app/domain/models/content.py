@@ -111,6 +111,19 @@ class PublicationMetadata:
 
 
 @dataclass(frozen=True)
+class EntryTag:
+    name: str
+    permalink: str
+
+
+@dataclass(frozen=True)
+class EntryMetadata:
+    publication_date: str
+    reading_time_minutes: int
+    tags: tuple[EntryTag, ...]
+
+
+@dataclass(frozen=True)
 class EpisodeNavigation:
     title: str
     permalink: str

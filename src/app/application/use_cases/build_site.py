@@ -8,6 +8,7 @@ import re
 from src.app.domain.models.content import (
     ArcView,
     ContentCatalog,
+    EntryMetadata,
     Episode,
     FeedEntry,
     HomepageSagaSummary,
@@ -33,6 +34,10 @@ from src.app.application.use_cases.project_navigation_state import (
 )
 from src.app.application.use_cases.project_homepage_surface import (
     project_homepage_surface,
+)
+from src.app.application.use_cases.project_entry_metadata import (
+    project_episode_metadata,
+    project_page_metadata,
 )
 from src.app.application.use_cases.project_publication_metadata import (
     project_publication_metadata,
@@ -183,6 +188,7 @@ def build_homepage(config: SiteConfig, homepage_surface: HomepageSurface) -> str
 
 
 def build_content_page(config: SiteConfig, page: Page) -> str:
+    entry_metadata = project_page_metadata(page)
     return _render_document(
         config=config,
         title=page.title,
@@ -192,11 +198,17 @@ def build_content_page(config: SiteConfig, page: Page) -> str:
         heading=page.title,
         summary=page.summary,
         metadata=page.date,
-        body_html=_render_markdown(page.body_markdown),
+        body_html="\n".join(
+            [
+                _render_entry_metadata(entry_metadata, base_url=config.base_url),
+                _render_markdown(page.body_markdown),
+            ]
+        ),
     )
 
 
 def build_episode_page(config: SiteConfig, episode: Episode, arc_view: ArcView) -> str:
+    entry_metadata = project_episode_metadata(episode)
     metadata = (
         f"{episode.date} · {episode.saga_title} / {episode.arc_title} · "
         f"Episode {episode.number}"
@@ -224,7 +236,12 @@ def build_episode_page(config: SiteConfig, episode: Episode, arc_view: ArcView) 
         summary=episode.summary,
         metadata=metadata,
         body_html="\n".join(
-            [parent_navigation, _render_markdown(episode.body_markdown), adjacent_navigation]
+            [
+                parent_navigation,
+                _render_entry_metadata(entry_metadata, base_url=config.base_url),
+                _render_markdown(episode.body_markdown),
+                adjacent_navigation,
+            ]
         ),
     )
 
@@ -489,6 +506,17 @@ def _render_document(
         margin-bottom: 1rem;
         color: var(--muted);
       }}
+      .entry-meta {{
+        margin-bottom: 1.5rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }}
+      .entry-meta a {{
+        color: var(--muted);
+      }}
+      .entry-meta .tags {{
+        display: inline;
+      }}
       .nav-grid {{
         display: flex;
         justify-content: space-between;
@@ -553,6 +581,23 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
         f"            <small>{html.escape(item.date)}{html.escape(context)}</small>\n"
         f"            <p>{html.escape(item.summary)}</p>\n"
         "          </li>"
+    )
+
+
+def _render_entry_metadata(metadata: EntryMetadata, *, base_url: str) -> str:
+    parts = [
+        html.escape(metadata.publication_date),
+        f"{metadata.reading_time_minutes} min read",
+    ]
+    tags_markup = ""
+    if metadata.tags:
+        tag_links = ", ".join(
+            f'<a href="{_absolute_url(base_url, tag.permalink)}">#{html.escape(tag.name)}</a>'
+            for tag in metadata.tags
+        )
+        tags_markup = f' · <span class="tags">{tag_links}</span>'
+    return (
+        f'        <div class="entry-meta">{" · ".join(parts)}{tags_markup}</div>'
     )
 
 
