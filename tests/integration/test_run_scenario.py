@@ -98,6 +98,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert "In Public" in homepage_html
     assert "This site tracks architecture decisions" in homepage_html
+    assert "move chronologically through the archives" in homepage_html
+    assert "search across the publication directly" in homepage_html
     assert 'class="active">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/search/"' in homepage_html
     assert 'href="https://wastingnotime.org/archives/"' in homepage_html

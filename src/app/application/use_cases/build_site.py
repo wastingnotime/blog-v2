@@ -255,7 +255,8 @@ def build_homepage(
             "        <section>\n"
             "          <h2>In Public</h2>\n"
             "          <p>This site tracks architecture decisions, evolving systems, and the writing that falls out of shipping them.</p>\n"
-            "          <p>Read the latest work, then follow the longer arcs through the saga index and library.</p>\n"
+            "          <p>Read the latest work, follow the longer arcs through sagas, browse ideas through the library, move chronologically through the archives, or search across the publication directly.</p>\n"
+            f'          <p><a href="{_absolute_url(config.base_url, "/search/")}">Search the publication</a> or <a href="{_absolute_url(config.base_url, "/archives/")}">browse the archives</a> when you want a faster way in.</p>\n'
             "        </section>\n"
             "        <section>\n"
             "          <h2>Recent</h2>\n"

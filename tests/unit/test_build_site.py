@@ -185,6 +185,10 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
 
     assert "In Public" in html
     assert "This site tracks architecture decisions" in html
+    assert "move chronologically through the archives" in html
+    assert "search across the publication directly" in html
+    assert 'href="https://example.com/search/"' in html
+    assert 'href="https://example.com/archives/"' in html
     assert "Active Sagas" in html
     assert "2 episodes · last release 2026-04-13 · in-progress" in html
     assert "Deployment target:" not in html
