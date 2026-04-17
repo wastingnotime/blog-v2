@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from src.app.application.use_cases.load_content_catalog import load_content_catalog
@@ -26,6 +27,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     expected_paths = {
         output_dir / "index.html",
         output_dir / "feed.xml",
+        output_dir / "search.json",
         output_dir / "sitemap.xml",
         output_dir / "favicon.ico",
         output_dir / "favicon-16x16.png",
@@ -64,6 +66,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     ).read_text(encoding="utf-8")
     about_html = (output_dir / "about" / "index.html").read_text(encoding="utf-8")
     feed_xml = (output_dir / "feed.xml").read_text(encoding="utf-8")
+    search_json = (output_dir / "search.json").read_text(encoding="utf-8")
     sitemap_xml = (output_dir / "sitemap.xml").read_text(encoding="utf-8")
     studio_html = (
         output_dir / "studio" / "index.html"
@@ -94,6 +97,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
     assert "<title>About</title>" in feed_xml
     assert "/api/event" not in feed_xml
+    search_index = json.loads(search_json)
+    assert any(entry["title"] == "About" for entry in search_index)
+    assert any(entry["title"] == "HireFlow" and entry["type"] == "saga" for entry in search_index)
+    assert any(
+        entry["title"] == "Second Iteration"
+        and entry["url"] == "https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/"
+        for entry in search_index
+    )
+    assert "/api/event" not in search_json
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://wastingnotime.org/</loc>" in sitemap_xml
     assert "<loc>https://wastingnotime.org/library/architecture/</loc>" in sitemap_xml

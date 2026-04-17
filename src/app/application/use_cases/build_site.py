@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from email.utils import format_datetime
 import html
+import json
 import re
 
 from src.app.domain.models.content import (
@@ -19,6 +20,8 @@ from src.app.domain.models.content import (
     RecentContent,
     SagasIndex,
     SagaView,
+    SearchEntry,
+    SearchIndex,
     SectionPage,
     SitemapEntry,
     TopicEntry,
@@ -43,6 +46,7 @@ from src.app.application.use_cases.project_entry_metadata import (
 from src.app.application.use_cases.project_publication_metadata import (
     project_publication_metadata,
 )
+from src.app.application.use_cases.project_search_index import project_search_index
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
@@ -65,6 +69,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         arc_views,
         topic_catalog.pages,
     )
+    search_index = project_search_index(config, catalog)
     sagas_index = project_sagas_index(saga_views, arc_views)
     section_pages = {page.slug: page for page in catalog.section_pages}
     pages = {
@@ -77,6 +82,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         "sagas/index.html": build_sagas_index_page(config, sagas_index),
         "studio/index.html": build_studio_page(config, section_pages["studio"]),
         "feed.xml": build_feed(config, publication_metadata),
+        "search.json": build_search_index(search_index),
         "sitemap.xml": build_sitemap(config, publication_metadata),
     }
 
@@ -146,6 +152,11 @@ def build_sitemap(config: SiteConfig, publication_metadata: PublicationMetadata)
         f"{entries_markup}\n"
         "</urlset>\n"
     )
+
+
+def build_search_index(search_index: SearchIndex) -> str:
+    records = [_serialize_search_entry(entry) for entry in search_index.entries]
+    return json.dumps(records, ensure_ascii=True) + "\n"
 
 
 def build_homepage(config: SiteConfig, homepage_surface: HomepageSurface) -> str:
@@ -610,6 +621,23 @@ def _render_identity_asset_links(*, base_url: str) -> str:
         markup_lines.append(f"    <link {' '.join(attributes)} />")
 
     return "\n".join(markup_lines)
+
+
+def _serialize_search_entry(entry: SearchEntry) -> dict[str, object]:
+    record: dict[str, object] = {
+        "title": entry.title,
+        "url": entry.url,
+        "type": entry.type,
+    }
+    if entry.summary:
+        record["summary"] = entry.summary
+    if entry.tags:
+        record["tags"] = list(entry.tags)
+    if entry.context:
+        record["context"] = entry.context
+    if entry.date:
+        record["date"] = entry.date
+    return record
 
 
 def _render_recent_item(item: RecentContent, *, base_url: str) -> str:

@@ -125,6 +125,22 @@ class PublicationMetadata:
 
 
 @dataclass(frozen=True)
+class SearchEntry:
+    title: str
+    url: str
+    type: str
+    summary: str | None = None
+    tags: tuple[str, ...] = ()
+    context: str | None = None
+    date: str | None = None
+
+
+@dataclass(frozen=True)
+class SearchIndex:
+    entries: tuple[SearchEntry, ...]
+
+
+@dataclass(frozen=True)
 class EntryTag:
     name: str
     permalink: str

@@ -1,3 +1,5 @@
+import json
+
 from src.app.application.use_cases.build_site import build_static_site
 from src.app.domain.models.content import (
     Arc,
@@ -182,6 +184,28 @@ def test_build_static_site_renders_identity_asset_links_in_document_head() -> No
         'href="https://example.com/apple-touch-icon.png"'
     ) in homepage_html
     assert 'href="https://example.com/apple-touch-icon.png"' in episode_html
+
+
+def test_build_static_site_generates_search_index() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    search_index = json.loads(pages["search.json"])
+
+    assert search_index[0]["title"] == "Second Iteration"
+    assert search_index[0]["url"] == (
+        "https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/"
+    )
+    assert any(entry["type"] == "saga" and entry["title"] == "HireFlow" for entry in search_index)
+    assert any(
+        entry["type"] == "arc"
+        and entry["context"] == "HireFlow"
+        for entry in search_index
+    )
+    assert any(
+        entry["type"] == "page"
+        and entry["url"] == "https://example.com/about/"
+        for entry in search_index
+    )
 
 
 
