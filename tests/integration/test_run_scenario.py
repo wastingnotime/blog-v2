@@ -136,6 +136,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-status-bar-style" content="default" />' in homepage_html
+    assert '<meta name="robots" content="index,follow" />' in homepage_html
     assert '<meta property="og:title" content="Wasting No Time" />' in homepage_html
     assert (
         '<meta property="og:description" content="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency." />'

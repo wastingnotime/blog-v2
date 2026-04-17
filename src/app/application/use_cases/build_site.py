@@ -858,6 +858,7 @@ def _render_document(
     <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
+    <meta name="robots" content="index,follow" />
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
 {open_graph_metadata}
