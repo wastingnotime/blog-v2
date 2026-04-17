@@ -496,6 +496,12 @@ def build_episode_page(
                 parent_navigation,
                 _render_entry_metadata(entry_metadata, base_url=config.base_url),
                 _render_markdown(episode.body_markdown),
+                (
+                    "        <section>\n"
+                    f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
+                    f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
+                    "        </section>"
+                ),
                 adjacent_navigation,
             ]
         ),

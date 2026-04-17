@@ -240,6 +240,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "1 min read" in episode_html
     assert 'href="https://wastingnotime.org/library/distributed-systems/"' in episode_html
+    assert 'href="https://wastingnotime.org/archives/"' in episode_html
+    assert 'href="https://wastingnotime.org/search/"' in episode_html
     assert 'href="https://wastingnotime.org/favicon-16x16.png"' in episode_html
     assert '<meta property="og:title" content="The First Brick" />' in episode_html
     assert (
