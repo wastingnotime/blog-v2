@@ -7,6 +7,8 @@ import json
 import re
 
 from src.app.domain.models.content import (
+    ArchiveEntry,
+    ArchiveIndex,
     ArcView,
     ContentCatalog,
     EntryMetadata,
@@ -50,6 +52,7 @@ from src.app.application.use_cases.project_footer_attribution import (
 from src.app.application.use_cases.project_publication_metadata import (
     project_publication_metadata,
 )
+from src.app.application.use_cases.project_archive_index import project_archive_index
 from src.app.application.use_cases.project_search_index import project_search_index
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
@@ -74,11 +77,17 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         arc_views,
         topic_catalog.pages,
     )
+    archive_index = project_archive_index(catalog)
     search_index = project_search_index(config, catalog)
     sagas_index = project_sagas_index(saga_views, arc_views)
     section_pages = {page.slug: page for page in catalog.section_pages}
     pages = {
         "index.html": build_homepage(config, homepage_surface, footer_attribution),
+        "archives/index.html": build_archive_page(
+            config,
+            archive_index,
+            footer_attribution,
+        ),
         "library/index.html": build_library_page(
             config,
             topic_catalog,
@@ -235,6 +244,36 @@ def build_homepage(
             "          <h2>Library</h2>\n"
             "          <p>Browse ideas and implementation threads by topic.</p>\n"
             f'          <a href="{_absolute_url(config.base_url, "/library/")}">Explore the library</a>\n'
+            "        </section>"
+        ),
+    )
+
+
+def build_archive_page(
+    config: SiteConfig,
+    archive_index: ArchiveIndex,
+    footer_attribution: FooterAttribution,
+) -> str:
+    archive_markup = "\n".join(
+        _render_archive_entry(entry, base_url=config.base_url)
+        for entry in archive_index.entries
+    )
+    return _render_document(
+        config=config,
+        title="Archives",
+        description="Chronological archive of published writing and saga episodes.",
+        canonical_path="/archives/",
+        eyebrow="Archives",
+        heading="Archives",
+        summary="Browse the publication chronologically from newest to oldest.",
+        metadata=f"{len(archive_index.entries)} published entries",
+        footer_attribution=footer_attribution,
+        body_html=(
+            "        <section>\n"
+            "          <h2>Chronological Archive</h2>\n"
+            "          <ul>\n"
+            f"{archive_markup}\n"
+            "          </ul>\n"
             "        </section>"
         ),
     )
@@ -756,6 +795,23 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
         f"{html.escape(item.title)}</a>\n"
         f"            <small>{html.escape(item.date)}{html.escape(context)}</small>\n"
         f"            <p>{html.escape(item.summary)}</p>\n"
+        "          </li>"
+    )
+
+
+def _render_archive_entry(entry: ArchiveEntry, *, base_url: str) -> str:
+    context = ""
+    if entry.saga_title:
+        context = f" · {entry.saga_title}"
+        if entry.arc_title:
+            context += f" / {entry.arc_title}"
+
+    return (
+        "          <li>\n"
+        f'            <a href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] '
+        f"{html.escape(entry.title)}</a>\n"
+        f"            <small>{html.escape(entry.date)}{html.escape(context)}</small>\n"
+        f"            <p>{html.escape(entry.summary)}</p>\n"
         "          </li>"
     )
 

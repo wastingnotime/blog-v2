@@ -26,6 +26,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     expected_paths = {
         output_dir / "index.html",
+        output_dir / "archives" / "index.html",
         output_dir / "feed.xml",
         output_dir / "robots.txt",
         output_dir / "search.json",
@@ -52,6 +53,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert expected_paths.issubset(set(written_paths))
 
     homepage_html = (output_dir / "index.html").read_text(encoding="utf-8")
+    archive_html = (
+        output_dir / "archives" / "index.html"
+    ).read_text(encoding="utf-8")
     library_html = (output_dir / "library" / "index.html").read_text(encoding="utf-8")
     topic_html = (
         output_dir / "library" / "architecture" / "index.html"
@@ -106,6 +110,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
     assert "Deployment target:" not in homepage_html
+    assert "Chronological Archive" in archive_html
+    assert "[episode] Second Iteration" in archive_html
+    assert "[page] About" in archive_html
+    assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
+    assert "HireFlow / The Origin Blueprint" in archive_html
+    assert "/api/event" not in archive_html
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
     assert "<title>About</title>" in feed_xml

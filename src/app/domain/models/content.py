@@ -89,6 +89,22 @@ class RecentContent:
 
 
 @dataclass(frozen=True)
+class ArchiveEntry:
+    title: str
+    kind: str
+    summary: str
+    date: str
+    permalink: str
+    saga_title: str | None = None
+    arc_title: str | None = None
+
+
+@dataclass(frozen=True)
+class ArchiveIndex:
+    entries: tuple[ArchiveEntry, ...]
+
+
+@dataclass(frozen=True)
 class HomepageSagaSummary:
     title: str
     permalink: str

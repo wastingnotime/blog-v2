@@ -79,9 +79,15 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
 def test_build_static_site_generates_library_and_topic_pages() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
+    archive_html = pages["archives/index.html"]
     library_html = pages["library/index.html"]
     topic_html = pages["library/architecture/index.html"]
 
+    assert "Chronological Archive" in archive_html
+    assert "[episode] Second Iteration" in archive_html
+    assert "[page] About" in archive_html
+    assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
+    assert "HireFlow / The Origin Blueprint" in archive_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert "architecture" in library_html
