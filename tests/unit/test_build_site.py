@@ -132,6 +132,9 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'class="active">About</a>' in about_html
     assert 'class="active">Sagas</a>' in saga_html
     assert 'href="https://example.com/library/"' in saga_html
+    assert 'href="https://example.com/feed.xml"' in home_html
+    assert 'href="https://example.com/feed.xml"' in about_html
+    assert 'href="https://example.com/feed.xml"' in saga_html
 
 
 def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -> None:

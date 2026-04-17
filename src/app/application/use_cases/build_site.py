@@ -822,14 +822,18 @@ def _render_navigation(
     *,
     base_url: str,
 ) -> str:
-    return "\n".join(
+    navigation_links = [
         (
             "        "
             f'<a href="{_absolute_url(base_url, link.path)}"'
             f' class="{"active" if link.is_active else ""}">{html.escape(link.label)}</a>'
         )
         for link in links
+    ]
+    navigation_links.append(
+        "        " f'<a href="{_absolute_url(base_url, "/feed.xml")}">RSS</a>'
     )
+    return "\n".join(navigation_links)
 
 
 def _absolute_url(base_url: str, path: str) -> str:

@@ -86,6 +86,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/about/"' in homepage_html
     assert 'href="https://wastingnotime.org/library/"' in homepage_html
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
+    assert 'href="https://wastingnotime.org/feed.xml"' in homepage_html
     assert 'href="https://wastingnotime.org/favicon.ico"' in homepage_html
     assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
     assert "3 recent entries shown" in homepage_html
@@ -121,6 +122,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "start reading" in sagas_index_html
     assert "Timeline" in saga_html
     assert 'class="active">Sagas</a>' in saga_html
+    assert 'href="https://wastingnotime.org/feed.xml"' in saga_html
     assert "The Origin Blueprint" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
     assert "Episodes" in arc_html
@@ -128,6 +130,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "The opening arc defines why HireFlow exists" in arc_html
     assert "Why this site exists" in about_html
     assert 'class="active">About</a>' in about_html
+    assert 'href="https://wastingnotime.org/feed.xml"' in about_html
     assert "1 min read" in about_html
     assert 'href="https://wastingnotime.org/library/architecture/"' in about_html
     assert 'href="https://wastingnotime.org/favicon-32x32.png"' in about_html
