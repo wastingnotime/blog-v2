@@ -100,6 +100,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "This site tracks architecture decisions" in homepage_html
     assert 'class="active">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/search/"' in homepage_html
+    assert 'href="https://wastingnotime.org/archives/"' in homepage_html
     assert 'href="https://wastingnotime.org/about/"' in homepage_html
     assert 'href="https://wastingnotime.org/library/"' in homepage_html
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
@@ -130,6 +131,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/library/"' in not_found_html
     assert "/api/event" not in not_found_html
     assert "Chronological Archive" in archive_html
+    assert 'class="active">Archives</a>' in archive_html
     assert "[episode] Second Iteration" in archive_html
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")

@@ -15,6 +15,7 @@ def project_navigation_state(current_path: str) -> tuple[NavigationLink, ...]:
     links = (
         ("Home", "/"),
         ("Search", "/search/"),
+        ("Archives", "/archives/"),
         ("Sagas", "/sagas/"),
         ("Library", "/library/"),
         ("Studio", "/studio/"),
@@ -36,6 +37,8 @@ def _active_section_for_path(current_path: str) -> str:
         return "home"
     if normalized.startswith("/search/"):
         return "search"
+    if normalized.startswith("/archives/"):
+        return "archives"
     if normalized.startswith("/sagas/"):
         return "sagas"
     if normalized.startswith("/library/"):
