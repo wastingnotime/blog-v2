@@ -195,6 +195,55 @@ def test_build_static_site_renders_identity_asset_links_in_document_head() -> No
     assert 'href="https://example.com/apple-touch-icon.png"' in episode_html
 
 
+def test_build_static_site_renders_open_graph_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    homepage_html = pages["index.html"]
+    about_html = pages["about/index.html"]
+    saga_html = pages["sagas/hireflow/index.html"]
+    episode_html = pages[
+        "sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"
+    ]
+
+    assert '<meta property="og:title" content="Example" />' in homepage_html
+    assert '<meta property="og:description" content="Static site" />' in homepage_html
+    assert '<meta property="og:url" content="https://example.com/" />' in homepage_html
+    assert '<meta property="og:site_name" content="Example" />' in homepage_html
+
+    assert '<meta property="og:title" content="About" />' in about_html
+    assert '<meta property="og:description" content="What this site is about." />' in about_html
+    assert '<meta property="og:url" content="https://example.com/about/" />' in about_html
+
+    assert '<meta property="og:title" content="HireFlow" />' in saga_html
+    assert '<meta property="og:description" content="Architecture in public." />' in saga_html
+    assert '<meta property="og:url" content="https://example.com/sagas/hireflow/" />' in saga_html
+
+    assert '<meta property="og:title" content="The First Brick" />' in episode_html
+    assert (
+        '<meta property="og:description" content="Recent work." />'
+        in episode_html
+    )
+    assert (
+        '<meta property="og:url" content="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
+        in episode_html
+    )
+
+
+def test_build_static_site_keeps_open_graph_type_bounded_to_website() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert '<meta property="og:type" content="website" />' in html
+
+
 def test_build_static_site_generates_search_index() -> None:
     pages = build_static_site(_site_config(), _catalog())
 

@@ -526,6 +526,12 @@ def _render_document(
     analytics_snippet = _render_analytics(config.analytics)
     canonical_url = _absolute_url(config.base_url, canonical_path)
     feed_url = _absolute_url(config.base_url, "/feed.xml")
+    open_graph_metadata = _render_open_graph_metadata(
+        site_title=config.title,
+        title=title,
+        description=description,
+        canonical_url=canonical_url,
+    )
     identity_asset_links = _render_identity_asset_links(base_url=config.base_url)
     navigation_markup = _render_navigation(
         project_navigation_state(canonical_path),
@@ -540,6 +546,7 @@ def _render_document(
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
+{open_graph_metadata}
     <link rel="alternate" type="application/rss+xml" title="{html.escape(config.title)} RSS" href="{html.escape(feed_url)}" />
 {identity_asset_links}
     <style>
@@ -673,6 +680,26 @@ def _render_document(
   </body>
 </html>
 """
+
+
+def _render_open_graph_metadata(
+    *,
+    site_title: str,
+    title: str,
+    description: str,
+    canonical_url: str,
+) -> str:
+    metadata = {
+        "og:title": title,
+        "og:description": description,
+        "og:type": "website",
+        "og:url": canonical_url,
+        "og:site_name": site_title,
+    }
+    return "\n".join(
+        f'    <meta property="{html.escape(property_name)}" content="{html.escape(value)}" />'
+        for property_name, value in metadata.items()
+    )
 
 
 def _render_identity_asset_links(*, base_url: str) -> str:
