@@ -846,6 +846,7 @@ def _render_document(
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="{THEME_COLOR}" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
