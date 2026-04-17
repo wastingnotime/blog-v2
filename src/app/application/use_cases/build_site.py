@@ -335,6 +335,8 @@ def build_archive_page(
             "          <ul>\n"
             f"{archive_markup}\n"
             "          </ul>\n"
+            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
+            f'          <p>Move by topic instead -> <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a></p>\n'
             "        </section>"
         ),
     )

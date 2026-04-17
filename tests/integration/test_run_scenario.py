@@ -139,6 +139,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
     assert "HireFlow / The Origin Blueprint" in archive_html
+    assert "/search/" in archive_html
+    assert "/library/" in archive_html
     assert "/api/event" not in archive_html
     assert "Search the publication" in search_html
     assert 'class="active">Search</a>' in search_html
