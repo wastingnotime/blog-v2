@@ -88,6 +88,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         "sagas/index.html": build_sagas_index_page(config, sagas_index, footer_attribution),
         "studio/index.html": build_studio_page(config, section_pages["studio"], footer_attribution),
         "feed.xml": build_feed(config, publication_metadata),
+        "robots.txt": build_robots_txt(config),
         "search.json": build_search_index(search_index),
         "sitemap.xml": build_sitemap(config, publication_metadata),
     }
@@ -171,6 +172,15 @@ def build_sitemap(config: SiteConfig, publication_metadata: PublicationMetadata)
 def build_search_index(search_index: SearchIndex) -> str:
     records = [_serialize_search_entry(entry) for entry in search_index.entries]
     return json.dumps(records, ensure_ascii=True) + "\n"
+
+
+def build_robots_txt(config: SiteConfig) -> str:
+    sitemap_url = _absolute_url(config.base_url, "/sitemap.xml")
+    return (
+        "User-agent: *\n"
+        "Allow: /\n"
+        f"Sitemap: {sitemap_url}\n"
+    )
 
 
 def build_homepage(

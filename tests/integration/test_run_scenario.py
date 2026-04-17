@@ -27,6 +27,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     expected_paths = {
         output_dir / "index.html",
         output_dir / "feed.xml",
+        output_dir / "robots.txt",
         output_dir / "search.json",
         output_dir / "sitemap.xml",
         output_dir / "favicon.ico",
@@ -66,6 +67,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     ).read_text(encoding="utf-8")
     about_html = (output_dir / "about" / "index.html").read_text(encoding="utf-8")
     feed_xml = (output_dir / "feed.xml").read_text(encoding="utf-8")
+    robots_txt = (output_dir / "robots.txt").read_text(encoding="utf-8")
     search_json = (output_dir / "search.json").read_text(encoding="utf-8")
     sitemap_xml = (output_dir / "sitemap.xml").read_text(encoding="utf-8")
     studio_html = (
@@ -108,6 +110,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
     assert "<title>About</title>" in feed_xml
     assert "/api/event" not in feed_xml
+    assert "User-agent: *" in robots_txt
+    assert "Allow: /" in robots_txt
+    assert "Sitemap: https://wastingnotime.org/sitemap.xml" in robots_txt
+    assert "/api/event" not in robots_txt
     search_index = json.loads(search_json)
     assert any(entry["title"] == "About" for entry in search_index)
     assert any(entry["title"] == "HireFlow" and entry["type"] == "saga" for entry in search_index)
