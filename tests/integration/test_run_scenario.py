@@ -118,6 +118,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/favicon.ico"' in homepage_html
     assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
     assert 'rel="manifest" href="https://wastingnotime.org/site.webmanifest"' in homepage_html
+    assert (
+        '<meta name="referrer" content="strict-origin-when-cross-origin" />'
+        in homepage_html
+    )
     assert '<meta name="format-detection" content="telephone=no" />' in homepage_html
     assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html

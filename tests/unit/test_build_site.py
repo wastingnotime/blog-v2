@@ -409,6 +409,24 @@ def test_build_static_site_renders_format_detection_metadata_in_document_head() 
         assert '<meta name="format-detection" content="telephone=no" />' in html
 
 
+def test_build_static_site_renders_referrer_policy_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert (
+            '<meta name="referrer" content="strict-origin-when-cross-origin" />'
+            in html
+        )
+
+
 def test_build_static_site_renders_mobile_web_app_metadata_in_document_head() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
