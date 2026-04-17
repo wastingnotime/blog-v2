@@ -101,6 +101,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         "feed.xml": build_feed(config, publication_metadata),
         "robots.txt": build_robots_txt(config),
         "search.json": build_search_index(search_index),
+        "site.webmanifest": build_site_webmanifest(config),
         "sitemap.xml": build_sitemap(config, publication_metadata),
     }
 
@@ -192,6 +193,33 @@ def build_robots_txt(config: SiteConfig) -> str:
         "Allow: /\n"
         f"Sitemap: {sitemap_url}\n"
     )
+
+
+def build_site_webmanifest(config: SiteConfig) -> str:
+    manifest = {
+        "name": config.title,
+        "short_name": config.title,
+        "start_url": _absolute_url(config.base_url, "/"),
+        "display": "standalone",
+        "icons": [
+            {
+                "src": _absolute_url(config.base_url, "/favicon-16x16.png"),
+                "sizes": "16x16",
+                "type": "image/png",
+            },
+            {
+                "src": _absolute_url(config.base_url, "/favicon-32x32.png"),
+                "sizes": "32x32",
+                "type": "image/png",
+            },
+            {
+                "src": _absolute_url(config.base_url, "/apple-touch-icon.png"),
+                "sizes": "180x180",
+                "type": "image/png",
+            },
+        ],
+    }
+    return json.dumps(manifest, ensure_ascii=True, indent=2) + "\n"
 
 
 def build_homepage(
@@ -689,6 +717,7 @@ def _render_document(
     analytics_snippet = _render_analytics(config.analytics)
     canonical_url = _absolute_url(config.base_url, canonical_path)
     feed_url = _absolute_url(config.base_url, "/feed.xml")
+    manifest_url = _absolute_url(config.base_url, "/site.webmanifest")
     open_graph_metadata = _render_open_graph_metadata(
         site_title=config.title,
         title=title,
@@ -711,6 +740,7 @@ def _render_document(
     <link rel="canonical" href="{html.escape(canonical_url)}" />
 {open_graph_metadata}
     <link rel="alternate" type="application/rss+xml" title="{html.escape(config.title)} RSS" href="{html.escape(feed_url)}" />
+    <link rel="manifest" href="{html.escape(manifest_url)}" />
 {identity_asset_links}
     <style>
       :root {{

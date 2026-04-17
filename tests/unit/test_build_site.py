@@ -121,6 +121,7 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     not_found_html = pages["404.html"]
     feed_xml = pages["feed.xml"]
     robots_txt = pages["robots.txt"]
+    webmanifest = json.loads(pages["site.webmanifest"])
     sitemap_xml = pages["sitemap.xml"]
 
     assert "Page Not Found" in not_found_html
@@ -136,6 +137,13 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert "User-agent: *" in robots_txt
     assert "Allow: /" in robots_txt
     assert "Sitemap: https://example.com/sitemap.xml" in robots_txt
+    assert webmanifest["name"] == "Example"
+    assert webmanifest["short_name"] == "Example"
+    assert webmanifest["start_url"] == "https://example.com/"
+    assert webmanifest["display"] == "standalone"
+    assert webmanifest["icons"][0]["src"] == "https://example.com/favicon-16x16.png"
+    assert webmanifest["icons"][1]["src"] == "https://example.com/favicon-32x32.png"
+    assert webmanifest["icons"][2]["src"] == "https://example.com/apple-touch-icon.png"
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://example.com/library/</loc>" in sitemap_xml
     assert "<loc>https://example.com/sagas/hireflow/</loc>" in sitemap_xml
@@ -217,6 +225,7 @@ def test_build_static_site_renders_identity_asset_links_in_document_head() -> No
         'rel="apple-touch-icon" type="image/png" '
         'href="https://example.com/apple-touch-icon.png"'
     ) in homepage_html
+    assert 'rel="manifest" href="https://example.com/site.webmanifest"' in homepage_html
     assert 'href="https://example.com/apple-touch-icon.png"' in episode_html
 
 

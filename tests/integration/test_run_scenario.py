@@ -32,6 +32,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         output_dir / "robots.txt",
         output_dir / "search" / "index.html",
         output_dir / "search.json",
+        output_dir / "site.webmanifest",
         output_dir / "sitemap.xml",
         output_dir / "favicon.ico",
         output_dir / "favicon-16x16.png",
@@ -79,6 +80,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     feed_xml = (output_dir / "feed.xml").read_text(encoding="utf-8")
     robots_txt = (output_dir / "robots.txt").read_text(encoding="utf-8")
     search_json = (output_dir / "search.json").read_text(encoding="utf-8")
+    webmanifest = json.loads(
+        (output_dir / "site.webmanifest").read_text(encoding="utf-8")
+    )
     sitemap_xml = (output_dir / "sitemap.xml").read_text(encoding="utf-8")
     studio_html = (
         output_dir / "studio" / "index.html"
@@ -103,6 +107,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in homepage_html
     assert 'href="https://wastingnotime.org/favicon.ico"' in homepage_html
     assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
+    assert 'rel="manifest" href="https://wastingnotime.org/site.webmanifest"' in homepage_html
     assert '<meta property="og:title" content="Wasting No Time" />' in homepage_html
     assert (
         '<meta property="og:description" content="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency." />'
@@ -144,6 +149,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Allow: /" in robots_txt
     assert "Sitemap: https://wastingnotime.org/sitemap.xml" in robots_txt
     assert "/api/event" not in robots_txt
+    assert webmanifest["name"] == "Wasting No Time"
+    assert webmanifest["short_name"] == "Wasting No Time"
+    assert webmanifest["start_url"] == "https://wastingnotime.org/"
+    assert webmanifest["icons"][0]["src"] == "https://wastingnotime.org/favicon-16x16.png"
+    assert webmanifest["icons"][1]["src"] == "https://wastingnotime.org/favicon-32x32.png"
+    assert webmanifest["icons"][2]["src"] == "https://wastingnotime.org/apple-touch-icon.png"
+    assert "/api/event" not in json.dumps(webmanifest)
     search_index = json.loads(search_json)
     assert any(entry["title"] == "About" for entry in search_index)
     assert any(entry["title"] == "HireFlow" and entry["type"] == "saga" for entry in search_index)
