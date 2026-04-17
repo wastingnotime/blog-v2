@@ -117,6 +117,18 @@ Hello world.
         MarkdownContentLoader().load(content_root)
 
 
+def test_markdown_content_loader_reads_repository_about_page_summary() -> None:
+    content_root = Path(__file__).resolve().parents[2] / "content"
+
+    catalog = MarkdownContentLoader().load(content_root)
+
+    about_page = next(page for page in catalog.pages if page.slug == "about")
+
+    assert about_page.summary == (
+        "Why this site exists and how the work is published in public."
+    )
+
+
 def _write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")

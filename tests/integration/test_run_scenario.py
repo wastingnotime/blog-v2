@@ -201,13 +201,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in about_html
     assert '<meta property="og:title" content="About" />' in about_html
     assert (
-        '<meta property="og:description" content="Why this site exists, what you will find here, and how to reach me." />'
+        '<meta property="og:description" content="Why this site exists and how the work is published in public." />'
         in about_html
     )
     assert '<meta property="og:url" content="https://wastingnotime.org/about/" />' in about_html
     assert '<meta property="og:type" content="website" />' in about_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in about_html
     assert "1 min read" in about_html
+    assert "homepage, saga index, library, archive, and search surfaces" in about_html
+    assert "how to reach me" not in about_html
     assert 'href="https://wastingnotime.org/library/architecture/"' in about_html
     assert 'href="https://wastingnotime.org/favicon-32x32.png"' in about_html
     assert "/sagas/" in studio_html

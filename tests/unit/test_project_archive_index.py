@@ -28,7 +28,7 @@ def _catalog() -> ContentCatalog:
             Page(
                 title="About",
                 slug="about",
-                summary="What this site is about.",
+                summary="Why this site exists and how the work is published in public.",
                 date="2026-04-10",
                 body_markdown="About body.",
                 tags=("architecture",),

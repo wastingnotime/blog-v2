@@ -192,6 +192,7 @@ def test_build_static_site_renders_entry_metadata_for_pages() -> None:
     assert "1 min read" in html
     assert 'href="https://example.com/library/architecture/"' in html
     assert "#architecture" in html
+    assert "homepage, saga index, library, archive, and search surfaces" in html
 
 
 def test_build_static_site_renders_narrative_container_body_content() -> None:
@@ -245,7 +246,10 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
     assert '<meta property="og:site_name" content="Example" />' in homepage_html
 
     assert '<meta property="og:title" content="About" />' in about_html
-    assert '<meta property="og:description" content="What this site is about." />' in about_html
+    assert (
+        '<meta property="og:description" content="Why this site exists and how the work is published in public." />'
+        in about_html
+    )
     assert '<meta property="og:url" content="https://example.com/about/" />' in about_html
 
     assert '<meta property="og:title" content="HireFlow" />' in saga_html
@@ -315,9 +319,17 @@ def _catalog() -> ContentCatalog:
             Page(
                 title="About",
                 slug="about",
-                summary="What this site is about.",
+                summary="Why this site exists and how the work is published in public.",
                 date="2026-04-10",
-                body_markdown="About body.",
+                body_markdown=(
+                    "Wasting No Time is a place to make architecture and software "
+                    "thinking visible.\n\n"
+                    "The goal is simple: publish work that stays concrete, "
+                    "testable, and useful.\n\n"
+                    "The site currently organizes that work through the homepage, "
+                    "saga index, library, archive, and search surfaces so readers "
+                    "can move by chronology, topic, or longer narrative thread."
+                ),
                 tags=("architecture",),
             ),
         ),
