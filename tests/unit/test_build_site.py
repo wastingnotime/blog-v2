@@ -457,6 +457,24 @@ def test_build_static_site_renders_application_name_metadata_in_document_head() 
         assert '<meta name="application-name" content="Example" />' in html
 
 
+def test_build_static_site_renders_viewport_fit_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert (
+            '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />'
+            in html
+        )
+
+
 def test_build_static_site_renders_mobile_web_app_metadata_in_document_head() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
