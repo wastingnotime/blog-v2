@@ -309,6 +309,7 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
     assert '<meta property="og:description" content="Static site" />' in homepage_html
     assert '<meta property="og:url" content="https://example.com/" />' in homepage_html
     assert '<meta property="og:site_name" content="Example" />' in homepage_html
+    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in homepage_html
 
     assert '<meta property="og:title" content="About" />' in about_html
     assert (
@@ -316,10 +317,12 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
         in about_html
     )
     assert '<meta property="og:url" content="https://example.com/about/" />' in about_html
+    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in about_html
 
     assert '<meta property="og:title" content="HireFlow" />' in saga_html
     assert '<meta property="og:description" content="Architecture in public." />' in saga_html
     assert '<meta property="og:url" content="https://example.com/sagas/hireflow/" />' in saga_html
+    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in saga_html
 
     assert '<meta property="og:title" content="The First Brick" />' in episode_html
     assert (
@@ -330,6 +333,7 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
         '<meta property="og:url" content="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
         in episode_html
     )
+    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in episode_html
 
 
 def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> None:
@@ -346,6 +350,7 @@ def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> N
     assert '<meta name="twitter:title" content="Example" />' in homepage_html
     assert '<meta name="twitter:description" content="Static site" />' in homepage_html
     assert '<meta name="twitter:url" content="https://example.com/" />' in homepage_html
+    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in homepage_html
 
     assert '<meta name="twitter:title" content="About" />' in about_html
     assert (
@@ -353,10 +358,12 @@ def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> N
         in about_html
     )
     assert '<meta name="twitter:url" content="https://example.com/about/" />' in about_html
+    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in about_html
 
     assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
     assert '<meta name="twitter:description" content="Architecture in public." />' in saga_html
     assert '<meta name="twitter:url" content="https://example.com/sagas/hireflow/" />' in saga_html
+    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in saga_html
 
     assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
     assert (
@@ -367,6 +374,7 @@ def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> N
         '<meta name="twitter:url" content="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
         in episode_html
     )
+    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in episode_html
 
 
 def test_build_static_site_keeps_twitter_card_type_bounded_to_summary() -> None:

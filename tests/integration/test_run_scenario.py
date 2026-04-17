@@ -40,6 +40,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         output_dir / "favicon-16x16.png",
         output_dir / "favicon-32x32.png",
         output_dir / "apple-touch-icon.png",
+        output_dir / "social-preview.png",
         output_dir / "about" / "index.html",
         output_dir / "library" / "index.html",
         output_dir / "library" / "architecture" / "index.html",
@@ -125,6 +126,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta property="og:url" content="https://wastingnotime.org/" />' in homepage_html
     assert '<meta property="og:type" content="website" />' in homepage_html
     assert '<meta property="og:site_name" content="Wasting No Time" />' in homepage_html
+    assert '<meta property="og:image" content="https://wastingnotime.org/social-preview.png" />' in homepage_html
     assert '<meta name="twitter:card" content="summary" />' in homepage_html
     assert '<meta name="twitter:title" content="Wasting No Time" />' in homepage_html
     assert (
@@ -132,6 +134,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         in homepage_html
     )
     assert '<meta name="twitter:url" content="https://wastingnotime.org/" />' in homepage_html
+    assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in homepage_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
     assert "3 recent entries shown" in homepage_html
     assert "2 episodes · last release 2025-11-15 · in-progress" in homepage_html
@@ -219,6 +222,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta property="og:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
     assert '<meta property="og:type" content="website" />' in saga_html
+    assert '<meta property="og:image" content="https://wastingnotime.org/social-preview.png" />' in saga_html
     assert '<meta name="twitter:card" content="summary" />' in saga_html
     assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
     assert (
@@ -226,6 +230,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         in saga_html
     )
     assert '<meta name="twitter:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
+    assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in saga_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in saga_html
     assert "The Origin Blueprint" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
@@ -247,6 +252,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta property="og:url" content="https://wastingnotime.org/about/" />' in about_html
     assert '<meta property="og:type" content="website" />' in about_html
+    assert '<meta property="og:image" content="https://wastingnotime.org/social-preview.png" />' in about_html
     assert '<meta name="twitter:card" content="summary" />' in about_html
     assert '<meta name="twitter:title" content="About" />' in about_html
     assert (
@@ -254,6 +260,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         in about_html
     )
     assert '<meta name="twitter:url" content="https://wastingnotime.org/about/" />' in about_html
+    assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in about_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in about_html
     assert "1 min read" in about_html
     assert "homepage, saga index, library, archive, and search surfaces" in about_html
@@ -286,6 +293,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         in episode_html
     )
     assert '<meta property="og:type" content="website" />' in episode_html
+    assert '<meta property="og:image" content="https://wastingnotime.org/social-preview.png" />' in episode_html
     assert '<meta name="twitter:card" content="summary" />' in episode_html
     assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
     assert (
@@ -296,8 +304,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         '<meta name="twitter:url" content="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
         in episode_html
     )
+    assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in episode_html
     assert "Ep 02 Second Iteration" in episode_html
     assert "/api/event" not in episode_html
     assert (output_dir / "favicon.ico").read_bytes() == (
         identity_assets_dir / "favicon.ico"
+    ).read_bytes()
+    assert (output_dir / "social-preview.png").read_bytes() == (
+        identity_assets_dir / "social-preview.png"
     ).read_bytes()

@@ -20,6 +20,7 @@ class StaticSiteBuilder:
             "favicon-16x16.png",
             "favicon-32x32.png",
             "apple-touch-icon.png",
+            "social-preview.png",
         )
 
     def build(self, config: SiteConfig, catalog: ContentCatalog) -> list[Path]:

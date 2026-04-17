@@ -817,16 +817,19 @@ def _render_document(
     canonical_url = _absolute_url(config.base_url, canonical_path)
     feed_url = _absolute_url(config.base_url, "/feed.xml")
     manifest_url = _absolute_url(config.base_url, "/site.webmanifest")
+    social_preview_url = _absolute_url(config.base_url, "/social-preview.png")
     open_graph_metadata = _render_open_graph_metadata(
         site_title=config.title,
         title=title,
         description=description,
         canonical_url=canonical_url,
+        social_preview_url=social_preview_url,
     )
     twitter_card_metadata = _render_twitter_card_metadata(
         title=title,
         description=description,
         canonical_url=canonical_url,
+        social_preview_url=social_preview_url,
     )
     identity_asset_links = _render_identity_asset_links(base_url=config.base_url)
     navigation_markup = _render_navigation(
@@ -986,6 +989,7 @@ def _render_open_graph_metadata(
     title: str,
     description: str,
     canonical_url: str,
+    social_preview_url: str,
 ) -> str:
     metadata = {
         "og:title": title,
@@ -993,6 +997,7 @@ def _render_open_graph_metadata(
         "og:type": "website",
         "og:url": canonical_url,
         "og:site_name": site_title,
+        "og:image": social_preview_url,
     }
     return "\n".join(
         f'    <meta property="{html.escape(property_name)}" content="{html.escape(value)}" />'
@@ -1005,12 +1010,14 @@ def _render_twitter_card_metadata(
     title: str,
     description: str,
     canonical_url: str,
+    social_preview_url: str,
 ) -> str:
     metadata = {
         "twitter:card": "summary",
         "twitter:title": title,
         "twitter:description": description,
         "twitter:url": canonical_url,
+        "twitter:image": social_preview_url,
     }
     return "\n".join(
         f'    <meta name="{html.escape(property_name)}" content="{html.escape(value)}" />'
