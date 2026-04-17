@@ -26,6 +26,13 @@ identity assets, search metadata, and footer attribution. The next publication
 surface gap is social link unfurl metadata: generated pages still lack bounded
 Open Graph tags for title, description, type, and canonical URL.
 
+Current repository evidence confirms that gap:
+
+- `src/app/application/use_cases/build_site.py` renders canonical, RSS, and
+  identity-asset head metadata but no `og:*` tags
+- generated `dist/index.html` includes the shared static head metadata and
+  likewise contains no Open Graph metadata
+
 This slice restores the minimum Open Graph surface needed for the current
 publication:
 
@@ -47,7 +54,7 @@ that:
 
 - title and description reflect the existing document metadata
 - URL matches the canonical publication URL
-- type stays bounded and deterministic for the current static site
+- type stays bounded as `website` for all routes in this bootstrap slice
 - site name remains stable for the configured publication
 
 ### `RenderOpenGraphHead`
@@ -65,6 +72,8 @@ metadata such that:
   and settings.
 - The slice stays bounded to text and URL metadata, not social image
   generation.
+- `og:type` remains the single literal value `website` in this slice so build
+  can ship deterministic metadata without inventing per-route social semantics.
 - Metadata should remain consistent across all generated HTML routes.
 - GitHub Pages compatibility remains a hard constraint.
 
@@ -78,8 +87,10 @@ metadata such that:
 
 - unit test asserting generated HTML pages include bounded Open Graph tags
 - unit test asserting Open Graph URLs use the configured static-site base URL
+- unit test asserting `og:type` remains `website` on homepage, section, page,
+  saga, and episode routes
 - integration test asserting homepage and representative content routes render
-  the same metadata shape
+  the same metadata shape with route-specific title, description, and URL
 - integration test asserting visible chrome behavior remains unchanged
 
 ## Scenario Definition
@@ -90,6 +101,7 @@ artifacts to verify:
 - homepage and representative content routes include Open Graph metadata in
   `<head>`
 - the metadata resolves to the existing canonical URLs and summaries
+- `og:type` stays `website` across the bounded static publication surface
 - visible navigation and footer behavior remain unchanged
 - the publication stays free of same-origin `/api` assumptions
 
@@ -97,4 +109,6 @@ artifacts to verify:
 
 - generated HTML pages expose deterministic bounded Open Graph metadata
 - metadata values derive from existing site settings and route content
+- the bounded `og:type=website` rule is enforced consistently across generated
+  HTML routes
 - deterministic tests cover head metadata and unchanged visible chrome
