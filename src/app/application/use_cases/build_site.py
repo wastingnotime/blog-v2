@@ -324,6 +324,7 @@ def build_not_found_page(
         heading="Page Not Found",
         summary="The route you asked for is not part of the current publication.",
         metadata="Static recovery page",
+        robots_content="noindex,follow",
         footer_attribution=footer_attribution,
         body_html=(
             "        <section>\n"
@@ -830,6 +831,7 @@ def _render_document(
     heading: str,
     summary: str,
     metadata: str,
+    robots_content: str = "index,follow",
     footer_attribution: FooterAttribution,
     body_html: str,
 ) -> str:
@@ -876,7 +878,7 @@ def _render_document(
     <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content="{html.escape(robots_content)}" />
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
 {open_graph_metadata}

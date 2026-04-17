@@ -557,6 +557,15 @@ def test_build_static_site_renders_robots_metadata_in_document_head() -> None:
         assert '<meta name="robots" content="index,follow" />' in html
 
 
+def test_build_static_site_renders_noindex_robots_metadata_for_not_found_page() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    not_found_html = pages["404.html"]
+
+    assert '<meta name="robots" content="noindex,follow" />' in not_found_html
+    assert '<meta name="robots" content="index,follow" />' not in not_found_html
+
+
 def test_build_static_site_renders_mobile_web_app_metadata_in_document_head() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
