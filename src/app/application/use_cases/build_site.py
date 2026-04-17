@@ -823,6 +823,11 @@ def _render_document(
         description=description,
         canonical_url=canonical_url,
     )
+    twitter_card_metadata = _render_twitter_card_metadata(
+        title=title,
+        description=description,
+        canonical_url=canonical_url,
+    )
     identity_asset_links = _render_identity_asset_links(base_url=config.base_url)
     navigation_markup = _render_navigation(
         project_navigation_state(canonical_path),
@@ -838,6 +843,7 @@ def _render_document(
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
 {open_graph_metadata}
+{twitter_card_metadata}
     <link rel="alternate" type="application/rss+xml" title="{html.escape(config.title)} RSS" href="{html.escape(feed_url)}" />
     <link rel="manifest" href="{html.escape(manifest_url)}" />
 {identity_asset_links}
@@ -990,6 +996,24 @@ def _render_open_graph_metadata(
     }
     return "\n".join(
         f'    <meta property="{html.escape(property_name)}" content="{html.escape(value)}" />'
+        for property_name, value in metadata.items()
+    )
+
+
+def _render_twitter_card_metadata(
+    *,
+    title: str,
+    description: str,
+    canonical_url: str,
+) -> str:
+    metadata = {
+        "twitter:card": "summary",
+        "twitter:title": title,
+        "twitter:description": description,
+        "twitter:url": canonical_url,
+    }
+    return "\n".join(
+        f'    <meta name="{html.escape(property_name)}" content="{html.escape(value)}" />'
         for property_name, value in metadata.items()
     )
 

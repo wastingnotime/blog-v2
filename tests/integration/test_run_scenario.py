@@ -125,6 +125,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta property="og:url" content="https://wastingnotime.org/" />' in homepage_html
     assert '<meta property="og:type" content="website" />' in homepage_html
     assert '<meta property="og:site_name" content="Wasting No Time" />' in homepage_html
+    assert '<meta name="twitter:card" content="summary" />' in homepage_html
+    assert '<meta name="twitter:title" content="Wasting No Time" />' in homepage_html
+    assert (
+        '<meta name="twitter:description" content="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency." />'
+        in homepage_html
+    )
+    assert '<meta name="twitter:url" content="https://wastingnotime.org/" />' in homepage_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
     assert "3 recent entries shown" in homepage_html
     assert "2 episodes · last release 2025-11-15 · in-progress" in homepage_html
@@ -212,6 +219,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta property="og:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
     assert '<meta property="og:type" content="website" />' in saga_html
+    assert '<meta name="twitter:card" content="summary" />' in saga_html
+    assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
+    assert (
+        '<meta name="twitter:description" content="A fictional hiring platform used as a laboratory for architecture trade-offs and emergent design." />'
+        in saga_html
+    )
+    assert '<meta name="twitter:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in saga_html
     assert "The Origin Blueprint" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
@@ -233,6 +247,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta property="og:url" content="https://wastingnotime.org/about/" />' in about_html
     assert '<meta property="og:type" content="website" />' in about_html
+    assert '<meta name="twitter:card" content="summary" />' in about_html
+    assert '<meta name="twitter:title" content="About" />' in about_html
+    assert (
+        '<meta name="twitter:description" content="Why this site exists and how the work is published in public." />'
+        in about_html
+    )
+    assert '<meta name="twitter:url" content="https://wastingnotime.org/about/" />' in about_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in about_html
     assert "1 min read" in about_html
     assert "homepage, saga index, library, archive, and search surfaces" in about_html
@@ -265,6 +286,16 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         in episode_html
     )
     assert '<meta property="og:type" content="website" />' in episode_html
+    assert '<meta name="twitter:card" content="summary" />' in episode_html
+    assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
+    assert (
+        '<meta name="twitter:description" content="We explore why HireFlow exists, what it will simulate, and how the architecture will emerge through iterative design." />'
+        in episode_html
+    )
+    assert (
+        '<meta name="twitter:url" content="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
+        in episode_html
+    )
     assert "Ep 02 Second Iteration" in episode_html
     assert "/api/event" not in episode_html
     assert (output_dir / "favicon.ico").read_bytes() == (

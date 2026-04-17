@@ -332,6 +332,58 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
     )
 
 
+def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    homepage_html = pages["index.html"]
+    about_html = pages["about/index.html"]
+    saga_html = pages["sagas/hireflow/index.html"]
+    episode_html = pages[
+        "sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"
+    ]
+
+    assert '<meta name="twitter:card" content="summary" />' in homepage_html
+    assert '<meta name="twitter:title" content="Example" />' in homepage_html
+    assert '<meta name="twitter:description" content="Static site" />' in homepage_html
+    assert '<meta name="twitter:url" content="https://example.com/" />' in homepage_html
+
+    assert '<meta name="twitter:title" content="About" />' in about_html
+    assert (
+        '<meta name="twitter:description" content="Why this site exists and how the work is published in public." />'
+        in about_html
+    )
+    assert '<meta name="twitter:url" content="https://example.com/about/" />' in about_html
+
+    assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
+    assert '<meta name="twitter:description" content="Architecture in public." />' in saga_html
+    assert '<meta name="twitter:url" content="https://example.com/sagas/hireflow/" />' in saga_html
+
+    assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
+    assert (
+        '<meta name="twitter:description" content="Recent work." />'
+        in episode_html
+    )
+    assert (
+        '<meta name="twitter:url" content="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
+        in episode_html
+    )
+
+
+def test_build_static_site_keeps_twitter_card_type_bounded_to_summary() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert '<meta name="twitter:card" content="summary" />' in html
+
+
 def test_build_static_site_keeps_open_graph_type_bounded_to_website() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
