@@ -87,6 +87,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/library/"' in homepage_html
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
     assert 'href="https://wastingnotime.org/feed.xml"' in homepage_html
+    assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in homepage_html
     assert 'href="https://wastingnotime.org/favicon.ico"' in homepage_html
     assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
@@ -124,6 +125,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Timeline" in saga_html
     assert 'class="active">Sagas</a>' in saga_html
     assert 'href="https://wastingnotime.org/feed.xml"' in saga_html
+    assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in saga_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in saga_html
     assert "The Origin Blueprint" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
@@ -133,6 +135,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Why this site exists" in about_html
     assert 'class="active">About</a>' in about_html
     assert 'href="https://wastingnotime.org/feed.xml"' in about_html
+    assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in about_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in about_html
     assert "1 min read" in about_html
     assert 'href="https://wastingnotime.org/library/architecture/"' in about_html

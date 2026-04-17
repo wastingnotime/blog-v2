@@ -525,6 +525,7 @@ def _render_document(
 ) -> str:
     analytics_snippet = _render_analytics(config.analytics)
     canonical_url = _absolute_url(config.base_url, canonical_path)
+    feed_url = _absolute_url(config.base_url, "/feed.xml")
     identity_asset_links = _render_identity_asset_links(base_url=config.base_url)
     navigation_markup = _render_navigation(
         project_navigation_state(canonical_path),
@@ -539,6 +540,7 @@ def _render_document(
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
+    <link rel="alternate" type="application/rss+xml" title="{html.escape(config.title)} RSS" href="{html.escape(feed_url)}" />
 {identity_asset_links}
     <style>
       :root {{
