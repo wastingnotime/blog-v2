@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+MODEL="${CODEX_REFINE_MODEL:-gpt-5.4}"
+EFFORT="${CODEX_REFINE_REASONING_EFFORT:-medium}"
+
+PROMPT="Use the repository skill at .agents/skills/refine/SKILL.md. Read it first and execute the refine phase for the current repository state."
+
+if (($# > 0)); then
+  PROMPT="${PROMPT}
+
+Additional operator instructions:
+$*"
+fi
+
+exec codex \
+  -C "$ROOT_DIR" \
+  -m "$MODEL" \
+  -c "reasoning_effort=\"$EFFORT\"" \
+  "$PROMPT"
