@@ -110,6 +110,8 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "Active sagas" in sagas_html
     assert "HireFlow" in sagas_html
     assert "start reading" in sagas_html
+    assert "/archives/" in sagas_html
+    assert "/search/" in sagas_html
     assert "/library/" in studio_html
     assert "/sagas/" in studio_html
     assert "/archives/" in studio_html

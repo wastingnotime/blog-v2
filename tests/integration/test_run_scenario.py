@@ -183,6 +183,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Active sagas" in sagas_index_html
     assert 'class="active">Sagas</a>' in sagas_index_html
     assert "start reading" in sagas_index_html
+    assert "/archives/" in sagas_index_html
+    assert "/search/" in sagas_index_html
     assert "Timeline" in saga_html
     assert 'class="active">Sagas</a>' in saga_html
     assert 'href="https://wastingnotime.org/feed.xml"' in saga_html
