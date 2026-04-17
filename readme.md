@@ -22,9 +22,17 @@ require first-party API infrastructure.
 pip install -e .
 pytest
 python -m src.app.interfaces.cli.run_scenario
+./scripts/mrl-refine
+./scripts/mrl-build
 ```
 
 The scenario runner generates a minimal static site into `dist/`.
+
+Phase launcher defaults:
+
+- `./scripts/mrl-refine` starts a non-interactive `codex exec` run in the repo root with `gpt-5.4` and `medium` reasoning effort.
+- `./scripts/mrl-build` starts a non-interactive `codex exec` run in the repo root with `gpt-5.3-codex` and `medium` reasoning effort.
+- Override them with `CODEX_REFINE_MODEL`, `CODEX_REFINE_REASONING_EFFORT`, `CODEX_BUILD_MODEL`, and `CODEX_BUILD_REASONING_EFFORT` when needed.
 
 ## Current Slice
 
