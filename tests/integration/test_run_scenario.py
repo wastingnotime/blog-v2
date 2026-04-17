@@ -34,6 +34,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         output_dir / "robots.txt",
         output_dir / "search" / "index.html",
         output_dir / "search.json",
+        output_dir / "browserconfig.xml",
         output_dir / "site.webmanifest",
         output_dir / "sitemap.xml",
         output_dir / "favicon.ico",
@@ -85,6 +86,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     feed_xml = (output_dir / "feed.xml").read_text(encoding="utf-8")
     robots_txt = (output_dir / "robots.txt").read_text(encoding="utf-8")
     search_json = (output_dir / "search.json").read_text(encoding="utf-8")
+    browserconfig_xml = (output_dir / "browserconfig.xml").read_text(encoding="utf-8")
     webmanifest = json.loads(
         (output_dir / "site.webmanifest").read_text(encoding="utf-8")
     )
@@ -133,6 +135,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="format-detection" content="telephone=no" />' in homepage_html
     assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
     assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in homepage_html
+    assert (
+        '<meta name="msapplication-config" content="https://wastingnotime.org/browserconfig.xml" />'
+        in homepage_html
+    )
     assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-status-bar-style" content="default" />' in homepage_html
@@ -193,6 +199,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Allow: /" in robots_txt
     assert "Sitemap: https://wastingnotime.org/sitemap.xml" in robots_txt
     assert "/api/event" not in robots_txt
+    assert "<browserconfig>" in browserconfig_xml
+    assert (
+        '<square150x150logo src="https://wastingnotime.org/apple-touch-icon.png"/>'
+        in browserconfig_xml
+    )
+    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
     assert webmanifest["name"] == "Wasting No Time"
     assert webmanifest["short_name"] == "Wasting No Time"
     assert webmanifest["start_url"] == "https://wastingnotime.org/"

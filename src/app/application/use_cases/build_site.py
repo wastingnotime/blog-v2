@@ -88,6 +88,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         ".nojekyll": build_nojekyll(),
         "CNAME": build_cname(config),
         "404.html": build_not_found_page(config, footer_attribution),
+        "browserconfig.xml": build_browserconfig(config),
         "index.html": build_homepage(config, homepage_surface, footer_attribution),
         "archives/index.html": build_archive_page(
             config,
@@ -235,6 +236,21 @@ def build_site_webmanifest(config: SiteConfig) -> str:
         ],
     }
     return json.dumps(manifest, ensure_ascii=True, indent=2) + "\n"
+
+
+def build_browserconfig(config: SiteConfig) -> str:
+    square_logo_url = _absolute_url(config.base_url, "/apple-touch-icon.png")
+    return (
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<browserconfig>\n"
+        "  <msapplication>\n"
+        "    <tile>\n"
+        f"      <square150x150logo src=\"{html.escape(square_logo_url)}\"/>\n"
+        f"      <TileColor>{html.escape(THEME_COLOR)}</TileColor>\n"
+        "    </tile>\n"
+        "  </msapplication>\n"
+        "</browserconfig>\n"
+    )
 
 
 def build_homepage(
@@ -821,6 +837,7 @@ def _render_document(
     canonical_url = _absolute_url(config.base_url, canonical_path)
     feed_url = _absolute_url(config.base_url, "/feed.xml")
     manifest_url = _absolute_url(config.base_url, "/site.webmanifest")
+    browserconfig_url = _absolute_url(config.base_url, "/browserconfig.xml")
     social_preview_url = _absolute_url(config.base_url, "/social-preview.png")
     open_graph_metadata = _render_open_graph_metadata(
         site_title=config.title,
@@ -854,6 +871,7 @@ def _render_document(
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="{THEME_COLOR}" />
     <meta name="msapplication-TileColor" content="{THEME_COLOR}" />
+    <meta name="msapplication-config" content="{html.escape(browserconfig_url)}" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />

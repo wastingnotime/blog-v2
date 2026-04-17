@@ -143,6 +143,7 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     feed_xml = pages["feed.xml"]
     robots_txt = pages["robots.txt"]
     webmanifest = json.loads(pages["site.webmanifest"])
+    browserconfig_xml = pages["browserconfig.xml"]
     sitemap_xml = pages["sitemap.xml"]
 
     assert nojekyll == "\n"
@@ -170,6 +171,9 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert webmanifest["icons"][0]["src"] == "https://example.com/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "https://example.com/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "https://example.com/apple-touch-icon.png"
+    assert "<browserconfig>" in browserconfig_xml
+    assert '<square150x150logo src="https://example.com/apple-touch-icon.png"/>' in browserconfig_xml
+    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://example.com/library/</loc>" in sitemap_xml
     assert "<loc>https://example.com/sagas/hireflow/</loc>" in sitemap_xml
@@ -488,6 +492,24 @@ def test_build_static_site_renders_msapplication_tile_color_metadata_in_document
 
     for html in route_html:
         assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in html
+
+
+def test_build_static_site_renders_msapplication_config_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert (
+            '<meta name="msapplication-config" content="https://example.com/browserconfig.xml" />'
+            in html
+        )
 
 
 def test_build_static_site_renders_author_metadata_in_document_head() -> None:
