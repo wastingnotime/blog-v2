@@ -222,6 +222,8 @@ def test_build_static_site_renders_narrative_container_body_content() -> None:
     arc_html = pages["sagas/hireflow/the-origin-blueprint/index.html"]
 
     assert "Saga body." in saga_html
+    assert "/archives/" in saga_html
+    assert "/search/" in saga_html
     assert "Arc body." in arc_html
 
 

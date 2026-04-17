@@ -205,6 +205,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "(c) 2025 wastingnotime.org - published as a static site" in saga_html
     assert "The Origin Blueprint" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
+    assert "/archives/" in saga_html
+    assert "/search/" in saga_html
     assert "Episodes" in arc_html
     assert "[Ep 01] The First Brick" in arc_html
     assert "The opening arc defines why HireFlow exists" in arc_html
