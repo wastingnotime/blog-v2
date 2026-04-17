@@ -299,6 +299,7 @@ def build_not_found_page(
             "          <p>The page you requested does not exist here, or it may have moved during the rebuild.</p>\n"
             "          <ul>\n"
             f'            <li><a href="{_absolute_url(config.base_url, "/")}">Return home</a></li>\n'
+            f'            <li><a href="{_absolute_url(config.base_url, "/search/")}">Search the publication</a></li>\n'
             f'            <li><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a></li>\n'
             f'            <li><a href="{_absolute_url(config.base_url, "/sagas/")}">Browse sagas</a></li>\n'
             f'            <li><a href="{_absolute_url(config.base_url, "/library/")}">Browse the library</a></li>\n'

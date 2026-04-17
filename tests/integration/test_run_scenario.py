@@ -126,6 +126,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Page Not Found" in not_found_html
     assert "Try one of these instead" in not_found_html
     assert 'href="https://wastingnotime.org/"' in not_found_html
+    assert 'href="https://wastingnotime.org/search/"' in not_found_html
     assert 'href="https://wastingnotime.org/archives/"' in not_found_html
     assert 'href="https://wastingnotime.org/sagas/"' in not_found_html
     assert 'href="https://wastingnotime.org/library/"' in not_found_html
