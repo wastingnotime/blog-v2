@@ -23,3 +23,19 @@ def test_project_navigation_state_marks_topic_routes_under_library() -> None:
     active = [link.label for link in links if link.is_active]
 
     assert active == ["Library"]
+
+
+def test_project_navigation_state_marks_search_route_active() -> None:
+    links = project_navigation_state("/search/")
+
+    active = [link.label for link in links if link.is_active]
+
+    assert active == ["Search"]
+
+
+def test_project_navigation_state_includes_search_link() -> None:
+    links = project_navigation_state("/")
+
+    labels = [link.label for link in links]
+
+    assert labels == ["Home", "Search", "Sagas", "Library", "Studio", "About"]

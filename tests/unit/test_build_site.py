@@ -146,11 +146,14 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
     home_html = pages["index.html"]
+    search_html = pages["search/index.html"]
     about_html = pages["about/index.html"]
     saga_html = pages["sagas/hireflow/index.html"]
 
     assert ">Home</a>" in home_html
     assert 'class="active">Home</a>' in home_html
+    assert 'href="https://example.com/search/"' in home_html
+    assert 'class="active">Search</a>' in search_html
     assert 'class="active">About</a>' in about_html
     assert 'class="active">Sagas</a>' in saga_html
     assert 'href="https://example.com/library/"' in saga_html

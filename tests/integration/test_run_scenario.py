@@ -95,6 +95,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "In Public" in homepage_html
     assert "This site tracks architecture decisions" in homepage_html
     assert 'class="active">Home</a>' in homepage_html
+    assert 'href="https://wastingnotime.org/search/"' in homepage_html
     assert 'href="https://wastingnotime.org/about/"' in homepage_html
     assert 'href="https://wastingnotime.org/library/"' in homepage_html
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
@@ -130,6 +131,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "HireFlow / The Origin Blueprint" in archive_html
     assert "/api/event" not in archive_html
     assert "Search the publication" in search_html
+    assert 'class="active">Search</a>' in search_html
     assert 'type="search"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://wastingnotime.org/search.json" in search_html
