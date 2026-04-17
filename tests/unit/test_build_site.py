@@ -103,6 +103,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "/library/" in search_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
+    assert "Other ways in" in library_html
     assert 'href="https://example.com/archives/"' in library_html
     assert 'href="https://example.com/search/"' in library_html
     assert "architecture" in library_html
@@ -120,6 +121,7 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     studio_html = pages["studio/index.html"]
 
     assert "Active sagas" in sagas_html
+    assert "Other ways in" in sagas_html
     assert "HireFlow" in sagas_html
     assert "start reading" in sagas_html
     assert "/archives/" in sagas_html
@@ -128,6 +130,7 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "/sagas/" in studio_html
     assert "/archives/" in studio_html
     assert "/search/" in studio_html
+    assert "Other ways in" in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
 
 
@@ -228,9 +231,39 @@ def test_build_static_site_renders_narrative_container_body_content() -> None:
     arc_html = pages["sagas/hireflow/the-origin-blueprint/index.html"]
 
     assert "Saga body." in saga_html
+    assert "Other ways in" in saga_html
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
     assert "Arc body." in arc_html
+
+
+def test_build_static_site_uses_shared_discovery_surface_with_route_specific_links() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    archive_discovery = _discovery_section(pages["archives/index.html"])
+    search_discovery = _discovery_section(pages["search/index.html"])
+    library_discovery = _discovery_section(pages["library/index.html"])
+    studio_discovery = _discovery_section(pages["studio/index.html"])
+    episode_discovery = _discovery_section(
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"]
+    )
+
+    assert 'href="https://example.com/search/"' in archive_discovery
+    assert 'href="https://example.com/library/"' in archive_discovery
+    assert 'href="https://example.com/archives/"' not in archive_discovery
+    assert 'href="https://example.com/archives/"' in search_discovery
+    assert 'href="https://example.com/library/"' in search_discovery
+    assert 'href="https://example.com/search/"' not in search_discovery
+    assert 'href="https://example.com/archives/"' in library_discovery
+    assert 'href="https://example.com/search/"' in library_discovery
+    assert 'href="https://example.com/library/"' not in library_discovery
+    assert 'href="https://example.com/sagas/"' in studio_discovery
+    assert 'href="https://example.com/library/"' in studio_discovery
+    assert 'href="https://example.com/archives/"' in studio_discovery
+    assert 'href="https://example.com/search/"' in studio_discovery
+    assert 'href="https://example.com/studio/"' not in studio_discovery
+    assert 'href="https://example.com/archives/"' in episode_discovery
+    assert 'href="https://example.com/search/"' in episode_discovery
 
 
 def test_build_static_site_renders_identity_asset_links_in_document_head() -> None:
@@ -331,6 +364,10 @@ def test_build_static_site_generates_search_index() -> None:
         for entry in search_index
     )
 
+def _discovery_section(html: str) -> str:
+    marker = "          <h2>Other ways in</h2>"
+    start = html.index(marker)
+    return html[start : html.index("        </section>", start)]
 
 
 def _site_config() -> SiteConfig:

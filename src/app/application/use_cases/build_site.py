@@ -329,15 +329,24 @@ def build_archive_page(
         summary="Browse the publication chronologically from newest to oldest.",
         metadata=f"{len(archive_index.entries)} published entries",
         footer_attribution=footer_attribution,
-        body_html=(
-            "        <section>\n"
-            "          <h2>Chronological Archive</h2>\n"
-            "          <ul>\n"
-            f"{archive_markup}\n"
-            "          </ul>\n"
-            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-            f'          <p>Move by topic instead -> <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a></p>\n'
-            "        </section>"
+        body_html="\n".join(
+            [
+                (
+                    "        <section>\n"
+                    "          <h2>Chronological Archive</h2>\n"
+                    "          <ul>\n"
+                    f"{archive_markup}\n"
+                    "          </ul>\n"
+                    "        </section>"
+                ),
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("Search across the publication", "/search/"),
+                        ("Move by topic instead", "/library/"),
+                    ),
+                ),
+            ]
         ),
     )
 
@@ -361,11 +370,11 @@ def build_search_page(
             "        <section>\n"
             "          <h2>Search the publication</h2>\n"
             "          <p>Type to filter the static index published with the site.</p>\n"
-            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a> or move by topic through <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a>.</p>\n'
             '          <input id="search-query" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" />\n'
             '          <p id="search-status">Enter a query to search the publication.</p>\n'
             '          <ul id="search-results"></ul>\n'
             "        </section>\n"
+            f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')))}\n"
             "        <script>\n"
             f"          const searchIndexUrl = {json.dumps(search_index_url)};\n"
             "          const searchInput = document.getElementById('search-query');\n"
@@ -446,11 +455,12 @@ def build_content_page(
             [
                 _render_entry_metadata(entry_metadata, base_url=config.base_url),
                 _render_markdown(page.body_markdown),
-                (
-                    "        <section>\n"
-                    f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-                    f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-                    "        </section>"
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("Browse the chronology", "/archives/"),
+                        ("Search across the publication", "/search/"),
+                    ),
                 ),
             ]
         ),
@@ -496,11 +506,12 @@ def build_episode_page(
                 parent_navigation,
                 _render_entry_metadata(entry_metadata, base_url=config.base_url),
                 _render_markdown(episode.body_markdown),
-                (
-                    "        <section>\n"
-                    f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-                    f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-                    "        </section>"
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("Browse the chronology", "/archives/"),
+                        ("Search across the publication", "/search/"),
+                    ),
                 ),
                 adjacent_navigation,
             ]
@@ -530,24 +541,37 @@ def build_saga_page(
         summary=saga_view.saga.summary,
         metadata=f"{saga_view.saga.date} · {saga_view.saga.status}",
         footer_attribution=footer_attribution,
-        body_html=(
-            "        <section>\n"
-            f"{_render_markdown(saga_view.saga.body_markdown)}\n"
-            "        </section>\n"
-            "        <section>\n"
-            "          <h2>Arcs</h2>\n"
-            "          <ul>\n"
-            f"{arc_markup}\n"
-            "          </ul>\n"
-            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-            "        </section>\n"
-            "        <section>\n"
-            "          <h2>Timeline</h2>\n"
-            "          <ul>\n"
-            f"{timeline_markup}\n"
-            "          </ul>\n"
-            "        </section>"
+        body_html="\n".join(
+            [
+                (
+                    "        <section>\n"
+                    f"{_render_markdown(saga_view.saga.body_markdown)}\n"
+                    "        </section>"
+                ),
+                (
+                    "        <section>\n"
+                    "          <h2>Arcs</h2>\n"
+                    "          <ul>\n"
+                    f"{arc_markup}\n"
+                    "          </ul>\n"
+                    "        </section>"
+                ),
+                (
+                    "        <section>\n"
+                    "          <h2>Timeline</h2>\n"
+                    "          <ul>\n"
+                    f"{timeline_markup}\n"
+                    "          </ul>\n"
+                    "        </section>"
+                ),
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("Browse the chronology", "/archives/"),
+                        ("Search across the publication", "/search/"),
+                    ),
+                ),
+            ]
         ),
     )
 
@@ -575,19 +599,30 @@ def build_arc_page(
         summary=arc_view.arc.summary,
         metadata=f"{arc_view.arc.date} · {arc_view.arc.saga_title}",
         footer_attribution=footer_attribution,
-        body_html=(
-            f"{breadcrumb}\n"
-            "        <section>\n"
-            f"{_render_markdown(arc_view.arc.body_markdown)}\n"
-            "        </section>\n"
-            "        <section>\n"
-            "          <h2>Episodes</h2>\n"
-            "          <ul>\n"
-            f"{episode_markup}\n"
-            "          </ul>\n"
-            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-            "        </section>"
+        body_html="\n".join(
+            [
+                breadcrumb,
+                (
+                    "        <section>\n"
+                    f"{_render_markdown(arc_view.arc.body_markdown)}\n"
+                    "        </section>"
+                ),
+                (
+                    "        <section>\n"
+                    "          <h2>Episodes</h2>\n"
+                    "          <ul>\n"
+                    f"{episode_markup}\n"
+                    "          </ul>\n"
+                    "        </section>"
+                ),
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("Browse the chronology", "/archives/"),
+                        ("Search across the publication", "/search/"),
+                    ),
+                ),
+            ]
         ),
     )
 
@@ -606,31 +641,19 @@ def build_library_page(
         f"{_render_markdown(section_page.body_markdown)}\n"
         "        </section>\n"
         "        <section>\n"
-        "          <h2>Other ways in</h2>\n"
-        "          <p>Browse the chronology -> "
-        f'<a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-        "          <p>Search across the publication -> "
-        f'<a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-        "        </section>\n"
-        "        <section>\n"
         "          <h2>Topics</h2>\n"
         "          <ul>\n"
         f"{tag_markup}\n"
         "          </ul>\n"
-        "        </section>"
+        "        </section>\n"
+        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')))}"
         if library_catalog.tags
         else (
             "        <section>\n"
             f"{_render_markdown(section_page.body_markdown)}\n"
             "        </section>\n"
-            "        <section>\n"
-            "          <h2>Other ways in</h2>\n"
-            "          <p>Browse the chronology -> "
-            f'<a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-            "          <p>Search across the publication -> "
-            f'<a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-            "        </section>\n"
-            "        <p>No tags available yet.</p>"
+            "        <p>No tags available yet.</p>\n"
+            f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')))}"
         )
     )
     return _render_document(
@@ -665,17 +688,26 @@ def build_topic_page(
         summary="A topic view across standalone pages and saga episodes.",
         metadata=f"{len(topic_page.entries)} entries",
         footer_attribution=footer_attribution,
-        body_html=(
-            "        <nav class=\"breadcrumbs\">"
-            f"<a href=\"{_absolute_url(config.base_url, '/library/')}\">Library</a></nav>\n"
-            "        <section>\n"
-            "          <h2>Entries</h2>\n"
-            "          <ul>\n"
-            f"{entry_markup}\n"
-            "          </ul>\n"
-            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-            "        </section>"
+        body_html="\n".join(
+            [
+                "        <nav class=\"breadcrumbs\">"
+                f"<a href=\"{_absolute_url(config.base_url, '/library/')}\">Library</a></nav>",
+                (
+                    "        <section>\n"
+                    "          <h2>Entries</h2>\n"
+                    "          <ul>\n"
+                    f"{entry_markup}\n"
+                    "          </ul>\n"
+                    "        </section>"
+                ),
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("Browse the chronology", "/archives/"),
+                        ("Search across the publication", "/search/"),
+                    ),
+                ),
+            ]
         ),
     )
 
@@ -699,15 +731,24 @@ def build_sagas_index_page(
         summary="Long-running efforts, grouped into readable narrative threads.",
         metadata=f"{len(sagas_index.sagas)} active sagas",
         footer_attribution=footer_attribution,
-        body_html=(
-            "        <section>\n"
-            "          <h2>Active sagas</h2>\n"
-            "          <ul>\n"
-            f"{saga_markup}\n"
-            "          </ul>\n"
-            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-            "        </section>"
+        body_html="\n".join(
+            [
+                (
+                    "        <section>\n"
+                    "          <h2>Active sagas</h2>\n"
+                    "          <ul>\n"
+                    f"{saga_markup}\n"
+                    "          </ul>\n"
+                    "        </section>"
+                ),
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("Browse the chronology", "/archives/"),
+                        ("Search across the publication", "/search/"),
+                    ),
+                ),
+            ]
         ),
     )
 
@@ -727,17 +768,23 @@ def build_studio_page(
         summary=section_page.summary,
         metadata="section hub",
         footer_attribution=footer_attribution,
-        body_html=(
-            "        <section>\n"
-            f"{_render_markdown(section_page.body_markdown)}\n"
-            "        </section>\n"
-            "        <section>\n"
-            "          <h2>Navigate</h2>\n"
-            f'          <p>See active sagas -> <a href="{_absolute_url(config.base_url, "/sagas/")}">/sagas/</a></p>\n'
-            f'          <p>Explore topics -> <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a></p>\n'
-            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
-            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
-            "        </section>"
+        body_html="\n".join(
+            [
+                (
+                    "        <section>\n"
+                    f"{_render_markdown(section_page.body_markdown)}\n"
+                    "        </section>"
+                ),
+                _render_discovery_surface(
+                    config.base_url,
+                    (
+                        ("See active sagas", "/sagas/"),
+                        ("Explore topics", "/library/"),
+                        ("Browse the chronology", "/archives/"),
+                        ("Search across the publication", "/search/"),
+                    ),
+                ),
+            ]
         ),
     )
 
@@ -933,6 +980,26 @@ def _render_open_graph_metadata(
     return "\n".join(
         f'    <meta property="{html.escape(property_name)}" content="{html.escape(value)}" />'
         for property_name, value in metadata.items()
+    )
+
+
+def _render_discovery_surface(
+    base_url: str,
+    destinations: tuple[tuple[str, str], ...],
+) -> str:
+    items = "\n".join(
+        (
+            "          <p>"
+            f"{html.escape(label)} -> "
+            f'<a href="{_absolute_url(base_url, path)}">{html.escape(path)}</a></p>'
+        )
+        for label, path in destinations
+    )
+    return (
+        "        <section>\n"
+        "          <h2>Other ways in</h2>\n"
+        f"{items}\n"
+        "        </section>"
     )
 
 

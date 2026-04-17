@@ -181,6 +181,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert 'class="active">Library</a>' in library_html
+    assert "Other ways in" in library_html
     assert 'href="https://wastingnotime.org/archives/"' in library_html
     assert 'href="https://wastingnotime.org/search/"' in library_html
     assert "architecture" in library_html
@@ -190,6 +191,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/search/" in topic_html
     assert "Active sagas" in sagas_index_html
     assert 'class="active">Sagas</a>' in sagas_index_html
+    assert "Other ways in" in sagas_index_html
     assert "start reading" in sagas_index_html
     assert "/archives/" in sagas_index_html
     assert "/search/" in sagas_index_html
@@ -237,6 +239,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/library/" in studio_html
     assert "/archives/" in studio_html
     assert "/search/" in studio_html
+    assert "Other ways in" in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
     assert 'class="active">Studio</a>' in studio_html
     assert "HireFlow / The Origin Blueprint" in episode_html
@@ -244,6 +247,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/library/distributed-systems/"' in episode_html
     assert 'href="https://wastingnotime.org/archives/"' in episode_html
     assert 'href="https://wastingnotime.org/search/"' in episode_html
+    assert "Other ways in" in episode_html
     assert 'href="https://wastingnotime.org/favicon-16x16.png"' in episode_html
     assert '<meta property="og:title" content="The First Brick" />' in episode_html
     assert (
