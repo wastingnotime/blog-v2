@@ -30,6 +30,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         output_dir / "archives" / "index.html",
         output_dir / "feed.xml",
         output_dir / "robots.txt",
+        output_dir / "search" / "index.html",
         output_dir / "search.json",
         output_dir / "sitemap.xml",
         output_dir / "favicon.ico",
@@ -57,6 +58,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     homepage_html = (output_dir / "index.html").read_text(encoding="utf-8")
     archive_html = (
         output_dir / "archives" / "index.html"
+    ).read_text(encoding="utf-8")
+    search_html = (
+        output_dir / "search" / "index.html"
     ).read_text(encoding="utf-8")
     library_html = (output_dir / "library" / "index.html").read_text(encoding="utf-8")
     topic_html = (
@@ -125,6 +129,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
     assert "HireFlow / The Origin Blueprint" in archive_html
     assert "/api/event" not in archive_html
+    assert "Search the publication" in search_html
+    assert 'type="search"' in search_html
+    assert "Enter a query to search the publication." in search_html
+    assert "https://wastingnotime.org/search.json" in search_html
+    assert "/api/event" not in search_html
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
     assert "<title>About</title>" in feed_xml

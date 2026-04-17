@@ -89,6 +89,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
             archive_index,
             footer_attribution,
         ),
+        "search/index.html": build_search_page(config, footer_attribution),
         "library/index.html": build_library_page(
             config,
             topic_catalog,
@@ -305,6 +306,89 @@ def build_archive_page(
             f"{archive_markup}\n"
             "          </ul>\n"
             "        </section>"
+        ),
+    )
+
+
+def build_search_page(
+    config: SiteConfig,
+    footer_attribution: FooterAttribution,
+) -> str:
+    search_index_url = _absolute_url(config.base_url, "/search.json")
+    return _render_document(
+        config=config,
+        title="Search",
+        description="Search the publication using the static search index.",
+        canonical_path="/search/",
+        eyebrow="Search",
+        heading="Search",
+        summary="Use the static index to find pages, sagas, arcs, and episodes.",
+        metadata="client-side search",
+        footer_attribution=footer_attribution,
+        body_html=(
+            "        <section>\n"
+            "          <h2>Search the publication</h2>\n"
+            "          <p>Type to filter the static index published with the site.</p>\n"
+            '          <input id="search-query" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" />\n'
+            '          <p id="search-status">Enter a query to search the publication.</p>\n'
+            '          <ul id="search-results"></ul>\n'
+            "        </section>\n"
+            "        <script>\n"
+            f"          const searchIndexUrl = {json.dumps(search_index_url)};\n"
+            "          const searchInput = document.getElementById('search-query');\n"
+            "          const searchStatus = document.getElementById('search-status');\n"
+            "          const searchResults = document.getElementById('search-results');\n"
+            "          let searchRecords = [];\n"
+            "          const renderResults = (query) => {\n"
+            "            const normalizedQuery = query.trim().toLowerCase();\n"
+            "            searchResults.innerHTML = '';\n"
+            "            if (!normalizedQuery) {\n"
+            "              searchStatus.textContent = 'Enter a query to search the publication.';\n"
+            "              return;\n"
+            "            }\n"
+            "            const matches = searchRecords.filter((record) => {\n"
+            "              const haystack = [record.title, record.summary, record.context, ...(record.tags || [])]\n"
+            "                .filter(Boolean)\n"
+            "                .join(' ')\n"
+            "                .toLowerCase();\n"
+            "              return haystack.includes(normalizedQuery);\n"
+            "            });\n"
+            "            searchStatus.textContent = matches.length\n"
+            "              ? `${matches.length} result${matches.length === 1 ? '' : 's'} for \"${query}\"`\n"
+            "              : `No results for \"${query}\"`;\n"
+            "            matches.forEach((record) => {\n"
+            "              const item = document.createElement('li');\n"
+            "              const link = document.createElement('a');\n"
+            "              link.href = record.url;\n"
+            "              link.textContent = `[${record.type}] ${record.title}`;\n"
+            "              item.appendChild(link);\n"
+            "              const meta = document.createElement('small');\n"
+            "              meta.textContent = [record.date, record.context].filter(Boolean).join(' · ');\n"
+            "              if (meta.textContent) {\n"
+            "                item.appendChild(document.createTextNode(' '));\n"
+            "                item.appendChild(meta);\n"
+            "              }\n"
+            "              if (record.summary) {\n"
+            "                const summary = document.createElement('p');\n"
+            "                summary.textContent = record.summary;\n"
+            "                item.appendChild(summary);\n"
+            "              }\n"
+            "              searchResults.appendChild(item);\n"
+            "            });\n"
+            "          };\n"
+            "          fetch(searchIndexUrl)\n"
+            "            .then((response) => response.json())\n"
+            "            .then((records) => {\n"
+            "              searchRecords = records;\n"
+            "              searchStatus.textContent = `Loaded ${records.length} searchable entries.`;\n"
+            "            })\n"
+            "            .catch(() => {\n"
+            "              searchStatus.textContent = 'Search index could not be loaded.';\n"
+            "            });\n"
+            "          searchInput.addEventListener('input', (event) => {\n"
+            "            renderResults(event.target.value);\n"
+            "          });\n"
+            "        </script>"
         ),
     )
 
