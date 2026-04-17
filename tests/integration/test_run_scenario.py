@@ -145,6 +145,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'type="search"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://wastingnotime.org/search.json" in search_html
+    assert "/archives/" in search_html
+    assert "/library/" in search_html
     assert "/api/event" not in search_html
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml

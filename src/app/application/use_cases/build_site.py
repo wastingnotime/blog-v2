@@ -359,6 +359,7 @@ def build_search_page(
             "        <section>\n"
             "          <h2>Search the publication</h2>\n"
             "          <p>Type to filter the static index published with the site.</p>\n"
+            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a> or move by topic through <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a>.</p>\n'
             '          <input id="search-query" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" />\n'
             '          <p id="search-status">Enter a query to search the publication.</p>\n'
             '          <ul id="search-results"></ul>\n'

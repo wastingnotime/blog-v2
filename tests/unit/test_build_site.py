@@ -93,6 +93,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'type="search"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://example.com/search.json" in search_html
+    assert "/archives/" in search_html
+    assert "/library/" in search_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert "architecture" in library_html
