@@ -640,6 +640,8 @@ def build_topic_page(
             "          <ul>\n"
             f"{entry_markup}\n"
             "          </ul>\n"
+            f'          <p>Browse the chronology -> <a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
+            f'          <p>Search across the publication -> <a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
             "        </section>"
         ),
     )

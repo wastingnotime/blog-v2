@@ -180,6 +180,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "architecture" in library_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
+    assert "/archives/" in topic_html
+    assert "/search/" in topic_html
     assert "Active sagas" in sagas_index_html
     assert 'class="active">Sagas</a>' in sagas_index_html
     assert "start reading" in sagas_index_html

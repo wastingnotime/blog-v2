@@ -99,6 +99,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
     assert "HireFlow / The Origin Blueprint" in topic_html
+    assert "/archives/" in topic_html
+    assert "/search/" in topic_html
 
 
 def test_build_static_site_generates_section_hub_pages() -> None:
