@@ -83,6 +83,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
     sagas_index = project_sagas_index(saga_views, arc_views)
     section_pages = {page.slug: page for page in catalog.section_pages}
     pages = {
+        ".nojekyll": build_nojekyll(),
         "CNAME": build_cname(config),
         "404.html": build_not_found_page(config, footer_attribution),
         "index.html": build_homepage(config, homepage_surface, footer_attribution),
@@ -199,6 +200,10 @@ def build_robots_txt(config: SiteConfig) -> str:
 
 def build_cname(config: SiteConfig) -> str:
     return f"{_site_host(config.base_url)}\n"
+
+
+def build_nojekyll() -> str:
+    return "\n"
 
 
 def build_site_webmanifest(config: SiteConfig) -> str:

@@ -25,6 +25,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     written_paths = builder.build(load_site_config(), catalog)
 
     expected_paths = {
+        output_dir / ".nojekyll",
         output_dir / "CNAME",
         output_dir / "404.html",
         output_dir / "index.html",
@@ -56,6 +57,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert expected_paths.issubset(set(written_paths))
 
+    nojekyll = (output_dir / ".nojekyll").read_text(encoding="utf-8")
     cname = (output_dir / "CNAME").read_text(encoding="utf-8")
     not_found_html = (output_dir / "404.html").read_text(encoding="utf-8")
     homepage_html = (output_dir / "index.html").read_text(encoding="utf-8")
@@ -98,6 +100,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         / "index.html"
     ).read_text(encoding="utf-8")
 
+    assert nojekyll == "\n"
     assert cname == "wastingnotime.org\n"
     assert "In Public" in homepage_html
     assert "This site tracks architecture decisions" in homepage_html
