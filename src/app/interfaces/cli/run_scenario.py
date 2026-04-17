@@ -12,7 +12,13 @@ from src.app.infrastructure.content.markdown_content_loader import MarkdownConte
 def main() -> None:
     output_dir = Path(_getenv("OUTPUT_DIR", default="dist"))
     content_root = Path(_getenv("CONTENT_ROOT", default="content"))
-    builder = StaticSiteBuilder(output_dir=output_dir)
+    identity_assets_dir = Path(
+        _getenv("IDENTITY_ASSETS_DIR", default="assets/site/current")
+    )
+    builder = StaticSiteBuilder(
+        output_dir=output_dir,
+        identity_assets_dir=identity_assets_dir,
+    )
     catalog = load_content_catalog(
         loader=MarkdownContentLoader(),
         content_root=content_root,

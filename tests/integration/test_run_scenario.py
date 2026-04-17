@@ -10,8 +10,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     tmp_path: Path,
 ) -> None:
     output_dir = tmp_path / "dist"
+    identity_assets_dir = Path(__file__).resolve().parents[2] / "assets" / "site" / "current"
     content_root = Path(__file__).resolve().parents[2] / "content"
-    builder = StaticSiteBuilder(output_dir=output_dir)
+    builder = StaticSiteBuilder(
+        output_dir=output_dir,
+        identity_assets_dir=identity_assets_dir,
+    )
     catalog = load_content_catalog(
         loader=MarkdownContentLoader(),
         content_root=content_root,
@@ -23,6 +27,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         output_dir / "index.html",
         output_dir / "feed.xml",
         output_dir / "sitemap.xml",
+        output_dir / "favicon.ico",
+        output_dir / "favicon-16x16.png",
+        output_dir / "favicon-32x32.png",
+        output_dir / "apple-touch-icon.png",
         output_dir / "about" / "index.html",
         output_dir / "library" / "index.html",
         output_dir / "library" / "architecture" / "index.html",
@@ -75,6 +83,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/about/"' in homepage_html
     assert 'href="https://wastingnotime.org/library/"' in homepage_html
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
+    assert 'href="https://wastingnotime.org/favicon.ico"' in homepage_html
+    assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
     assert "3 recent entries shown" in homepage_html
     assert "2 episodes · last release 2025-11-15 · in-progress" in homepage_html
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
@@ -108,6 +118,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'class="active">About</a>' in about_html
     assert "1 min read" in about_html
     assert 'href="https://wastingnotime.org/library/architecture/"' in about_html
+    assert 'href="https://wastingnotime.org/favicon-32x32.png"' in about_html
     assert "/sagas/" in studio_html
     assert "/library/" in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
@@ -115,5 +126,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "1 min read" in episode_html
     assert 'href="https://wastingnotime.org/library/distributed-systems/"' in episode_html
+    assert 'href="https://wastingnotime.org/favicon-16x16.png"' in episode_html
     assert "Ep 02 Second Iteration" in episode_html
     assert "/api/event" not in episode_html
+    assert (output_dir / "favicon.ico").read_bytes() == (
+        identity_assets_dir / "favicon.ico"
+    ).read_bytes()

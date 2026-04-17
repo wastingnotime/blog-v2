@@ -160,6 +160,30 @@ def test_build_static_site_renders_narrative_container_body_content() -> None:
     assert "Arc body." in arc_html
 
 
+def test_build_static_site_renders_identity_asset_links_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    homepage_html = pages["index.html"]
+    episode_html = pages[
+        "sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"
+    ]
+
+    assert 'rel="icon" href="https://example.com/favicon.ico"' in homepage_html
+    assert (
+        'rel="icon" type="image/png" sizes="16x16" '
+        'href="https://example.com/favicon-16x16.png"'
+    ) in homepage_html
+    assert (
+        'rel="icon" type="image/png" sizes="32x32" '
+        'href="https://example.com/favicon-32x32.png"'
+    ) in homepage_html
+    assert (
+        'rel="apple-touch-icon" type="image/png" '
+        'href="https://example.com/apple-touch-icon.png"'
+    ) in homepage_html
+    assert 'href="https://example.com/apple-touch-icon.png"' in episode_html
+
+
 
 def _site_config() -> SiteConfig:
     return SiteConfig(

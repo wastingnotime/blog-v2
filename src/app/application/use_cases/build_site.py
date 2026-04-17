@@ -46,6 +46,13 @@ from src.app.application.use_cases.project_publication_metadata import (
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
+IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
+    ("icon", "/favicon.ico", None),
+    ("icon", "/favicon-16x16.png", "16x16"),
+    ("icon", "/favicon-32x32.png", "32x32"),
+    ("apple-touch-icon", "/apple-touch-icon.png", None),
+)
+
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
     arc_views = project_arc_views(catalog)
@@ -449,6 +456,7 @@ def _render_document(
 ) -> str:
     analytics_snippet = _render_analytics(config.analytics)
     canonical_url = _absolute_url(config.base_url, canonical_path)
+    identity_asset_links = _render_identity_asset_links(base_url=config.base_url)
     navigation_markup = _render_navigation(
         project_navigation_state(canonical_path),
         base_url=config.base_url,
@@ -462,6 +470,7 @@ def _render_document(
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
+{identity_asset_links}
     <style>
       :root {{
         color-scheme: light;
@@ -587,6 +596,20 @@ def _render_document(
   </body>
 </html>
 """
+
+
+def _render_identity_asset_links(*, base_url: str) -> str:
+    markup_lines: list[str] = []
+    for rel, path, sizes in IDENTITY_ASSET_LINKS:
+        attributes = [f'rel="{rel}"']
+        if path.endswith(".png"):
+            attributes.append('type="image/png"')
+        if sizes is not None:
+            attributes.append(f'sizes="{sizes}"')
+        attributes.append(f'href="{html.escape(_absolute_url(base_url, path))}"')
+        markup_lines.append(f"    <link {' '.join(attributes)} />")
+
+    return "\n".join(markup_lines)
 
 
 def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
