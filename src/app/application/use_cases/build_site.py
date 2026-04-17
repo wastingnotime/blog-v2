@@ -82,6 +82,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
     sagas_index = project_sagas_index(saga_views, arc_views)
     section_pages = {page.slug: page for page in catalog.section_pages}
     pages = {
+        "404.html": build_not_found_page(config, footer_attribution),
         "index.html": build_homepage(config, homepage_surface, footer_attribution),
         "archives/index.html": build_archive_page(
             config,
@@ -244,6 +245,35 @@ def build_homepage(
             "          <h2>Library</h2>\n"
             "          <p>Browse ideas and implementation threads by topic.</p>\n"
             f'          <a href="{_absolute_url(config.base_url, "/library/")}">Explore the library</a>\n'
+            "        </section>"
+        ),
+    )
+
+
+def build_not_found_page(
+    config: SiteConfig,
+    footer_attribution: FooterAttribution,
+) -> str:
+    return _render_document(
+        config=config,
+        title="Not Found",
+        description="The requested page could not be found on this static site.",
+        canonical_path="/404.html",
+        eyebrow="404",
+        heading="Page Not Found",
+        summary="The route you asked for is not part of the current publication.",
+        metadata="Static recovery page",
+        footer_attribution=footer_attribution,
+        body_html=(
+            "        <section>\n"
+            "          <h2>Try one of these instead</h2>\n"
+            "          <p>The page you requested does not exist here, or it may have moved during the rebuild.</p>\n"
+            "          <ul>\n"
+            f'            <li><a href="{_absolute_url(config.base_url, "/")}">Return home</a></li>\n'
+            f'            <li><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a></li>\n'
+            f'            <li><a href="{_absolute_url(config.base_url, "/sagas/")}">Browse sagas</a></li>\n'
+            f'            <li><a href="{_absolute_url(config.base_url, "/library/")}">Browse the library</a></li>\n'
+            "          </ul>\n"
             "        </section>"
         ),
     )

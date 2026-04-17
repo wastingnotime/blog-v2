@@ -113,10 +113,17 @@ def test_build_static_site_generates_section_hub_pages() -> None:
 def test_build_static_site_generates_feed_and_sitemap() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
+    not_found_html = pages["404.html"]
     feed_xml = pages["feed.xml"]
     robots_txt = pages["robots.txt"]
     sitemap_xml = pages["sitemap.xml"]
 
+    assert "Page Not Found" in not_found_html
+    assert "Try one of these instead" in not_found_html
+    assert 'href="https://example.com/"' in not_found_html
+    assert 'href="https://example.com/archives/"' in not_found_html
+    assert 'href="https://example.com/sagas/"' in not_found_html
+    assert 'href="https://example.com/library/"' in not_found_html
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<title>Second Iteration</title>" in feed_xml
     assert "<link>https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml

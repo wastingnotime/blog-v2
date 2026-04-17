@@ -25,6 +25,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     written_paths = builder.build(load_site_config(), catalog)
 
     expected_paths = {
+        output_dir / "404.html",
         output_dir / "index.html",
         output_dir / "archives" / "index.html",
         output_dir / "feed.xml",
@@ -52,6 +53,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert expected_paths.issubset(set(written_paths))
 
+    not_found_html = (output_dir / "404.html").read_text(encoding="utf-8")
     homepage_html = (output_dir / "index.html").read_text(encoding="utf-8")
     archive_html = (
         output_dir / "archives" / "index.html"
@@ -110,6 +112,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
     assert "Deployment target:" not in homepage_html
+    assert "Page Not Found" in not_found_html
+    assert "Try one of these instead" in not_found_html
+    assert 'href="https://wastingnotime.org/"' in not_found_html
+    assert 'href="https://wastingnotime.org/archives/"' in not_found_html
+    assert 'href="https://wastingnotime.org/sagas/"' in not_found_html
+    assert 'href="https://wastingnotime.org/library/"' in not_found_html
+    assert "/api/event" not in not_found_html
     assert "Chronological Archive" in archive_html
     assert "[episode] Second Iteration" in archive_html
     assert "[page] About" in archive_html
