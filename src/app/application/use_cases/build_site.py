@@ -851,6 +851,7 @@ def _render_document(
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="{THEME_COLOR}" />
+    <meta name="msapplication-TileColor" content="{THEME_COLOR}" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />

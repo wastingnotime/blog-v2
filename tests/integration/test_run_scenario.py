@@ -130,6 +130,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta name="format-detection" content="telephone=no" />' in homepage_html
     assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
+    assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-status-bar-style" content="default" />' in homepage_html
