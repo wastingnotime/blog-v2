@@ -490,6 +490,21 @@ def test_build_static_site_renders_msapplication_tile_color_metadata_in_document
         assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in html
 
 
+def test_build_static_site_renders_author_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert '<meta name="author" content="example.com" />' in html
+
+
 def test_build_static_site_renders_mobile_web_app_metadata_in_document_head() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
