@@ -12,6 +12,7 @@ from src.app.domain.models.content import (
     EntryMetadata,
     Episode,
     FeedEntry,
+    FooterAttribution,
     HomepageSagaSummary,
     HomepageSurface,
     LibraryCatalog,
@@ -43,6 +44,9 @@ from src.app.application.use_cases.project_entry_metadata import (
     project_episode_metadata,
     project_page_metadata,
 )
+from src.app.application.use_cases.project_footer_attribution import (
+    project_footer_attribution,
+)
 from src.app.application.use_cases.project_publication_metadata import (
     project_publication_metadata,
 )
@@ -60,6 +64,7 @@ IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
     arc_views = project_arc_views(catalog)
+    footer_attribution = project_footer_attribution(config, catalog)
     saga_views = project_saga_views(catalog, arc_views)
     homepage_surface = project_homepage_surface(catalog, saga_views, arc_views)
     topic_catalog = project_topic_catalog(catalog)
@@ -73,32 +78,39 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
     sagas_index = project_sagas_index(saga_views, arc_views)
     section_pages = {page.slug: page for page in catalog.section_pages}
     pages = {
-        "index.html": build_homepage(config, homepage_surface),
+        "index.html": build_homepage(config, homepage_surface, footer_attribution),
         "library/index.html": build_library_page(
             config,
             topic_catalog,
             section_pages["library"],
+            footer_attribution,
         ),
-        "sagas/index.html": build_sagas_index_page(config, sagas_index),
-        "studio/index.html": build_studio_page(config, section_pages["studio"]),
+        "sagas/index.html": build_sagas_index_page(config, sagas_index, footer_attribution),
+        "studio/index.html": build_studio_page(config, section_pages["studio"], footer_attribution),
         "feed.xml": build_feed(config, publication_metadata),
         "search.json": build_search_index(search_index),
         "sitemap.xml": build_sitemap(config, publication_metadata),
     }
 
     for page in catalog.pages:
-        pages[f"{page.slug}/index.html"] = build_content_page(config, page)
+        pages[f"{page.slug}/index.html"] = build_content_page(
+            config,
+            page,
+            footer_attribution,
+        )
 
     for saga in catalog.sagas:
         pages[f"sagas/{saga.slug}/index.html"] = build_saga_page(
             config,
             saga_views[saga.slug],
+            footer_attribution,
         )
 
     for arc in catalog.arcs:
         pages[f"sagas/{arc.saga_slug}/{arc.slug}/index.html"] = build_arc_page(
             config,
             arc_views[(arc.saga_slug, arc.slug)],
+            footer_attribution,
         )
 
     for episode in catalog.episodes:
@@ -106,12 +118,14 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
             config,
             episode,
             arc_views[(episode.saga_slug, episode.arc_slug)],
+            footer_attribution,
         )
 
     for topic_page in topic_catalog.pages:
         pages[f"library/{topic_page.tag}/index.html"] = build_topic_page(
             config,
             topic_page,
+            footer_attribution,
         )
 
     return pages
@@ -159,7 +173,11 @@ def build_search_index(search_index: SearchIndex) -> str:
     return json.dumps(records, ensure_ascii=True) + "\n"
 
 
-def build_homepage(config: SiteConfig, homepage_surface: HomepageSurface) -> str:
+def build_homepage(
+    config: SiteConfig,
+    homepage_surface: HomepageSurface,
+    footer_attribution: FooterAttribution,
+) -> str:
     recent_items = homepage_surface.recent_entries
     recent_markup = "\n".join(
         _render_recent_item(item, base_url=config.base_url) for item in recent_items
@@ -183,6 +201,7 @@ def build_homepage(config: SiteConfig, homepage_surface: HomepageSurface) -> str
         heading=config.title,
         summary="Architecture, systems thinking, and long-running software work made legible in public.",
         metadata=recent_metadata,
+        footer_attribution=footer_attribution,
         body_html=(
             "        <section>\n"
             "          <h2>In Public</h2>\n"
@@ -211,7 +230,11 @@ def build_homepage(config: SiteConfig, homepage_surface: HomepageSurface) -> str
     )
 
 
-def build_content_page(config: SiteConfig, page: Page) -> str:
+def build_content_page(
+    config: SiteConfig,
+    page: Page,
+    footer_attribution: FooterAttribution,
+) -> str:
     entry_metadata = project_page_metadata(page)
     return _render_document(
         config=config,
@@ -222,6 +245,7 @@ def build_content_page(config: SiteConfig, page: Page) -> str:
         heading=page.title,
         summary=page.summary,
         metadata=page.date,
+        footer_attribution=footer_attribution,
         body_html="\n".join(
             [
                 _render_entry_metadata(entry_metadata, base_url=config.base_url),
@@ -231,7 +255,12 @@ def build_content_page(config: SiteConfig, page: Page) -> str:
     )
 
 
-def build_episode_page(config: SiteConfig, episode: Episode, arc_view: ArcView) -> str:
+def build_episode_page(
+    config: SiteConfig,
+    episode: Episode,
+    arc_view: ArcView,
+    footer_attribution: FooterAttribution,
+) -> str:
     entry_metadata = project_episode_metadata(episode)
     metadata = (
         f"{episode.date} · {episode.saga_title} / {episode.arc_title} · "
@@ -259,6 +288,7 @@ def build_episode_page(config: SiteConfig, episode: Episode, arc_view: ArcView) 
         heading=episode.title,
         summary=episode.summary,
         metadata=metadata,
+        footer_attribution=footer_attribution,
         body_html="\n".join(
             [
                 parent_navigation,
@@ -270,7 +300,11 @@ def build_episode_page(config: SiteConfig, episode: Episode, arc_view: ArcView) 
     )
 
 
-def build_saga_page(config: SiteConfig, saga_view: SagaView) -> str:
+def build_saga_page(
+    config: SiteConfig,
+    saga_view: SagaView,
+    footer_attribution: FooterAttribution,
+) -> str:
     arc_markup = "\n".join(
         _render_arc_summary(arc, base_url=config.base_url) for arc in saga_view.arcs
     )
@@ -287,6 +321,7 @@ def build_saga_page(config: SiteConfig, saga_view: SagaView) -> str:
         heading=saga_view.saga.title,
         summary=saga_view.saga.summary,
         metadata=f"{saga_view.saga.date} · {saga_view.saga.status}",
+        footer_attribution=footer_attribution,
         body_html=(
             "        <section>\n"
             f"{_render_markdown(saga_view.saga.body_markdown)}\n"
@@ -307,7 +342,11 @@ def build_saga_page(config: SiteConfig, saga_view: SagaView) -> str:
     )
 
 
-def build_arc_page(config: SiteConfig, arc_view: ArcView) -> str:
+def build_arc_page(
+    config: SiteConfig,
+    arc_view: ArcView,
+    footer_attribution: FooterAttribution,
+) -> str:
     episode_markup = "\n".join(
         _render_arc_episode(episode, base_url=config.base_url)
         for episode in arc_view.episodes
@@ -325,6 +364,7 @@ def build_arc_page(config: SiteConfig, arc_view: ArcView) -> str:
         heading=arc_view.arc.title,
         summary=arc_view.arc.summary,
         metadata=f"{arc_view.arc.date} · {arc_view.arc.saga_title}",
+        footer_attribution=footer_attribution,
         body_html=(
             f"{breadcrumb}\n"
             "        <section>\n"
@@ -344,6 +384,7 @@ def build_library_page(
     config: SiteConfig,
     library_catalog: LibraryCatalog,
     section_page: SectionPage,
+    footer_attribution: FooterAttribution,
 ) -> str:
     tag_markup = "\n".join(
         _render_library_tag(tag, base_url=config.base_url) for tag in library_catalog.tags
@@ -375,11 +416,16 @@ def build_library_page(
         heading=section_page.title,
         summary=section_page.summary,
         metadata=f"{len(library_catalog.tags)} topics",
+        footer_attribution=footer_attribution,
         body_html=body_html,
     )
 
 
-def build_topic_page(config: SiteConfig, topic_page: TopicPage) -> str:
+def build_topic_page(
+    config: SiteConfig,
+    topic_page: TopicPage,
+    footer_attribution: FooterAttribution,
+) -> str:
     entry_markup = "\n".join(
         _render_topic_entry(entry, base_url=config.base_url) for entry in topic_page.entries
     )
@@ -392,6 +438,7 @@ def build_topic_page(config: SiteConfig, topic_page: TopicPage) -> str:
         heading=f"#{topic_page.tag}",
         summary="A topic view across standalone pages and saga episodes.",
         metadata=f"{len(topic_page.entries)} entries",
+        footer_attribution=footer_attribution,
         body_html=(
             "        <nav class=\"breadcrumbs\">"
             f"<a href=\"{_absolute_url(config.base_url, '/library/')}\">Library</a></nav>\n"
@@ -405,7 +452,11 @@ def build_topic_page(config: SiteConfig, topic_page: TopicPage) -> str:
     )
 
 
-def build_sagas_index_page(config: SiteConfig, sagas_index: SagasIndex) -> str:
+def build_sagas_index_page(
+    config: SiteConfig,
+    sagas_index: SagasIndex,
+    footer_attribution: FooterAttribution,
+) -> str:
     saga_markup = "\n".join(
         _render_saga_summary(summary, base_url=config.base_url)
         for summary in sagas_index.sagas
@@ -419,6 +470,7 @@ def build_sagas_index_page(config: SiteConfig, sagas_index: SagasIndex) -> str:
         heading="Sagas",
         summary="Long-running efforts, grouped into readable narrative threads.",
         metadata=f"{len(sagas_index.sagas)} active sagas",
+        footer_attribution=footer_attribution,
         body_html=(
             "        <section>\n"
             "          <h2>Active sagas</h2>\n"
@@ -430,7 +482,11 @@ def build_sagas_index_page(config: SiteConfig, sagas_index: SagasIndex) -> str:
     )
 
 
-def build_studio_page(config: SiteConfig, section_page: SectionPage) -> str:
+def build_studio_page(
+    config: SiteConfig,
+    section_page: SectionPage,
+    footer_attribution: FooterAttribution,
+) -> str:
     return _render_document(
         config=config,
         title=section_page.title,
@@ -440,6 +496,7 @@ def build_studio_page(config: SiteConfig, section_page: SectionPage) -> str:
         heading=section_page.title,
         summary=section_page.summary,
         metadata="section hub",
+        footer_attribution=footer_attribution,
         body_html=(
             "        <section>\n"
             f"{_render_markdown(section_page.body_markdown)}\n"
@@ -463,6 +520,7 @@ def _render_document(
     heading: str,
     summary: str,
     metadata: str,
+    footer_attribution: FooterAttribution,
     body_html: str,
 ) -> str:
     analytics_snippet = _render_analytics(config.analytics)
@@ -572,6 +630,11 @@ def _render_document(
         padding-top: 1.5rem;
         border-top: 1px solid var(--line);
       }}
+      footer {{
+        margin-top: 2.5rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }}
       article p, article li, article blockquote {{
         font-size: 1.08rem;
         line-height: 1.75;
@@ -603,6 +666,7 @@ def _render_document(
 {body_html}
       </article>
       </main>
+      <footer>{html.escape(_render_footer_text(footer_attribution))}</footer>
     </div>
   </body>
 </html>
@@ -834,6 +898,13 @@ def _render_navigation(
         "        " f'<a href="{_absolute_url(base_url, "/feed.xml")}">RSS</a>'
     )
     return "\n".join(navigation_links)
+
+
+def _render_footer_text(footer_attribution: FooterAttribution) -> str:
+    return (
+        f"(c) {footer_attribution.year} {footer_attribution.site_name} "
+        f"- {footer_attribution.tagline}"
+    )
 
 
 def _absolute_url(base_url: str, path: str) -> str:

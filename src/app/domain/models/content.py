@@ -141,6 +141,13 @@ class SearchIndex:
 
 
 @dataclass(frozen=True)
+class FooterAttribution:
+    year: str
+    site_name: str
+    tagline: str
+
+
+@dataclass(frozen=True)
 class EntryTag:
     name: str
     permalink: str
