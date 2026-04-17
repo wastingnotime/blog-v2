@@ -181,6 +181,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert 'class="active">Library</a>' in library_html
+    assert 'href="https://wastingnotime.org/archives/"' in library_html
+    assert 'href="https://wastingnotime.org/search/"' in library_html
     assert "architecture" in library_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html

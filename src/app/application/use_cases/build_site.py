@@ -606,6 +606,13 @@ def build_library_page(
         f"{_render_markdown(section_page.body_markdown)}\n"
         "        </section>\n"
         "        <section>\n"
+        "          <h2>Other ways in</h2>\n"
+        "          <p>Browse the chronology -> "
+        f'<a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
+        "          <p>Search across the publication -> "
+        f'<a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
+        "        </section>\n"
+        "        <section>\n"
         "          <h2>Topics</h2>\n"
         "          <ul>\n"
         f"{tag_markup}\n"
@@ -615,6 +622,13 @@ def build_library_page(
         else (
             "        <section>\n"
             f"{_render_markdown(section_page.body_markdown)}\n"
+            "        </section>\n"
+            "        <section>\n"
+            "          <h2>Other ways in</h2>\n"
+            "          <p>Browse the chronology -> "
+            f'<a href="{_absolute_url(config.base_url, "/archives/")}">/archives/</a></p>\n'
+            "          <p>Search across the publication -> "
+            f'<a href="{_absolute_url(config.base_url, "/search/")}">/search/</a></p>\n'
             "        </section>\n"
             "        <p>No tags available yet.</p>"
         )

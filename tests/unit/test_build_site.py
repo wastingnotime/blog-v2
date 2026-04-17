@@ -103,6 +103,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "/library/" in search_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
+    assert 'href="https://example.com/archives/"' in library_html
+    assert 'href="https://example.com/search/"' in library_html
     assert "architecture" in library_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
