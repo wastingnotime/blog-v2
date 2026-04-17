@@ -2,12 +2,20 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from src.app.domain.models.content import Arc, ContentCatalog, Episode, Page, Saga
+from src.app.domain.models.content import (
+    Arc,
+    ContentCatalog,
+    Episode,
+    Page,
+    Saga,
+    SectionPage,
+)
 
 
 class MarkdownContentLoader:
     def load(self, content_root: Path) -> ContentCatalog:
         pages = []
+        section_pages = []
         sagas = []
         arcs = []
         episodes = []
@@ -27,6 +35,19 @@ class MarkdownContentLoader:
                     tags=_optional_tags(frontmatter, path),
                 )
                 pages.append(page)
+
+        sections_root = content_root / "sections"
+        if sections_root.exists():
+            for path in sorted(sections_root.glob("*.md")):
+                frontmatter, body = _parse_frontmatter(path.read_text(encoding="utf-8"))
+                _require_type(path, frontmatter, expected="section")
+                section_page = SectionPage(
+                    title=_require_string(frontmatter, "title", path),
+                    slug=path.stem,
+                    summary=_require_string(frontmatter, "summary", path),
+                    body_markdown=body.strip(),
+                )
+                section_pages.append(section_page)
 
         sagas_root = content_root / "sagas"
         if sagas_root.exists():
@@ -102,6 +123,7 @@ class MarkdownContentLoader:
 
         return ContentCatalog(
             pages=tuple(sorted(pages, key=lambda page: page.slug)),
+            section_pages=tuple(sorted(section_pages, key=lambda page: page.slug)),
             sagas=tuple(sorted(sagas, key=lambda saga: saga.slug)),
             arcs=tuple(sorted(arcs, key=lambda arc: (arc.saga_slug, arc.slug))),
             episodes=tuple(

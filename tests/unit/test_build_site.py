@@ -1,5 +1,12 @@
 from src.app.application.use_cases.build_site import build_static_site
-from src.app.domain.models.content import Arc, ContentCatalog, Episode, Page, Saga
+from src.app.domain.models.content import (
+    Arc,
+    ContentCatalog,
+    Episode,
+    Page,
+    Saga,
+    SectionPage,
+)
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
 
 
@@ -73,6 +80,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     topic_html = pages["library/architecture/index.html"]
 
     assert "Topics" in library_html
+    assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert "architecture" in library_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
@@ -90,6 +98,7 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "start reading" in sagas_html
     assert "/library/" in studio_html
     assert "/sagas/" in studio_html
+    assert "Wasting No Time is a studio for architecture" in studio_html
 
 
 def test_build_static_site_generates_feed_and_sitemap() -> None:
@@ -161,6 +170,24 @@ def _catalog() -> ContentCatalog:
                 tags=("architecture",),
             ),
         ),
+        section_pages=(
+            SectionPage(
+                title="Library",
+                slug="library",
+                summary="A section for navigating the site's ideas.",
+                body_markdown=(
+                    "The library is the fastest way to move by idea instead of chronology."
+                ),
+            ),
+            SectionPage(
+                title="Studio",
+                slug="studio",
+                summary="A section surface for work in public.",
+                body_markdown=(
+                    "Wasting No Time is a studio for architecture, systems thinking, and deliberate experiments."
+                ),
+            ),
+        ),
         sagas=(
             Saga(
                 title="HireFlow",
@@ -225,6 +252,7 @@ def _catalog_with_extra_page() -> ContentCatalog:
                 tags=("writing",),
             ),
         ),
+        section_pages=base_catalog.section_pages,
         sagas=base_catalog.sagas,
         arcs=base_catalog.arcs,
         episodes=base_catalog.episodes,

@@ -24,6 +24,17 @@ Hello world.
 """,
     )
     _write(
+        content_root / "sections" / "library.md",
+        """---
+title: "Library"
+type: "section"
+summary: "Library summary."
+---
+
+Library body.
+""",
+    )
+    _write(
         content_root / "sagas" / "hireflow" / "index.md",
         """---
 title: "HireFlow"
@@ -69,6 +80,7 @@ tags:
     catalog = MarkdownContentLoader().load(content_root)
 
     assert catalog.pages[0].title == "About"
+    assert catalog.section_pages[0].title == "Library"
     assert catalog.pages[0].tags == ("architecture",)
     assert catalog.sagas[0].title == "HireFlow"
     assert catalog.arcs[0].title == "The Origin Blueprint"

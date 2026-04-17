@@ -18,6 +18,18 @@ class Page:
 
 
 @dataclass(frozen=True)
+class SectionPage:
+    title: str
+    slug: str
+    summary: str
+    body_markdown: str
+
+    @property
+    def permalink(self) -> str:
+        return f"/{self.slug}/"
+
+
+@dataclass(frozen=True)
 class Saga:
     title: str
     slug: str
@@ -204,3 +216,4 @@ class ContentCatalog:
     sagas: tuple[Saga, ...]
     arcs: tuple[Arc, ...]
     episodes: tuple[Episode, ...]
+    section_pages: tuple[SectionPage, ...] = ()

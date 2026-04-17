@@ -19,6 +19,7 @@ from src.app.domain.models.content import (
     RecentContent,
     SagasIndex,
     SagaView,
+    SectionPage,
     SitemapEntry,
     TopicEntry,
     TopicPage,
@@ -58,11 +59,16 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         topic_catalog.pages,
     )
     sagas_index = project_sagas_index(saga_views, arc_views)
+    section_pages = {page.slug: page for page in catalog.section_pages}
     pages = {
         "index.html": build_homepage(config, homepage_surface),
-        "library/index.html": build_library_page(config, topic_catalog),
+        "library/index.html": build_library_page(
+            config,
+            topic_catalog,
+            section_pages["library"],
+        ),
         "sagas/index.html": build_sagas_index_page(config, sagas_index),
-        "studio/index.html": build_studio_page(config),
+        "studio/index.html": build_studio_page(config, section_pages["studio"]),
         "feed.xml": build_feed(config, publication_metadata),
         "sitemap.xml": build_sitemap(config, publication_metadata),
     }
@@ -310,11 +316,18 @@ def build_arc_page(config: SiteConfig, arc_view: ArcView) -> str:
     )
 
 
-def build_library_page(config: SiteConfig, library_catalog: LibraryCatalog) -> str:
+def build_library_page(
+    config: SiteConfig,
+    library_catalog: LibraryCatalog,
+    section_page: SectionPage,
+) -> str:
     tag_markup = "\n".join(
         _render_library_tag(tag, base_url=config.base_url) for tag in library_catalog.tags
     )
     body_html = (
+        "        <section>\n"
+        f"{_render_markdown(section_page.body_markdown)}\n"
+        "        </section>\n"
         "        <section>\n"
         "          <h2>Topics</h2>\n"
         "          <ul>\n"
@@ -322,16 +335,21 @@ def build_library_page(config: SiteConfig, library_catalog: LibraryCatalog) -> s
         "          </ul>\n"
         "        </section>"
         if library_catalog.tags
-        else "        <p>No tags available yet.</p>"
+        else (
+            "        <section>\n"
+            f"{_render_markdown(section_page.body_markdown)}\n"
+            "        </section>\n"
+            "        <p>No tags available yet.</p>"
+        )
     )
     return _render_document(
         config=config,
-        title="Library",
-        description="Browse topics derived from repository-authored content.",
+        title=section_page.title,
+        description=section_page.summary,
         canonical_path="/library/",
         eyebrow="Library",
-        heading="Library",
-        summary="Browse the site by topic instead of chronology alone.",
+        heading=section_page.title,
+        summary=section_page.summary,
         metadata=f"{len(library_catalog.tags)} topics",
         body_html=body_html,
     )
@@ -388,26 +406,24 @@ def build_sagas_index_page(config: SiteConfig, sagas_index: SagasIndex) -> str:
     )
 
 
-def build_studio_page(config: SiteConfig) -> str:
+def build_studio_page(config: SiteConfig, section_page: SectionPage) -> str:
     return _render_document(
         config=config,
-        title="Studio",
-        description="A section hub for the main spaces in the site.",
+        title=section_page.title,
+        description=section_page.summary,
         canonical_path="/studio/",
         eyebrow="Studio",
-        heading="Studio",
-        summary="The publication is organized around ongoing work and topic-based navigation.",
+        heading=section_page.title,
+        summary=section_page.summary,
         metadata="section hub",
         body_html=(
             "        <section>\n"
-            "          <h2>Wasting No Time</h2>\n"
-            "          <p>Architecture, integration, performance, and the discipline of focus.</p>\n"
-            f'          <p>See active sagas -> <a href="{_absolute_url(config.base_url, "/sagas/")}">/sagas/</a></p>\n'
-            f'          <p>Explore topics -> <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a></p>\n'
+            f"{_render_markdown(section_page.body_markdown)}\n"
             "        </section>\n"
             "        <section>\n"
-            "          <h2>Experiments</h2>\n"
-            "          <p>Prototypes and explorations that may become products, or simply clarify an idea.</p>\n"
+            "          <h2>Navigate</h2>\n"
+            f'          <p>See active sagas -> <a href="{_absolute_url(config.base_url, "/sagas/")}">/sagas/</a></p>\n'
+            f'          <p>Explore topics -> <a href="{_absolute_url(config.base_url, "/library/")}">/library/</a></p>\n'
             "        </section>"
         ),
     )

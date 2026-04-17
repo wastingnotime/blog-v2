@@ -89,6 +89,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "<loc>https://wastingnotime.org/library/architecture/</loc>" in sitemap_xml
     assert "<lastmod>2025-11-15</lastmod>" in sitemap_xml
     assert "Topics" in library_html
+    assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert 'class="active">Library</a>' in library_html
     assert "architecture" in library_html
     assert "[page] About" in topic_html
@@ -107,6 +108,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/library/architecture/"' in about_html
     assert "/sagas/" in studio_html
     assert "/library/" in studio_html
+    assert "Wasting No Time is a studio for architecture" in studio_html
     assert 'class="active">Studio</a>' in studio_html
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "1 min read" in episode_html
