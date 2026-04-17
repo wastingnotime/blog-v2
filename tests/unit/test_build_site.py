@@ -69,6 +69,8 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     assert "[Ep 01] The First Brick" in arc_html
     assert "[Ep 02] Second Iteration" in arc_html
     assert "Arc body." in arc_html
+    assert "/archives/" in arc_html
+    assert "/search/" in arc_html
     assert "HireFlow</a> /" in first_episode_html
     assert "1 min read" in first_episode_html
     assert 'href="https://example.com/library/architecture/"' in first_episode_html
