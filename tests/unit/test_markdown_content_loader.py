@@ -43,6 +43,8 @@ summary: "Saga summary."
 status: "in-progress"
 date: "2026-04-11"
 ---
+
+Saga body.
 """,
     )
     _write(
@@ -53,6 +55,8 @@ type: "arc"
 summary: "Arc summary."
 date: "2026-04-11"
 ---
+
+Arc body.
 """,
     )
     _write(
@@ -83,7 +87,9 @@ tags:
     assert catalog.section_pages[0].title == "Library"
     assert catalog.pages[0].tags == ("architecture",)
     assert catalog.sagas[0].title == "HireFlow"
+    assert catalog.sagas[0].body_markdown == "Saga body."
     assert catalog.arcs[0].title == "The Origin Blueprint"
+    assert catalog.arcs[0].body_markdown == "Arc body."
     assert catalog.episodes[0].arc_title == "The Origin Blueprint"
     assert catalog.episodes[0].tags == ("architecture", "writing")
     assert catalog.episodes[0].permalink == (

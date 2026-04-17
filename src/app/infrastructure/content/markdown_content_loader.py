@@ -66,9 +66,9 @@ class MarkdownContentLoader:
                     summary=_require_string(frontmatter, "summary", saga_index),
                     date=_require_string(frontmatter, "date", saga_index),
                     status=_require_string(frontmatter, "status", saga_index),
+                    body_markdown=body.strip(),
                 )
                 sagas.append(saga)
-                _ = body
 
                 for arc_dir in sorted(path for path in saga_dir.iterdir() if path.is_dir()):
                     arc_index = arc_dir / "index.md"
@@ -86,10 +86,10 @@ class MarkdownContentLoader:
                         date=_require_string(arc_frontmatter, "date", arc_index),
                         saga_slug=saga.slug,
                         saga_title=saga.title,
+                        body_markdown=arc_body.strip(),
                     )
                     arcs.append(arc)
                     arc_titles[(saga.slug, arc_dir.name)] = arc.title
-                    _ = arc_body
 
                     for episode_path in sorted(arc_dir.glob("*.md")):
                         if episode_path.name == "index.md":

@@ -271,6 +271,9 @@ def build_saga_page(config: SiteConfig, saga_view: SagaView) -> str:
         metadata=f"{saga_view.saga.date} · {saga_view.saga.status}",
         body_html=(
             "        <section>\n"
+            f"{_render_markdown(saga_view.saga.body_markdown)}\n"
+            "        </section>\n"
+            "        <section>\n"
             "          <h2>Arcs</h2>\n"
             "          <ul>\n"
             f"{arc_markup}\n"
@@ -306,6 +309,9 @@ def build_arc_page(config: SiteConfig, arc_view: ArcView) -> str:
         metadata=f"{arc_view.arc.date} · {arc_view.arc.saga_title}",
         body_html=(
             f"{breadcrumb}\n"
+            "        <section>\n"
+            f"{_render_markdown(arc_view.arc.body_markdown)}\n"
+            "        </section>\n"
             "        <section>\n"
             "          <h2>Episodes</h2>\n"
             "          <ul>\n"

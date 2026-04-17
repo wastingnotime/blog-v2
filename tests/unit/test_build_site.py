@@ -66,6 +66,7 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
 
     assert "[Ep 01] The First Brick" in arc_html
     assert "[Ep 02] Second Iteration" in arc_html
+    assert "Arc body." in arc_html
     assert "HireFlow</a> /" in first_episode_html
     assert "1 min read" in first_episode_html
     assert 'href="https://example.com/library/architecture/"' in first_episode_html
@@ -149,6 +150,16 @@ def test_build_static_site_renders_entry_metadata_for_pages() -> None:
     assert "#architecture" in html
 
 
+def test_build_static_site_renders_narrative_container_body_content() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    saga_html = pages["sagas/hireflow/index.html"]
+    arc_html = pages["sagas/hireflow/the-origin-blueprint/index.html"]
+
+    assert "Saga body." in saga_html
+    assert "Arc body." in arc_html
+
+
 
 def _site_config() -> SiteConfig:
     return SiteConfig(
@@ -195,6 +206,7 @@ def _catalog() -> ContentCatalog:
                 summary="Architecture in public.",
                 date="2026-04-11",
                 status="in-progress",
+                body_markdown="Saga body.",
             ),
         ),
         arcs=(
@@ -205,6 +217,7 @@ def _catalog() -> ContentCatalog:
                 date="2026-04-11",
                 saga_slug="hireflow",
                 saga_title="HireFlow",
+                body_markdown="Arc body.",
             ),
         ),
         episodes=(

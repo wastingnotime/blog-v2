@@ -100,8 +100,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Timeline" in saga_html
     assert 'class="active">Sagas</a>' in saga_html
     assert "The Origin Blueprint" in saga_html
+    assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
     assert "Episodes" in arc_html
     assert "[Ep 01] The First Brick" in arc_html
+    assert "The opening arc defines why HireFlow exists" in arc_html
     assert "Why this site exists" in about_html
     assert 'class="active">About</a>' in about_html
     assert "1 min read" in about_html

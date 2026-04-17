@@ -36,6 +36,7 @@ class Saga:
     summary: str
     date: str
     status: str
+    body_markdown: str = ""
 
     @property
     def permalink(self) -> str:
@@ -50,6 +51,7 @@ class Arc:
     date: str
     saga_slug: str
     saga_title: str
+    body_markdown: str = ""
 
     @property
     def permalink(self) -> str:
