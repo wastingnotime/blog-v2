@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from datetime import datetime, timezone
 from email.utils import format_datetime
 import html
@@ -282,6 +283,11 @@ def build_homepage(
         summary="Architecture, systems thinking, and long-running software work made legible in public.",
         metadata=recent_metadata,
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_website_structured_data(
+            site_title=config.title,
+            site_description=config.description,
+            base_url=config.base_url,
+        ),
         body_html=(
             "        <section>\n"
             "          <h2>In Public</h2>\n"
@@ -483,6 +489,15 @@ def build_content_page(
         summary=page.summary,
         metadata=page.date,
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_article_structured_data(
+            title=page.title,
+            description=page.summary,
+            canonical_url=_absolute_url(config.base_url, page.permalink),
+            publication_date=page.date,
+            author_name=_site_host(config.base_url),
+            publisher_name=config.title,
+            publisher_url=_absolute_url(config.base_url, "/"),
+        ),
         body_html="\n".join(
             [
                 _render_entry_metadata(entry_metadata, base_url=config.base_url),
@@ -533,6 +548,15 @@ def build_episode_page(
         summary=episode.summary,
         metadata=metadata,
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_article_structured_data(
+            title=episode.title,
+            description=episode.summary,
+            canonical_url=_absolute_url(config.base_url, episode.permalink),
+            publication_date=episode.date,
+            author_name=_site_host(config.base_url),
+            publisher_name=config.title,
+            publisher_url=_absolute_url(config.base_url, "/"),
+        ),
         body_html="\n".join(
             [
                 parent_navigation,
@@ -833,6 +857,7 @@ def _render_document(
     metadata: str,
     robots_content: str = "index,follow",
     footer_attribution: FooterAttribution,
+    structured_data_payload: Mapping[str, object] | None = None,
     body_html: str,
 ) -> str:
     analytics_snippet = _render_analytics(config.analytics)
@@ -854,6 +879,7 @@ def _render_document(
         canonical_url=canonical_url,
         social_preview_url=social_preview_url,
     )
+    structured_data_script = _render_structured_data_script(structured_data_payload)
     identity_asset_links = _render_identity_asset_links(base_url=config.base_url)
     navigation_markup = _render_navigation(
         project_navigation_state(canonical_path),
@@ -883,6 +909,7 @@ def _render_document(
     <link rel="canonical" href="{html.escape(canonical_url)}" />
 {open_graph_metadata}
 {twitter_card_metadata}
+{structured_data_script}
     <link rel="alternate" type="application/rss+xml" title="{html.escape(config.title)} RSS" href="{html.escape(feed_url)}" />
     <link rel="manifest" href="{html.escape(manifest_url)}" />
 {identity_asset_links}
@@ -1058,6 +1085,72 @@ def _render_twitter_card_metadata(
     return "\n".join(
         f'    <meta name="{html.escape(property_name)}" content="{html.escape(value)}" />'
         for property_name, value in metadata.items()
+    )
+
+
+def _project_website_structured_data(
+    *,
+    site_title: str,
+    site_description: str,
+    base_url: str,
+) -> dict[str, object]:
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": site_title,
+        "description": site_description,
+        "url": _absolute_url(base_url, "/"),
+    }
+
+
+def _project_article_structured_data(
+    *,
+    title: str,
+    description: str,
+    canonical_url: str,
+    publication_date: str,
+    author_name: str,
+    publisher_name: str,
+    publisher_url: str,
+) -> dict[str, object]:
+    return {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": title,
+        "description": description,
+        "datePublished": publication_date,
+        "url": canonical_url,
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": canonical_url,
+        },
+        "author": {
+            "@type": "Person",
+            "name": author_name,
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": publisher_name,
+            "url": publisher_url,
+        },
+    }
+
+
+def _render_structured_data_script(
+    payload: Mapping[str, object] | None,
+) -> str:
+    if payload is None:
+        return ""
+    serialized_payload = json.dumps(
+        dict(payload),
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+    return (
+        '    <script type="application/ld+json">'
+        f"{serialized_payload}"
+        "</script>"
     )
 
 

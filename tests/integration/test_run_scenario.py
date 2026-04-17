@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import re
 
 from src.app.application.use_cases.load_content_catalog import load_content_catalog
 from src.app.interfaces.cli.run_scenario import load_site_config
@@ -162,6 +163,19 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta name="twitter:url" content="https://wastingnotime.org/" />' in homepage_html
     assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in homepage_html
+    homepage_structured_data = _json_ld_payloads(homepage_html)
+    assert homepage_structured_data == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Wasting No Time",
+            "description": (
+                "blog-v2 starts from a simpler contract: static output, GitHub "
+                "Pages deployment, and no first-party /api dependency."
+            ),
+            "url": "https://wastingnotime.org/",
+        }
+    ]
     assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
     assert "3 recent entries shown" in homepage_html
     assert "2 episodes · last release 2025-11-15 · in-progress" in homepage_html
@@ -176,6 +190,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/sagas/"' in not_found_html
     assert 'href="https://wastingnotime.org/library/"' in not_found_html
     assert "/api/event" not in not_found_html
+    assert _json_ld_payloads(not_found_html) == []
     assert "Chronological Archive" in archive_html
     assert 'class="active">Archives</a>' in archive_html
     assert "[episode] Second Iteration" in archive_html
@@ -298,6 +313,16 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta name="twitter:url" content="https://wastingnotime.org/about/" />' in about_html
     assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in about_html
+    about_structured_data = _json_ld_payloads(about_html)
+    assert len(about_structured_data) == 1
+    assert about_structured_data[0]["@context"] == "https://schema.org"
+    assert about_structured_data[0]["@type"] == "Article"
+    assert about_structured_data[0]["headline"] == "About"
+    assert about_structured_data[0]["description"] == (
+        "Why this site exists and how the work is published in public."
+    )
+    assert about_structured_data[0]["datePublished"] == "2025-10-25"
+    assert about_structured_data[0]["url"] == "https://wastingnotime.org/about/"
     assert "(c) 2025 wastingnotime.org - published as a static site" in about_html
     assert "1 min read" in about_html
     assert "homepage, saga index, library, archive, and search surfaces" in about_html
@@ -343,6 +368,19 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         in episode_html
     )
     assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in episode_html
+    episode_structured_data = _json_ld_payloads(episode_html)
+    assert len(episode_structured_data) == 1
+    assert episode_structured_data[0]["@context"] == "https://schema.org"
+    assert episode_structured_data[0]["@type"] == "Article"
+    assert episode_structured_data[0]["headline"] == "The First Brick"
+    assert episode_structured_data[0]["description"] == (
+        "We explore why HireFlow exists, what it will simulate, and how "
+        "the architecture will emerge through iterative design."
+    )
+    assert episode_structured_data[0]["datePublished"] == "2025-11-14"
+    assert episode_structured_data[0]["url"] == (
+        "https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/"
+    )
     assert "Ep 02 Second Iteration" in episode_html
     assert "/api/event" not in episode_html
     assert (output_dir / "favicon.ico").read_bytes() == (
@@ -351,3 +389,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert (output_dir / "social-preview.png").read_bytes() == (
         identity_assets_dir / "social-preview.png"
     ).read_bytes()
+
+
+def _json_ld_payloads(html: str) -> list[dict[str, object]]:
+    matches = re.findall(
+        r'<script type="application/ld\+json">(.+?)</script>',
+        html,
+        flags=re.DOTALL,
+    )
+    return [json.loads(match) for match in matches]

@@ -1,4 +1,5 @@
 import json
+import re
 
 from src.app.application.use_cases.build_site import build_static_site
 from src.app.domain.models.content import (
@@ -616,6 +617,68 @@ def test_build_static_site_keeps_open_graph_type_bounded_to_website() -> None:
         assert '<meta property="og:type" content="website" />' in html
 
 
+def test_build_static_site_renders_bounded_json_ld_structured_data() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    homepage_payloads = _json_ld_payloads(pages["index.html"])
+    about_payloads = _json_ld_payloads(pages["about/index.html"])
+    episode_payloads = _json_ld_payloads(
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"]
+    )
+
+    assert len(homepage_payloads) == 1
+    assert homepage_payloads[0] == {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Example",
+        "description": "Static site",
+        "url": "https://example.com/",
+    }
+
+    assert len(about_payloads) == 1
+    assert about_payloads[0]["@context"] == "https://schema.org"
+    assert about_payloads[0]["@type"] == "Article"
+    assert about_payloads[0]["headline"] == "About"
+    assert about_payloads[0]["description"] == (
+        "Why this site exists and how the work is published in public."
+    )
+    assert about_payloads[0]["datePublished"] == "2026-04-10"
+    assert about_payloads[0]["url"] == "https://example.com/about/"
+    assert about_payloads[0]["mainEntityOfPage"] == {
+        "@type": "WebPage",
+        "@id": "https://example.com/about/",
+    }
+    assert about_payloads[0]["author"] == {
+        "@type": "Person",
+        "name": "example.com",
+    }
+    assert about_payloads[0]["publisher"] == {
+        "@type": "Organization",
+        "name": "Example",
+        "url": "https://example.com/",
+    }
+
+    assert len(episode_payloads) == 1
+    assert episode_payloads[0]["@context"] == "https://schema.org"
+    assert episode_payloads[0]["@type"] == "Article"
+    assert episode_payloads[0]["headline"] == "The First Brick"
+    assert episode_payloads[0]["description"] == "Recent work."
+    assert episode_payloads[0]["datePublished"] == "2026-04-12"
+    assert episode_payloads[0]["url"] == (
+        "https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/"
+    )
+
+
+def test_build_static_site_omits_json_ld_for_structural_and_recovery_routes() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    assert _json_ld_payloads(pages["404.html"]) == []
+    assert _json_ld_payloads(pages["search/index.html"]) == []
+    assert _json_ld_payloads(pages["archives/index.html"]) == []
+    assert _json_ld_payloads(pages["library/index.html"]) == []
+    assert _json_ld_payloads(pages["sagas/hireflow/index.html"]) == []
+
+
 def test_build_static_site_generates_search_index() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
@@ -641,6 +704,15 @@ def _discovery_section(html: str) -> str:
     marker = "          <h2>Other ways in</h2>"
     start = html.index(marker)
     return html[start : html.index("        </section>", start)]
+
+
+def _json_ld_payloads(html: str) -> list[dict[str, object]]:
+    matches = re.findall(
+        r'<script type="application/ld\+json">(.+?)</script>',
+        html,
+        flags=re.DOTALL,
+    )
+    return [json.loads(match) for match in matches]
 
 
 def _site_config() -> SiteConfig:
