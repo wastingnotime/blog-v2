@@ -5,6 +5,7 @@ from email.utils import format_datetime
 import html
 import json
 import re
+from urllib.parse import urlparse
 
 from src.app.domain.models.content import (
     ArchiveEntry,
@@ -82,6 +83,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
     sagas_index = project_sagas_index(saga_views, arc_views)
     section_pages = {page.slug: page for page in catalog.section_pages}
     pages = {
+        "CNAME": build_cname(config),
         "404.html": build_not_found_page(config, footer_attribution),
         "index.html": build_homepage(config, homepage_surface, footer_attribution),
         "archives/index.html": build_archive_page(
@@ -193,6 +195,10 @@ def build_robots_txt(config: SiteConfig) -> str:
         "Allow: /\n"
         f"Sitemap: {sitemap_url}\n"
     )
+
+
+def build_cname(config: SiteConfig) -> str:
+    return f"{_site_host(config.base_url)}\n"
 
 
 def build_site_webmanifest(config: SiteConfig) -> str:
@@ -1256,6 +1262,13 @@ def _render_footer_text(footer_attribution: FooterAttribution) -> str:
 
 def _absolute_url(base_url: str, path: str) -> str:
     return base_url.rstrip("/") + path
+
+
+def _site_host(base_url: str) -> str:
+    parsed = urlparse(base_url)
+    if parsed.hostname is None:
+        raise ValueError(f"base_url must include a hostname: {base_url!r}")
+    return parsed.hostname
 
 
 def _render_markdown(markdown_text: str) -> str:

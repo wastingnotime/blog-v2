@@ -25,6 +25,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     written_paths = builder.build(load_site_config(), catalog)
 
     expected_paths = {
+        output_dir / "CNAME",
         output_dir / "404.html",
         output_dir / "index.html",
         output_dir / "archives" / "index.html",
@@ -55,6 +56,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert expected_paths.issubset(set(written_paths))
 
+    cname = (output_dir / "CNAME").read_text(encoding="utf-8")
     not_found_html = (output_dir / "404.html").read_text(encoding="utf-8")
     homepage_html = (output_dir / "index.html").read_text(encoding="utf-8")
     archive_html = (
@@ -96,6 +98,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         / "index.html"
     ).read_text(encoding="utf-8")
 
+    assert cname == "wastingnotime.org\n"
     assert "In Public" in homepage_html
     assert "This site tracks architecture decisions" in homepage_html
     assert "move chronologically through the archives" in homepage_html

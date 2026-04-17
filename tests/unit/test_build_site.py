@@ -137,12 +137,14 @@ def test_build_static_site_generates_section_hub_pages() -> None:
 def test_build_static_site_generates_feed_and_sitemap() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
+    cname = pages["CNAME"]
     not_found_html = pages["404.html"]
     feed_xml = pages["feed.xml"]
     robots_txt = pages["robots.txt"]
     webmanifest = json.loads(pages["site.webmanifest"])
     sitemap_xml = pages["sitemap.xml"]
 
+    assert cname == "example.com\n"
     assert "Page Not Found" in not_found_html
     assert "Try one of these instead" in not_found_html
     assert 'href="https://example.com/"' in not_found_html
