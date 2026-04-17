@@ -64,6 +64,8 @@ IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon-32x32.png", "32x32"),
     ("apple-touch-icon", "/apple-touch-icon.png", None),
 )
+THEME_COLOR = "#fffdf8"
+BACKGROUND_COLOR = "#f3efe5"
 
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
@@ -212,6 +214,8 @@ def build_site_webmanifest(config: SiteConfig) -> str:
         "short_name": config.title,
         "start_url": _absolute_url(config.base_url, "/"),
         "display": "standalone",
+        "theme_color": THEME_COLOR,
+        "background_color": BACKGROUND_COLOR,
         "icons": [
             {
                 "src": _absolute_url(config.base_url, "/favicon-16x16.png"),
@@ -842,6 +846,7 @@ def _render_document(
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="{THEME_COLOR}" />
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />

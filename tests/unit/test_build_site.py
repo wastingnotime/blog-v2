@@ -165,6 +165,8 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert webmanifest["short_name"] == "Example"
     assert webmanifest["start_url"] == "https://example.com/"
     assert webmanifest["display"] == "standalone"
+    assert webmanifest["theme_color"] == "#fffdf8"
+    assert webmanifest["background_color"] == "#f3efe5"
     assert webmanifest["icons"][0]["src"] == "https://example.com/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "https://example.com/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "https://example.com/apple-touch-icon.png"
@@ -375,6 +377,21 @@ def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> N
         in episode_html
     )
     assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in episode_html
+
+
+def test_build_static_site_renders_theme_color_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert '<meta name="theme-color" content="#fffdf8" />' in html
 
 
 def test_build_static_site_keeps_twitter_card_type_bounded_to_summary() -> None:

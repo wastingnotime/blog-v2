@@ -118,6 +118,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/favicon.ico"' in homepage_html
     assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
     assert 'rel="manifest" href="https://wastingnotime.org/site.webmanifest"' in homepage_html
+    assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
     assert '<meta property="og:title" content="Wasting No Time" />' in homepage_html
     assert (
         '<meta property="og:description" content="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency." />'
@@ -177,6 +178,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert webmanifest["name"] == "Wasting No Time"
     assert webmanifest["short_name"] == "Wasting No Time"
     assert webmanifest["start_url"] == "https://wastingnotime.org/"
+    assert webmanifest["theme_color"] == "#fffdf8"
+    assert webmanifest["background_color"] == "#f3efe5"
     assert webmanifest["icons"][0]["src"] == "https://wastingnotime.org/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "https://wastingnotime.org/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "https://wastingnotime.org/apple-touch-icon.png"
