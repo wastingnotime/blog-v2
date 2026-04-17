@@ -394,6 +394,26 @@ def test_build_static_site_renders_theme_color_metadata_in_document_head() -> No
         assert '<meta name="theme-color" content="#fffdf8" />' in html
 
 
+def test_build_static_site_renders_mobile_web_app_metadata_in_document_head() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    route_html = (
+        pages["index.html"],
+        pages["library/index.html"],
+        pages["about/index.html"],
+        pages["sagas/hireflow/index.html"],
+        pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"],
+    )
+
+    for html in route_html:
+        assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in html
+        assert '<meta name="apple-mobile-web-app-title" content="Example" />' in html
+        assert (
+            '<meta name="apple-mobile-web-app-status-bar-style" content="default" />'
+            in html
+        )
+
+
 def test_build_static_site_keeps_twitter_card_type_bounded_to_summary() -> None:
     pages = build_static_site(_site_config(), _catalog())
 

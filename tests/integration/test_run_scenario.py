@@ -119,6 +119,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
     assert 'rel="manifest" href="https://wastingnotime.org/site.webmanifest"' in homepage_html
     assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
+    assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
+    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
+    assert '<meta name="apple-mobile-web-app-status-bar-style" content="default" />' in homepage_html
     assert '<meta property="og:title" content="Wasting No Time" />' in homepage_html
     assert (
         '<meta property="og:description" content="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency." />'
@@ -226,6 +229,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta property="og:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
     assert '<meta property="og:type" content="website" />' in saga_html
     assert '<meta property="og:image" content="https://wastingnotime.org/social-preview.png" />' in saga_html
+    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in saga_html
     assert '<meta name="twitter:card" content="summary" />' in saga_html
     assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
     assert (
@@ -256,6 +260,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta property="og:url" content="https://wastingnotime.org/about/" />' in about_html
     assert '<meta property="og:type" content="website" />' in about_html
     assert '<meta property="og:image" content="https://wastingnotime.org/social-preview.png" />' in about_html
+    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in about_html
     assert '<meta name="twitter:card" content="summary" />' in about_html
     assert '<meta name="twitter:title" content="About" />' in about_html
     assert (
@@ -297,6 +302,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<meta property="og:type" content="website" />' in episode_html
     assert '<meta property="og:image" content="https://wastingnotime.org/social-preview.png" />' in episode_html
+    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in episode_html
     assert '<meta name="twitter:card" content="summary" />' in episode_html
     assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
     assert (

@@ -847,6 +847,9 @@ def _render_document(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="{THEME_COLOR}" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
