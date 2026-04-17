@@ -223,6 +223,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "1 min read" in about_html
     assert "homepage, saga index, library, archive, and search surfaces" in about_html
     assert "how to reach me" not in about_html
+    assert 'href="https://wastingnotime.org/archives/"' in about_html
+    assert 'href="https://wastingnotime.org/search/"' in about_html
     assert 'href="https://wastingnotime.org/library/architecture/"' in about_html
     assert 'href="https://wastingnotime.org/favicon-32x32.png"' in about_html
     assert "/sagas/" in studio_html

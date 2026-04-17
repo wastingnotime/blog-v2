@@ -209,6 +209,8 @@ def test_build_static_site_renders_entry_metadata_for_pages() -> None:
 
     assert "1 min read" in html
     assert 'href="https://example.com/library/architecture/"' in html
+    assert 'href="https://example.com/archives/"' in html
+    assert 'href="https://example.com/search/"' in html
     assert "#architecture" in html
     assert "homepage, saga index, library, archive, and search surfaces" in html
 
