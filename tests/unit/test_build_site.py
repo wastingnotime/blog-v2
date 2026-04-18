@@ -101,6 +101,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'method="get"' in search_html
     assert 'action="https://example.com/search/"' in search_html
     assert '<label for="search-query">Search query</label>' in search_html
+    assert '<p id="search-helper">Type to filter the static index published with the site.</p>' in search_html
+    assert 'aria-describedby="search-helper search-status"' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
     assert "<noscript>" in search_html
