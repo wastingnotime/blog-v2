@@ -174,6 +174,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
                 "Pages deployment, and no first-party /api dependency."
             ),
             "url": "https://wastingnotime.org/",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://wastingnotime.org/search/?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+            },
         }
     ]
     assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
@@ -205,6 +210,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'type="search"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://wastingnotime.org/search.json" in search_html
+    assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
+    assert "searchInput.value = initialQuery;" in search_html
+    assert "renderResults(searchInput.value);" in search_html
     assert "/archives/" in search_html
     assert "/library/" in search_html
     assert "/api/event" not in search_html

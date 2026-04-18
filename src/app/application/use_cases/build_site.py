@@ -418,6 +418,7 @@ def build_search_page(
             "          const searchInput = document.getElementById('search-query');\n"
             "          const searchStatus = document.getElementById('search-status');\n"
             "          const searchResults = document.getElementById('search-results');\n"
+            "          const initialQuery = new URLSearchParams(window.location.search).get('q') ?? '';\n"
             "          let searchRecords = [];\n"
             "          const renderResults = (query) => {\n"
             "            const normalizedQuery = query.trim().toLowerCase();\n"
@@ -460,11 +461,12 @@ def build_search_page(
             "            .then((response) => response.json())\n"
             "            .then((records) => {\n"
             "              searchRecords = records;\n"
-            "              searchStatus.textContent = `Loaded ${records.length} searchable entries.`;\n"
+            "              renderResults(searchInput.value);\n"
             "            })\n"
             "            .catch(() => {\n"
             "              searchStatus.textContent = 'Search index could not be loaded.';\n"
             "            });\n"
+            "          searchInput.value = initialQuery;\n"
             "          searchInput.addEventListener('input', (event) => {\n"
             "            renderResults(event.target.value);\n"
             "          });\n"
@@ -1100,6 +1102,11 @@ def _project_website_structured_data(
         "name": site_title,
         "description": site_description,
         "url": _absolute_url(base_url, "/"),
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": _absolute_url(base_url, "/search/?q={search_term_string}"),
+            "query-input": "required name=search_term_string",
+        },
     }
 
 
