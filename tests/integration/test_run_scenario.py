@@ -254,6 +254,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "link.appendChild(createHighlightedFragment(record.title, normalizedQuery));" in search_html
     assert "meta.appendChild(createHighlightedFragment(record.context, normalizedQuery));" in search_html
     assert "summary.appendChild(createHighlightedFragment(record.summary, normalizedQuery));" in search_html
+    assert "if ((record.tags || []).length) {" in search_html
+    assert "tags.appendChild(document.createTextNode('Tags: '));" in search_html
+    assert "record.tags.forEach((tag, index) => {" in search_html
+    assert "tags.appendChild(createHighlightedFragment(tag, normalizedQuery));" in search_html
     assert "nextUrl.searchParams.set('q', normalizedQuery);" in search_html
     assert "nextUrl.searchParams.delete('q');" in search_html
     assert "window.history.replaceState(null, '', nextPath);" in search_html
