@@ -403,6 +403,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
             "url": "https://wastingnotime.org/library/",
         }
     ]
+    assert '<ul class="topic-entry-list">' in topic_html
+    assert '<a class="topic-entry-link" href="https://wastingnotime.org/about/">[page] About</a>' in topic_html
+    assert 'class="topic-entry-meta">2025-10-25</small>' in topic_html
+    assert '<a class="topic-entry-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in topic_html
+    assert 'class="topic-entry-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in topic_html
+    assert 'class="topic-entry-summary">The second pass gives the saga explicit navigation instead of isolated pages.</p>' in topic_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
     assert "/archives/" in topic_html

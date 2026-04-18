@@ -178,6 +178,12 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'href="https://example.com/search/"' in library_html
     assert '<ul class="library-topic-list">' in library_html
     assert '<a class="topic-link" href="https://example.com/library/architecture/">#architecture</a>' in library_html
+    assert '<ul class="topic-entry-list">' in topic_html
+    assert '<a class="topic-entry-link" href="https://example.com/about/">[page] About</a>' in topic_html
+    assert 'class="topic-entry-meta">2026-04-10</small>' in topic_html
+    assert '<a class="topic-entry-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in topic_html
+    assert 'class="topic-entry-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in topic_html
+    assert 'class="topic-entry-summary">Follow-up work.</p>' in topic_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
     assert "HireFlow / The Origin Blueprint" in topic_html

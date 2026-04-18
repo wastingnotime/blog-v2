@@ -924,7 +924,7 @@ def build_topic_page(
                 (
                     "        <section>\n"
                     "          <h2>Entries</h2>\n"
-                    "          <ul>\n"
+                    "          <ul class=\"topic-entry-list\">\n"
                     f"{entry_markup}\n"
                     "          </ul>\n"
                     "        </section>"
@@ -1226,6 +1226,29 @@ def _render_document(
         color: #ffffff;
         border-color: rgba(255, 255, 255, 0.4);
         text-decoration: underline;
+      }}
+      .topic-entry-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .topic-entry-list > li + li {{
+        margin-top: 1rem;
+      }}
+      .topic-entry-link {{
+        color: var(--text-100);
+      }}
+      .topic-entry-meta {{
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
+      }}
+      .topic-entry-summary {{
+        margin: 0.35rem 0 0;
+        color: var(--text-400);
+        font-size: 0.92rem;
+        line-height: 1.6;
       }}
       .site-frame {{
         width: min(64rem, calc(100vw - 3rem));
@@ -1717,9 +1740,9 @@ def _render_topic_entry(entry: TopicEntry, *, base_url: str) -> str:
     context_markup = f" · {html.escape(context)}" if context else ""
     return (
         "            <li>\n"
-        f'              <a href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
-        f"              <small>{html.escape(entry.date)}{context_markup}</small>\n"
-        f"              <p>{html.escape(entry.summary)}</p>\n"
+        f'              <a class="topic-entry-link" href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
+        f'              <small class="topic-entry-meta">{html.escape(entry.date)}{context_markup}</small>\n'
+        f'              <p class="topic-entry-summary">{html.escape(entry.summary)}</p>\n'
         "            </li>"
     )
 
