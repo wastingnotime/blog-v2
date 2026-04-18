@@ -437,6 +437,7 @@ def build_search_page(
             "          <h2>Search the publication</h2>\n"
             "          <p>Type to filter the static index published with the site.</p>\n"
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
+            '            <label for="search-query">Search query</label>\n'
             '            <input id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" />\n'
             "          </form>\n"
             "          <noscript>\n"

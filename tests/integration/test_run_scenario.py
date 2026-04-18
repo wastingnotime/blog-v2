@@ -226,6 +226,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
     assert 'action="https://wastingnotime.org/search/"' in search_html
+    assert '<label for="search-query">Search query</label>' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
     assert "<noscript>" in search_html
