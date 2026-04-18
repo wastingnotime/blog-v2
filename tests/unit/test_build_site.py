@@ -105,7 +105,21 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "Enter a query to search the publication." in search_html
     assert "https://example.com/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
+    assert "const normalizeSearchText = (value) => (value || '').trim().toLowerCase();" in search_html
     assert "const projectSearchUrlState = (query) => {" in search_html
+    assert "const scoreSearchRecord = (record, normalizedQuery) => {" in search_html
+    assert "if (normalizedTitle === normalizedQuery) {" in search_html
+    assert "if (normalizedTitle.startsWith(normalizedQuery)) {" in search_html
+    assert "if (normalizedTitle.includes(normalizedQuery)) {" in search_html
+    assert "if (normalizedContext === normalizedQuery) {" in search_html
+    assert "if (normalizedSummary.includes(normalizedQuery)) {" in search_html
+    assert "if (normalizedTags.some((tag) => tag === normalizedQuery)) {" in search_html
+    assert "return Number.POSITIVE_INFINITY;" in search_html
+    assert ".filter(({ score }) => Number.isFinite(score))" in search_html
+    assert ".sort((left, right) => {" in search_html
+    assert "return left.score - right.score;" in search_html
+    assert "const titleComparison = normalizeSearchText(left.record.title)" in search_html
+    assert "return (left.record.url || '').localeCompare(right.record.url || '');" in search_html
     assert "nextUrl.searchParams.set('q', normalizedQuery);" in search_html
     assert "nextUrl.searchParams.delete('q');" in search_html
     assert "window.history.replaceState(null, '', nextPath);" in search_html
