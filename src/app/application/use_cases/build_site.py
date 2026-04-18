@@ -392,7 +392,7 @@ def build_archive_page(
                 (
                     "        <section>\n"
                     "          <h2>Chronological Archive</h2>\n"
-                    "          <ul>\n"
+                    "          <ul class=\"archive-entry-list\">\n"
                     f"{archive_markup}\n"
                     "          </ul>\n"
                     "        </section>"
@@ -1273,6 +1273,29 @@ def _render_document(
         color: var(--text-400);
         font-size: 0.8rem;
       }}
+      .archive-entry-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .archive-entry-list > li + li {{
+        margin-top: 1rem;
+      }}
+      .archive-entry-link {{
+        color: var(--text-100);
+      }}
+      .archive-entry-meta {{
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
+      }}
+      .archive-entry-summary {{
+        margin: 0.35rem 0 0;
+        color: var(--text-400);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }}
       .site-frame {{
         width: min(64rem, calc(100vw - 3rem));
         margin: 0 auto;
@@ -1614,10 +1637,10 @@ def _render_archive_entry(entry: ArchiveEntry, *, base_url: str) -> str:
 
     return (
         "          <li>\n"
-        f'            <a href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] '
+        f'            <a class="archive-entry-link" href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] '
         f"{html.escape(entry.title)}</a>\n"
-        f"            <small>{html.escape(entry.date)}{html.escape(context)}</small>\n"
-        f"            <p>{html.escape(entry.summary)}</p>\n"
+        f'            <small class="archive-entry-meta">{html.escape(entry.date)}{html.escape(context)}</small>\n'
+        f'            <p class="archive-entry-summary">{html.escape(entry.summary)}</p>\n'
         "          </li>"
     )
 

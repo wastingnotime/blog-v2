@@ -97,6 +97,10 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     topic_html = pages["library/architecture/index.html"]
 
     assert "Chronological Archive" in archive_html
+    assert '<ul class="archive-entry-list">' in archive_html
+    assert '<a class="archive-entry-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
+    assert 'class="archive-entry-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in archive_html
+    assert 'class="archive-entry-summary">Follow-up work.</p>' in archive_html
     assert "[episode] Second Iteration" in archive_html
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
