@@ -235,6 +235,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Live search on this page requires JavaScript." in search_html
     assert "browse the chronology or move by topic instead." in search_html
     assert 'id="search-status" aria-live="polite" aria-atomic="true"' in search_html
+    assert 'id="search-results" aria-label="Search results"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://wastingnotime.org/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
