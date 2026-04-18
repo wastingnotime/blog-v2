@@ -62,6 +62,7 @@ def _build_sitemap_entries(
     content_dates = [entry.date for entry in _build_feed_entries(catalog)]
     entries = [
         SitemapEntry(permalink="/", last_modified=_max_date(content_dates)),
+        SitemapEntry(permalink="/archives/", last_modified=_max_date(content_dates)),
         SitemapEntry(
             permalink="/library/",
             last_modified=_max_date(

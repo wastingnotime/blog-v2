@@ -197,9 +197,11 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert '<square150x150logo src="https://example.com/apple-touch-icon.png"/>' in browserconfig_xml
     assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
+    assert "<loc>https://example.com/archives/</loc>" in sitemap_xml
     assert "<loc>https://example.com/library/</loc>" in sitemap_xml
     assert "<loc>https://example.com/sagas/hireflow/</loc>" in sitemap_xml
     assert "<lastmod>2026-04-13</lastmod>" in sitemap_xml
+    assert "https://example.com/search/" not in sitemap_xml
 
 
 def test_build_static_site_adds_shared_navigation_and_active_section() -> None:

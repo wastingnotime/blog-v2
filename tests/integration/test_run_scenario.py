@@ -285,8 +285,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/api/event" not in search_json
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://wastingnotime.org/</loc>" in sitemap_xml
+    assert "<loc>https://wastingnotime.org/archives/</loc>" in sitemap_xml
     assert "<loc>https://wastingnotime.org/library/architecture/</loc>" in sitemap_xml
     assert "<lastmod>2025-11-15</lastmod>" in sitemap_xml
+    assert "https://wastingnotime.org/search/" not in sitemap_xml
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert 'class="active">Library</a>' in library_html

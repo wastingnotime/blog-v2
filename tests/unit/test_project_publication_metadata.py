@@ -46,6 +46,7 @@ def test_project_publication_metadata_projects_sitemap_last_modified_dates() -> 
     }
 
     assert sitemap_by_permalink["/"] == "2026-04-14"
+    assert sitemap_by_permalink["/archives/"] == "2026-04-14"
     assert sitemap_by_permalink["/library/"] == "2026-04-14"
     assert sitemap_by_permalink["/sagas/hireflow/"] == "2026-04-14"
     assert sitemap_by_permalink["/sagas/hireflow/the-origin-blueprint/"] == "2026-04-14"
