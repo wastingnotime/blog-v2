@@ -97,12 +97,23 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "/search/" in archive_html
     assert "/library/" in archive_html
     assert "Search the publication" in search_html
+    assert 'id="search-form"' in search_html
+    assert 'method="get"' in search_html
+    assert 'action="/search/"' in search_html
     assert 'type="search"' in search_html
+    assert 'name="q"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://example.com/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
+    assert "const projectSearchUrlState = (query) => {" in search_html
+    assert "nextUrl.searchParams.set('q', normalizedQuery);" in search_html
+    assert "nextUrl.searchParams.delete('q');" in search_html
+    assert "window.history.replaceState(null, '', nextPath);" in search_html
+    assert "searchForm.addEventListener('submit', (event) => {" in search_html
     assert "searchInput.value = initialQuery;" in search_html
     assert "renderResults(searchInput.value);" in search_html
+    assert "projectSearchUrlState(event.target.value);" in search_html
+    assert '<link rel="canonical" href="https://example.com/search/" />' in search_html
     assert "/archives/" in search_html
     assert "/library/" in search_html
     assert "Topics" in library_html
