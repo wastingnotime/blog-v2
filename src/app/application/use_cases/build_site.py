@@ -992,6 +992,12 @@ def build_studio_page(
     section_page: SectionPage,
     footer_attribution: FooterAttribution,
 ) -> str:
+    studio_destinations = (
+        ("See active sagas", "/sagas/"),
+        ("Explore topics", "/library/"),
+        ("Browse the chronology", "/archives/"),
+        ("Search across the publication", "/search/"),
+    )
     return _render_document(
         config=config,
         title=section_page.title,
@@ -1014,14 +1020,9 @@ def build_studio_page(
                     f"{_render_markdown(section_page.body_markdown)}\n"
                     "        </section>"
                 ),
-                _render_discovery_surface(
+                _render_studio_discovery_surface(
                     config.base_url,
-                    (
-                        ("See active sagas", "/sagas/"),
-                        ("Explore topics", "/library/"),
-                        ("Browse the chronology", "/archives/"),
-                        ("Search across the publication", "/search/"),
-                    ),
+                    studio_destinations,
                 ),
             ]
         ),
@@ -1295,6 +1296,23 @@ def _render_document(
         color: var(--text-400);
         font-size: 0.92rem;
         line-height: 1.6;
+      }}
+      .studio-discovery-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .studio-discovery-list > li + li {{
+        margin-top: 0.85rem;
+      }}
+      .studio-discovery-label {{
+        color: var(--text-100);
+      }}
+      .studio-discovery-path {{
+        display: block;
+        margin-top: 0.15rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
       }}
       .site-frame {{
         width: min(64rem, calc(100vw - 3rem));
@@ -1576,6 +1594,29 @@ def _render_discovery_surface(
         "        <section>\n"
         "          <h2>Other ways in</h2>\n"
         f"{items}\n"
+        "        </section>"
+    )
+
+
+def _render_studio_discovery_surface(
+    base_url: str,
+    destinations: tuple[tuple[str, str], ...],
+) -> str:
+    items = "\n".join(
+        (
+            "            <li>\n"
+            f'              <a class="studio-discovery-label" href="{_absolute_url(base_url, path)}">{html.escape(label)}</a>\n'
+            f'              <small class="studio-discovery-path">{html.escape(path)}</small>\n'
+            "            </li>"
+        )
+        for label, path in destinations
+    )
+    return (
+        "        <section>\n"
+        "          <h2>In the studio</h2>\n"
+        "          <ul class=\"studio-discovery-list\">\n"
+        f"{items}\n"
+        "          </ul>\n"
         "        </section>"
     )
 

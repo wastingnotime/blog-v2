@@ -245,7 +245,11 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "/sagas/" in studio_html
     assert "/archives/" in studio_html
     assert "/search/" in studio_html
-    assert "Other ways in" in studio_html
+    assert "<h2>In the studio</h2>" in studio_html
+    assert '<ul class="studio-discovery-list">' in studio_html
+    assert '<a class="studio-discovery-label" href="https://example.com/sagas/">See active sagas</a>' in studio_html
+    assert '<small class="studio-discovery-path">/sagas/</small>' in studio_html
+    assert "Other ways in" not in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
 
 
@@ -381,7 +385,6 @@ def test_build_static_site_uses_shared_discovery_surface_with_route_specific_lin
     archive_discovery = _discovery_section(pages["archives/index.html"])
     search_discovery = _discovery_section(pages["search/index.html"])
     library_discovery = _discovery_section(pages["library/index.html"])
-    studio_discovery = _discovery_section(pages["studio/index.html"])
     episode_discovery = _discovery_section(
         pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"]
     )
@@ -395,11 +398,6 @@ def test_build_static_site_uses_shared_discovery_surface_with_route_specific_lin
     assert 'href="https://example.com/archives/"' in library_discovery
     assert 'href="https://example.com/search/"' in library_discovery
     assert 'href="https://example.com/library/"' not in library_discovery
-    assert 'href="https://example.com/sagas/"' in studio_discovery
-    assert 'href="https://example.com/library/"' in studio_discovery
-    assert 'href="https://example.com/archives/"' in studio_discovery
-    assert 'href="https://example.com/search/"' in studio_discovery
-    assert 'href="https://example.com/studio/"' not in studio_discovery
     assert 'href="https://example.com/archives/"' in episode_discovery
     assert 'href="https://example.com/search/"' in episode_discovery
 
