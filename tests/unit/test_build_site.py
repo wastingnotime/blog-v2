@@ -159,6 +159,7 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     not_found_html = pages["404.html"]
     feed_xml = pages["feed.xml"]
     robots_txt = pages["robots.txt"]
+    opensearch_xml = pages["opensearch.xml"]
     webmanifest = json.loads(pages["site.webmanifest"])
     browserconfig_xml = pages["browserconfig.xml"]
     sitemap_xml = pages["sitemap.xml"]
@@ -179,6 +180,10 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert "User-agent: *" in robots_txt
     assert "Allow: /" in robots_txt
     assert "Sitemap: https://example.com/sitemap.xml" in robots_txt
+    assert '<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">' in opensearch_xml
+    assert "<ShortName>Example</ShortName>" in opensearch_xml
+    assert "<Description>Static site</Description>" in opensearch_xml
+    assert 'template="https://example.com/search/?q={searchTerms}"' in opensearch_xml
     assert webmanifest["name"] == "Example"
     assert webmanifest["short_name"] == "Example"
     assert webmanifest["start_url"] == "https://example.com/"
@@ -221,6 +226,9 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in home_html
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in about_html
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in saga_html
+    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in home_html
+    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in about_html
+    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in saga_html
     assert "(c) 2026 example.com - published as a static site" in home_html
     assert "(c) 2026 example.com - published as a static site" in about_html
     assert "(c) 2026 example.com - published as a static site" in saga_html

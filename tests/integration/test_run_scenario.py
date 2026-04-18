@@ -30,6 +30,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         output_dir / "CNAME",
         output_dir / "404.html",
         output_dir / "index.html",
+        output_dir / "opensearch.xml",
         output_dir / "archives" / "index.html",
         output_dir / "feed.xml",
         output_dir / "robots.txt",
@@ -86,6 +87,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     about_html = (output_dir / "about" / "index.html").read_text(encoding="utf-8")
     feed_xml = (output_dir / "feed.xml").read_text(encoding="utf-8")
     robots_txt = (output_dir / "robots.txt").read_text(encoding="utf-8")
+    opensearch_xml = (output_dir / "opensearch.xml").read_text(encoding="utf-8")
     search_json = (output_dir / "search.json").read_text(encoding="utf-8")
     browserconfig_xml = (output_dir / "browserconfig.xml").read_text(encoding="utf-8")
     webmanifest = json.loads(
@@ -118,6 +120,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/sagas/"' in homepage_html
     assert 'href="https://wastingnotime.org/feed.xml"' in homepage_html
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in homepage_html
+    assert (
+        'rel="search" type="application/opensearchdescription+xml" '
+        'title="Wasting No Time Search" href="https://wastingnotime.org/opensearch.xml"'
+        in homepage_html
+    )
     assert 'href="https://wastingnotime.org/favicon.ico"' in homepage_html
     assert 'href="https://wastingnotime.org/apple-touch-icon.png"' in homepage_html
     assert 'rel="manifest" href="https://wastingnotime.org/site.webmanifest"' in homepage_html
@@ -237,6 +244,21 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Allow: /" in robots_txt
     assert "Sitemap: https://wastingnotime.org/sitemap.xml" in robots_txt
     assert "/api/event" not in robots_txt
+    assert (
+        '<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">'
+        in opensearch_xml
+    )
+    assert "<ShortName>Wasting No Time</ShortName>" in opensearch_xml
+    assert (
+        "<Description>blog-v2 starts from a simpler contract: static output, GitHub "
+        "Pages deployment, and no first-party /api dependency.</Description>"
+        in opensearch_xml
+    )
+    assert (
+        'template="https://wastingnotime.org/search/?q={searchTerms}"'
+        in opensearch_xml
+    )
+    assert "/api/event" not in opensearch_xml
     assert "<browserconfig>" in browserconfig_xml
     assert (
         '<square150x150logo src="https://wastingnotime.org/apple-touch-icon.png"/>'

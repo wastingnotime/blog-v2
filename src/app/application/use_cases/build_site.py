@@ -94,6 +94,7 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         "404.html": build_not_found_page(config, footer_attribution),
         "browserconfig.xml": build_browserconfig(config),
         "index.html": build_homepage(config, homepage_surface, footer_attribution),
+        "opensearch.xml": build_opensearch_description(config),
         "archives/index.html": build_archive_page(
             config,
             archive_index,
@@ -211,6 +212,19 @@ def build_cname(config: SiteConfig) -> str:
 
 def build_nojekyll() -> str:
     return "\n"
+
+
+def build_opensearch_description(config: SiteConfig) -> str:
+    search_template = _absolute_url(config.base_url, "/search/?q={searchTerms}")
+    return (
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        "<OpenSearchDescription xmlns=\"http://a9.com/-/spec/opensearch/1.1/\">\n"
+        f"  <ShortName>{html.escape(config.title)}</ShortName>\n"
+        f"  <Description>{html.escape(config.description)}</Description>\n"
+        "  <InputEncoding>UTF-8</InputEncoding>\n"
+        f"  <Url type=\"text/html\" template=\"{html.escape(search_template)}\"/>\n"
+        "</OpenSearchDescription>\n"
+    )
 
 
 def build_site_webmanifest(config: SiteConfig) -> str:
@@ -891,6 +905,7 @@ def _render_document(
     feed_url = _absolute_url(config.base_url, "/feed.xml")
     manifest_url = _absolute_url(config.base_url, "/site.webmanifest")
     browserconfig_url = _absolute_url(config.base_url, "/browserconfig.xml")
+    opensearch_url = _absolute_url(config.base_url, "/opensearch.xml")
     social_preview_url = _absolute_url(config.base_url, "/social-preview.png")
     open_graph_metadata = _render_open_graph_metadata(
         site_title=config.title,
@@ -937,6 +952,7 @@ def _render_document(
 {twitter_card_metadata}
 {structured_data_script}
     <link rel="alternate" type="application/rss+xml" title="{html.escape(config.title)} RSS" href="{html.escape(feed_url)}" />
+    <link rel="search" type="application/opensearchdescription+xml" title="{html.escape(config.title)} Search" href="{html.escape(opensearch_url)}" />
     <link rel="manifest" href="{html.escape(manifest_url)}" />
 {identity_asset_links}
     <style>
