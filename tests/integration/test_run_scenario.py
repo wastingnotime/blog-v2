@@ -260,6 +260,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "archivesLink.textContent = 'the archives';" in search_html
     assert "libraryLink.textContent = 'the library';" in search_html
     assert "searchResults.appendChild(searchRecovery);" in search_html
+    assert "Search index could not be loaded." in search_html
+    assert "while search is unavailable." in search_html
     assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
     assert "link.appendChild(createHighlightedFragment(record.title, normalizedQuery));" in search_html
     assert "meta.appendChild(createHighlightedFragment(record.context, normalizedQuery));" in search_html
