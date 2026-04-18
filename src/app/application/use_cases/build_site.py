@@ -297,7 +297,7 @@ def build_homepage(
         canonical_path="/",
         eyebrow="Home",
         heading=config.title,
-        summary="Architecture, systems thinking, and long-running software work made legible in public.",
+        summary="Experiments in architecture, focus, and growth - built in public, one saga at a time.",
         metadata=recent_metadata,
         footer_attribution=footer_attribution,
         structured_data_payload=_project_website_structured_data(
@@ -307,26 +307,24 @@ def build_homepage(
         ),
         body_html=(
             "        <section>\n"
-            "          <h2>In Public</h2>\n"
-            "          <p>This site tracks architecture decisions, evolving systems, and the writing that falls out of shipping them.</p>\n"
-            "          <p>Read the latest work, follow the longer arcs through sagas, browse ideas through the library, move chronologically through the archives, or search across the publication directly.</p>\n"
-            f'          <p><a href="{_absolute_url(config.base_url, "/search/")}">Search the publication</a> or <a href="{_absolute_url(config.base_url, "/archives/")}">browse the archives</a> when you want a faster way in.</p>\n'
+            "          <p>Experiments in architecture, focus, and growth - built in public, one saga at a time.</p>\n"
+            f'          <p><a href="{_absolute_url(config.base_url, "/search/")}">Search the publication</a>, <a href="{_absolute_url(config.base_url, "/archives/")}">browse the archives</a>, or move by topic through <a href="{_absolute_url(config.base_url, "/library/")}">the library</a>.</p>\n'
             "        </section>\n"
             "        <section>\n"
-            "          <h2>Recent</h2>\n"
+            "          <h2>RECENT</h2>\n"
             "          <ul>\n"
             f"{recent_markup}\n"
             "          </ul>\n"
             "        </section>\n"
             "        <section>\n"
-            "          <h2>Active Sagas</h2>\n"
+            "          <h2>SAGAS</h2>\n"
             "          <ul>\n"
             f"{saga_markup}\n"
             "          </ul>\n"
             f'          <a href="{_absolute_url(config.base_url, "/sagas/")}">Browse all sagas</a>\n'
             "        </section>\n"
             "        <section>\n"
-            "          <h2>Library</h2>\n"
+            "          <h2>LIBRARY</h2>\n"
             "          <p>Browse ideas and implementation threads by topic.</p>\n"
             f'          <a href="{_absolute_url(config.base_url, "/library/")}">Explore the library</a>\n'
             "        </section>"

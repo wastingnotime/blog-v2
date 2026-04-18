@@ -108,10 +108,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert nojekyll == "\n"
     assert cname == "wastingnotime.org\n"
-    assert "In Public" in homepage_html
-    assert "This site tracks architecture decisions" in homepage_html
-    assert "move chronologically through the archives" in homepage_html
-    assert "search across the publication directly" in homepage_html
+    assert (
+        "Experiments in architecture, focus, and growth - built in public, one saga at a time."
+        in homepage_html
+    )
+    assert "This site tracks architecture decisions" not in homepage_html
+    assert "search across the publication directly" not in homepage_html
+    assert "<h2>RECENT</h2>" in homepage_html
+    assert "<h2>SAGAS</h2>" in homepage_html
+    assert "<h2>LIBRARY</h2>" in homepage_html
     assert 'class="active">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/search/"' in homepage_html
     assert 'href="https://wastingnotime.org/archives/"' in homepage_html
