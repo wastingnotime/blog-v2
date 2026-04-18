@@ -234,6 +234,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "const normalizeSearchText = (value) => (value || '').trim().toLowerCase();" in search_html
     assert "const projectSearchUrlState = (query) => {" in search_html
     assert "const scoreSearchRecord = (record, normalizedQuery) => {" in search_html
+    assert "const createHighlightedFragment = (value, normalizedQuery) => {" in search_html
+    assert "const fragment = document.createDocumentFragment();" in search_html
+    assert "const mark = document.createElement('mark');" in search_html
+    assert "mark.textContent = sourceText.slice(matchIndex, matchIndex + normalizedQuery.length);" in search_html
     assert "if (normalizedTitle === normalizedQuery) {" in search_html
     assert "if (normalizedTitle.startsWith(normalizedQuery)) {" in search_html
     assert "if (normalizedTitle.includes(normalizedQuery)) {" in search_html
@@ -246,6 +250,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "return left.score - right.score;" in search_html
     assert "const titleComparison = normalizeSearchText(left.record.title)" in search_html
     assert "return (left.record.url || '').localeCompare(right.record.url || '');" in search_html
+    assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
+    assert "link.appendChild(createHighlightedFragment(record.title, normalizedQuery));" in search_html
+    assert "meta.appendChild(createHighlightedFragment(record.context, normalizedQuery));" in search_html
+    assert "summary.appendChild(createHighlightedFragment(record.summary, normalizedQuery));" in search_html
     assert "nextUrl.searchParams.set('q', normalizedQuery);" in search_html
     assert "nextUrl.searchParams.delete('q');" in search_html
     assert "window.history.replaceState(null, '', nextPath);" in search_html
