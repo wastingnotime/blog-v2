@@ -176,7 +176,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "Other ways in" in library_html
     assert 'href="https://example.com/archives/"' in library_html
     assert 'href="https://example.com/search/"' in library_html
-    assert "architecture" in library_html
+    assert '<ul class="library-topic-list">' in library_html
+    assert '<a class="topic-link" href="https://example.com/library/architecture/">#architecture</a>' in library_html
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
     assert "HireFlow / The Origin Blueprint" in topic_html

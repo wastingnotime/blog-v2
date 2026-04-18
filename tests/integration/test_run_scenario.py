@@ -390,7 +390,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Other ways in" in library_html
     assert 'href="https://wastingnotime.org/archives/"' in library_html
     assert 'href="https://wastingnotime.org/search/"' in library_html
-    assert "architecture" in library_html
+    assert '<ul class="library-topic-list">' in library_html
+    assert '<a class="topic-link" href="https://wastingnotime.org/library/architecture/">#architecture</a>' in library_html
     assert _json_ld_payloads(library_html) == [
         {
             "@context": "https://schema.org",

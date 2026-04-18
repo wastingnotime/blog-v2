@@ -866,7 +866,7 @@ def build_library_page(
         "        </section>\n"
         "        <section>\n"
         "          <h2>Topics</h2>\n"
-        "          <ul>\n"
+        "          <ul class=\"library-topic-list\">\n"
         f"{tag_markup}\n"
         "          </ul>\n"
         "        </section>\n"
@@ -1204,6 +1204,28 @@ def _render_document(
       .homepage-saga-status {{
         color: var(--text-400);
         font-size: 0.8rem;
+      }}
+      .library-topic-list {{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .topic-link {{
+        display: inline-block;
+        padding: 0.45rem 0.75rem;
+        border: 1px solid var(--line);
+        border-radius: 0.3rem;
+        color: var(--text-100);
+        text-decoration: none;
+        transition: color 0.15s ease, border-color 0.15s ease;
+      }}
+      .topic-link:hover {{
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.4);
+        text-decoration: underline;
       }}
       .site-frame {{
         width: min(64rem, calc(100vw - 3rem));
@@ -1681,7 +1703,7 @@ def _render_adjacent_navigation(
 def _render_library_tag(tag: str, *, base_url: str) -> str:
     return (
         "            <li>\n"
-        f'              <a href="{_absolute_url(base_url, f"/library/{tag}/")}">{html.escape(tag)}</a>\n'
+        f'              <a class="topic-link" href="{_absolute_url(base_url, f"/library/{tag}/")}">#{html.escape(tag)}</a>\n'
         "            </li>"
     )
 
