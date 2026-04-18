@@ -970,7 +970,7 @@ def build_sagas_index_page(
                 (
                     "        <section>\n"
                     "          <h2>Active sagas</h2>\n"
-                    "          <ul>\n"
+                    "          <ul class=\"saga-index-list\">\n"
                     f"{saga_markup}\n"
                     "          </ul>\n"
                     "        </section>"
@@ -1249,6 +1249,29 @@ def _render_document(
         color: var(--text-400);
         font-size: 0.92rem;
         line-height: 1.6;
+      }}
+      .saga-index-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .saga-index-list > li + li {{
+        margin-top: 1rem;
+      }}
+      .saga-index-link {{
+        color: var(--text-100);
+      }}
+      .saga-index-summary {{
+        margin: 0.35rem 0 0;
+        color: var(--text-400);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }}
+      .saga-index-start {{
+        display: inline-block;
+        margin-top: 0.45rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
       }}
       .site-frame {{
         width: min(64rem, calc(100vw - 3rem));
@@ -1751,12 +1774,12 @@ def _render_saga_summary(summary: object, *, base_url: str) -> str:
     start_link = ""
     if summary.start_permalink:
         start_link = (
-            f'\n              <small><a href="{_absolute_url(base_url, summary.start_permalink)}">start reading</a></small>'
+            f'\n              <small class="saga-index-start"><a href="{_absolute_url(base_url, summary.start_permalink)}">start reading</a></small>'
         )
     return (
         "            <li>\n"
-        f'              <a href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
-        f"              <p>{html.escape(summary.summary)}</p>{start_link}\n"
+        f'              <a class="saga-index-link" href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+        f'              <p class="saga-index-summary">{html.escape(summary.summary)}</p>{start_link}\n'
         "            </li>"
     )
 
