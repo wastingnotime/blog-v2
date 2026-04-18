@@ -223,6 +223,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "searchInput.value = initialQuery;" in search_html
     assert "renderResults(searchInput.value);" in search_html
     assert "projectSearchUrlState(event.target.value);" in search_html
+    assert '<meta name="robots" content="noindex,follow" />' in search_html
+    assert '<meta name="robots" content="index,follow" />' not in search_html
     assert '<link rel="canonical" href="https://wastingnotime.org/search/" />' in search_html
     assert "/archives/" in search_html
     assert "/library/" in search_html

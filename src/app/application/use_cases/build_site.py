@@ -57,6 +57,9 @@ from src.app.application.use_cases.project_publication_metadata import (
 from src.app.application.use_cases.project_archive_index import project_archive_index
 from src.app.application.use_cases.project_search_index import project_search_index
 from src.app.application.use_cases.project_topic_catalog import project_topic_catalog
+from src.app.application.use_cases.project_route_robots_policy import (
+    project_route_robots_policy,
+)
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
@@ -877,13 +880,14 @@ def _render_document(
     heading: str,
     summary: str,
     metadata: str,
-    robots_content: str = "index,follow",
+    robots_content: str | None = None,
     footer_attribution: FooterAttribution,
     structured_data_payload: Mapping[str, object] | None = None,
     body_html: str,
 ) -> str:
     analytics_snippet = _render_analytics(config.analytics)
     canonical_url = _absolute_url(config.base_url, canonical_path)
+    robots_directive = robots_content or project_route_robots_policy(canonical_path)
     feed_url = _absolute_url(config.base_url, "/feed.xml")
     manifest_url = _absolute_url(config.base_url, "/site.webmanifest")
     browserconfig_url = _absolute_url(config.base_url, "/browserconfig.xml")
@@ -926,7 +930,7 @@ def _render_document(
     <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
-    <meta name="robots" content="{html.escape(robots_content)}" />
+    <meta name="robots" content="{html.escape(robots_directive)}" />
     <meta name="description" content="{html.escape(description)}" />
     <link rel="canonical" href="{html.escape(canonical_url)}" />
 {open_graph_metadata}
