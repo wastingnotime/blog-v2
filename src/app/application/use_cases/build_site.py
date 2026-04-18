@@ -416,6 +416,7 @@ def build_search_page(
     footer_attribution: FooterAttribution,
 ) -> str:
     search_index_url = _absolute_url(config.base_url, "/search.json")
+    search_action_url = _absolute_url(config.base_url, "/search/")
     return _render_document(
         config=config,
         title="Search",
@@ -435,7 +436,7 @@ def build_search_page(
             "        <section>\n"
             "          <h2>Search the publication</h2>\n"
             "          <p>Type to filter the static index published with the site.</p>\n"
-            '          <form id="search-form" method="get" action="/search/">\n'
+            f'          <form id="search-form" method="get" action="{search_action_url}">\n'
             '            <input id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" />\n'
             "          </form>\n"
             '          <p id="search-status">Enter a query to search the publication.</p>\n'

@@ -225,7 +225,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'class="active">Search</a>' in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
-    assert 'action="/search/"' in search_html
+    assert 'action="https://wastingnotime.org/search/"' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
     assert "Enter a query to search the publication." in search_html
@@ -486,6 +486,35 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert (output_dir / "social-preview.png").read_bytes() == (
         identity_assets_dir / "social-preview.png"
     ).read_bytes()
+
+
+def test_static_site_builder_uses_prefixed_base_url_for_search_form_action(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("SITE_BASE_URL", "https://example.com/blog/")
+    output_dir = tmp_path / "dist"
+    identity_assets_dir = Path(__file__).resolve().parents[2] / "assets" / "site" / "current"
+    content_root = Path(__file__).resolve().parents[2] / "content"
+    builder = StaticSiteBuilder(
+        output_dir=output_dir,
+        identity_assets_dir=identity_assets_dir,
+    )
+    catalog = load_content_catalog(
+        loader=MarkdownContentLoader(),
+        content_root=content_root,
+    )
+
+    builder.build(load_site_config(), catalog)
+
+    search_html = (
+        output_dir / "search" / "index.html"
+    ).read_text(encoding="utf-8")
+
+    assert 'action="https://example.com/blog/search/"' in search_html
+    assert 'action="/search/"' not in search_html
+    assert '<link rel="canonical" href="https://example.com/blog/search/" />' in search_html
+    assert "https://example.com/blog/search.json" in search_html
 
 
 def _json_ld_payloads(html: str) -> list[dict[str, object]]:

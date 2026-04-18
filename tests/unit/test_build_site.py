@@ -99,7 +99,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "Search the publication" in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
-    assert 'action="/search/"' in search_html
+    assert 'action="https://example.com/search/"' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
     assert "Enter a query to search the publication." in search_html
@@ -129,6 +129,17 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "HireFlow / The Origin Blueprint" in topic_html
     assert "/archives/" in topic_html
     assert "/search/" in topic_html
+
+
+def test_build_static_site_uses_base_url_for_search_form_action() -> None:
+    pages = build_static_site(_site_config(base_url="https://example.com/blog/"), _catalog())
+
+    search_html = pages["search/index.html"]
+
+    assert 'action="https://example.com/blog/search/"' in search_html
+    assert 'action="/search/"' not in search_html
+    assert "https://example.com/blog/search.json" in search_html
+    assert '<link rel="canonical" href="https://example.com/blog/search/" />' in search_html
 
 
 def test_build_static_site_generates_section_hub_pages() -> None:
@@ -796,11 +807,11 @@ def _json_ld_payloads(html: str) -> list[dict[str, object]]:
     return [json.loads(match) for match in matches]
 
 
-def _site_config() -> SiteConfig:
+def _site_config(*, base_url: str = "https://example.com/") -> SiteConfig:
     return SiteConfig(
         title="Example",
         description="Static site",
-        base_url="https://example.com/",
+        base_url=base_url,
     )
 
 
