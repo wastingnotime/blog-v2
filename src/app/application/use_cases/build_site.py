@@ -312,13 +312,13 @@ def build_homepage(
             "        </section>\n"
             "        <section>\n"
             "          <h2 class=\"section-label\">RECENT</h2>\n"
-            "          <ul>\n"
+            "          <ul class=\"homepage-list\">\n"
             f"{recent_markup}\n"
             "          </ul>\n"
             "        </section>\n"
             "        <section>\n"
             "          <h2 class=\"section-label\">SAGAS</h2>\n"
-            "          <ul>\n"
+            "          <ul class=\"homepage-list\">\n"
             f"{saga_markup}\n"
             "          </ul>\n"
             f'          <a href="{_absolute_url(config.base_url, "/sagas/")}">Browse all sagas</a>\n'
@@ -1172,6 +1172,39 @@ def _render_document(
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }}
+      .homepage-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .homepage-list > li + li {{
+        margin-top: 1rem;
+      }}
+      .homepage-link {{
+        color: var(--text-100);
+      }}
+      .homepage-meta {{
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
+      }}
+      .homepage-summary {{
+        margin: 0.35rem 0 0;
+        color: var(--text-400);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }}
+      .homepage-saga-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.45rem;
+      }}
+      .homepage-saga-status {{
+        color: var(--text-400);
+        font-size: 0.8rem;
+      }}
       .site-frame {{
         width: min(64rem, calc(100vw - 3rem));
         margin: 0 auto;
@@ -1496,10 +1529,10 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
 
     return (
         "          <li>\n"
-        f'            <a href="{_absolute_url(base_url, item.permalink)}">[{html.escape(item.kind)}] '
+        f'            <a class="homepage-link" href="{_absolute_url(base_url, item.permalink)}">[{html.escape(item.kind)}] '
         f"{html.escape(item.title)}</a>\n"
-        f"            <small>{html.escape(item.date)}{html.escape(context)}</small>\n"
-        f"            <p>{html.escape(item.summary)}</p>\n"
+        f'            <small class="homepage-meta">{html.escape(item.date)}{html.escape(context)}</small>\n'
+        f'            <p class="homepage-summary">{html.escape(item.summary)}</p>\n'
         "          </li>"
     )
 
@@ -1577,9 +1610,11 @@ def _render_homepage_saga_summary(
 
     return (
         "          <li>\n"
-        f'            <a href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
-        f"            <small>{html.escape(' · '.join(status_parts))}</small>\n"
-        f"            <p>{html.escape(summary.summary)}</p>\n"
+        '            <div class="homepage-saga-row">\n'
+        f'              <a class="homepage-link" href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+        f'              <small class="homepage-saga-status">{html.escape(" - ".join(status_parts))}</small>\n'
+        "            </div>\n"
+        f'            <p class="homepage-summary">{html.escape(summary.summary)}</p>\n'
         "          </li>"
     )
 

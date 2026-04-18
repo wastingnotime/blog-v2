@@ -53,6 +53,10 @@ def test_build_static_site_limits_homepage_recent_entries() -> None:
     assert "Architecture, focus, and growth in public." in html
     assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
+    assert '<ul class="homepage-list">' in html
+    assert 'class="homepage-link"' in html
+    assert 'class="homepage-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in html
+    assert 'class="homepage-summary">Follow-up work.</p>' in html
     assert "[episode] Second Iteration" in html
     assert "[episode] The First Brick" in html
     assert "[page] Notes" in html
@@ -194,6 +198,9 @@ def test_build_static_site_refines_homepage_editorial_surface() -> None:
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
     assert '<h2 class="section-label">LIBRARY</h2>' in html
+    assert 'class="homepage-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in html
+    assert 'class="homepage-saga-row">' in html
+    assert 'class="homepage-saga-status">2 episodes - last release 2026-04-13 - in-progress</small>' in html
     assert "<h2>In Public</h2>" not in html
     assert "<h2>Active Sagas</h2>" not in html
 
@@ -326,7 +333,8 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
     assert '<h2 class="section-label">LIBRARY</h2>' in html
-    assert "2 episodes · last release 2026-04-13 · in-progress" in html
+    assert '<a class="homepage-link" href="https://example.com/sagas/hireflow/">HireFlow</a>' in html
+    assert "2 episodes - last release 2026-04-13 - in-progress" in html
     assert "Deployment target:" not in html
 
 

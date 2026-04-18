@@ -123,6 +123,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<h2 class="section-label">RECENT</h2>' in homepage_html
     assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
     assert '<h2 class="section-label">LIBRARY</h2>' in homepage_html
+    assert '<ul class="homepage-list">' in homepage_html
+    assert 'class="homepage-link"' in homepage_html
+    assert 'class="homepage-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in homepage_html
+    assert 'class="homepage-saga-status">2 episodes - last release 2025-11-15 - in-progress</small>' in homepage_html
     assert 'class="active">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/search/"' in homepage_html
     assert 'href="https://wastingnotime.org/archives/"' in homepage_html
@@ -166,6 +170,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "--surface: #0b0b0b;" in homepage_html
     assert "--text-400: #a1a1aa;" in homepage_html
     assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in homepage_html
+    assert ".homepage-list {" in homepage_html
+    assert ".homepage-meta {" in homepage_html
+    assert ".homepage-summary {" in homepage_html
+    assert ".homepage-saga-row {" in homepage_html
+    assert ".homepage-saga-status {" in homepage_html
     assert ".homepage-paths {" in homepage_html
     assert ".section-label {" in homepage_html
     assert ".site-nav a.active::after {" in homepage_html
@@ -212,7 +221,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     ]
     assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
     assert "3 recent entries shown" in homepage_html
-    assert "2 episodes · last release 2025-11-15 · in-progress" in homepage_html
+    assert "2 episodes - last release 2025-11-15 - in-progress" in homepage_html
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
     assert "Deployment target:" not in homepage_html
