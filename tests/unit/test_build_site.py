@@ -112,6 +112,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "const projectSearchUrlState = (query) => {" in search_html
     assert "const scoreSearchRecord = (record, normalizedQuery) => {" in search_html
     assert "const createHighlightedFragment = (value, normalizedQuery) => {" in search_html
+    assert "const searchRecovery = document.createElement('p');" in search_html
     assert "const fragment = document.createDocumentFragment();" in search_html
     assert "const mark = document.createElement('mark');" in search_html
     assert "mark.textContent = sourceText.slice(matchIndex, matchIndex + normalizedQuery.length);" in search_html
@@ -127,6 +128,12 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "return left.score - right.score;" in search_html
     assert "const titleComparison = normalizeSearchText(left.record.title)" in search_html
     assert "return (left.record.url || '').localeCompare(right.record.url || '');" in search_html
+    assert "searchRecovery.replaceChildren();" in search_html
+    assert "if (!matches.length) {" in search_html
+    assert "searchRecovery.appendChild(document.createTextNode('Try '));" in search_html
+    assert "archivesLink.textContent = 'the archives';" in search_html
+    assert "libraryLink.textContent = 'the library';" in search_html
+    assert "searchResults.appendChild(searchRecovery);" in search_html
     assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
     assert "link.appendChild(createHighlightedFragment(record.title, normalizedQuery));" in search_html
     assert "meta.appendChild(createHighlightedFragment(record.context, normalizedQuery));" in search_html
