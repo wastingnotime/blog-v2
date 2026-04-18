@@ -68,8 +68,8 @@ IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon-32x32.png", "32x32"),
     ("apple-touch-icon", "/apple-touch-icon.png", None),
 )
-THEME_COLOR = "#fffdf8"
-BACKGROUND_COLOR = "#f3efe5"
+THEME_COLOR = "#0b0b0b"
+BACKGROUND_COLOR = "#000000"
 
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
@@ -1081,7 +1081,7 @@ def _render_document(
     <meta name="generator" content="blog-v2 static builder" />
     <meta name="author" content="{html.escape(_site_host(config.base_url))}" />
     <meta name="application-name" content="{html.escape(config.title)}" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="dark" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="{THEME_COLOR}" />
@@ -1089,7 +1089,7 @@ def _render_document(
     <meta name="msapplication-config" content="{html.escape(browserconfig_url)}" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>{html.escape(title)} | {html.escape(config.title)}</title>
     <meta name="robots" content="{html.escape(robots_directive)}" />
     <meta name="description" content="{html.escape(description)}" />
@@ -1103,48 +1103,58 @@ def _render_document(
 {identity_asset_links}
     <style>
       :root {{
-        color-scheme: light;
-        --ink: #111827;
-        --muted: #4b5563;
-        --line: #d1d5db;
-        --paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);
-        --accent: #0f766e;
+        color-scheme: dark;
+        --bg: #000000;
+        --surface: #0b0b0b;
+        --text-100: #f4f4f5;
+        --text-200: #e4e4e7;
+        --text-300: #d4d4d8;
+        --text-400: #a1a1aa;
+        --line: #27272a;
+        --line-strong: #3f3f46;
       }}
       * {{ box-sizing: border-box; }}
       body {{
         margin: 0;
         min-height: 100vh;
-        font-family: Georgia, "Times New Roman", serif;
-        color: var(--ink);
-        background: var(--paper);
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        color: var(--text-200);
+        background: var(--bg);
       }}
       main {{
         width: min(46rem, calc(100vw - 3rem));
         margin: 0 auto;
-        padding: 4rem 0 5rem;
+        padding: 3.5rem 0 5rem;
+      }}
+      a {{
+        color: var(--text-400);
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }}
+      a:hover {{
+        color: #ffffff;
+        text-decoration: underline;
       }}
       .eyebrow {{
-        display: inline-block;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 0.35rem 0.75rem;
-        color: var(--muted);
+        color: var(--text-400);
         font-size: 0.85rem;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
       }}
       h1 {{
         margin: 1.25rem 0 0.75rem;
         font-size: clamp(2.2rem, 6vw, 4rem);
-        line-height: 1;
+        line-height: 1.05;
+        color: #ffffff;
       }}
       .meta, .summary {{
-        color: var(--muted);
+        color: var(--text-400);
       }}
       .site-frame {{
         width: min(64rem, calc(100vw - 3rem));
         margin: 0 auto;
-        padding: 2rem 0 5rem;
+        padding: 1.5rem 0 5rem;
       }}
       .site-nav {{
         display: flex;
@@ -1155,25 +1165,29 @@ def _render_document(
         border-bottom: 1px solid var(--line);
       }}
       .site-nav a {{
-        color: var(--muted);
-        text-decoration: none;
+        color: var(--text-400);
       }}
       .site-nav a.active {{
-        color: var(--ink);
-        font-weight: 600;
-        text-decoration: underline;
+        color: #ffffff;
+        font-weight: 500;
+      }}
+      .site-nav a.active::after {{
+        content: "•";
+        margin-left: 0.4em;
+        opacity: 0.6;
+        font-weight: 400;
       }}
       .breadcrumbs {{
         margin-bottom: 1rem;
-        color: var(--muted);
+        color: var(--text-400);
       }}
       .entry-meta {{
         margin-bottom: 1.5rem;
-        color: var(--muted);
+        color: var(--text-400);
         font-size: 0.95rem;
       }}
       .entry-meta a {{
-        color: var(--muted);
+        color: var(--text-400);
       }}
       .entry-meta .tags {{
         display: inline;
@@ -1191,25 +1205,64 @@ def _render_document(
         padding-top: 1.5rem;
         border-top: 1px solid var(--line);
       }}
+      article a {{
+        text-decoration: underline;
+        text-decoration-thickness: 0.06em;
+        text-underline-offset: 2px;
+      }}
       footer {{
         margin-top: 2.5rem;
-        color: var(--muted);
+        color: var(--text-400);
         font-size: 0.85rem;
       }}
-      article p, article li, article blockquote {{
-        font-size: 1.08rem;
-        line-height: 1.75;
+      article h2 {{
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1.25rem;
+        line-height: 1.6;
       }}
-      article h2, article h3 {{
+      article h3 {{
         margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-200);
+        font-weight: 500;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }}
+      article p, article li, article blockquote {{
+        font-size: 1rem;
+        line-height: 1.7;
+        color: var(--text-200);
       }}
       article blockquote {{
         margin-left: 0;
         padding-left: 1rem;
-        border-left: 4px solid var(--accent);
+        border-left: 2px solid var(--line-strong);
+        color: var(--text-300);
+        font-style: italic;
+      }}
+      article pre {{
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+        overflow: auto;
       }}
       article code {{
-        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 0.1rem 0.35rem;
+        border-radius: 0.25rem;
+        color: var(--text-100);
+      }}
+      article pre code {{
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
       }}
     </style>
 {analytics_snippet}  </head>

@@ -245,14 +245,14 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert webmanifest["short_name"] == "Example"
     assert webmanifest["start_url"] == "https://example.com/"
     assert webmanifest["display"] == "standalone"
-    assert webmanifest["theme_color"] == "#fffdf8"
-    assert webmanifest["background_color"] == "#f3efe5"
+    assert webmanifest["theme_color"] == "#0b0b0b"
+    assert webmanifest["background_color"] == "#000000"
     assert webmanifest["icons"][0]["src"] == "https://example.com/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "https://example.com/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "https://example.com/apple-touch-icon.png"
     assert "<browserconfig>" in browserconfig_xml
     assert '<square150x150logo src="https://example.com/apple-touch-icon.png"/>' in browserconfig_xml
-    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
+    assert "<TileColor>#0b0b0b</TileColor>" in browserconfig_xml
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://example.com/archives/</loc>" in sitemap_xml
     assert "<loc>https://example.com/library/</loc>" in sitemap_xml
@@ -479,7 +479,7 @@ def test_build_static_site_renders_theme_color_metadata_in_document_head() -> No
     )
 
     for html in route_html:
-        assert '<meta name="theme-color" content="#fffdf8" />' in html
+        assert '<meta name="theme-color" content="#0b0b0b" />' in html
 
 
 def test_build_static_site_renders_format_detection_metadata_in_document_head() -> None:
@@ -527,7 +527,27 @@ def test_build_static_site_renders_color_scheme_metadata_in_document_head() -> N
     )
 
     for html in route_html:
-        assert '<meta name="color-scheme" content="light" />' in html
+        assert '<meta name="color-scheme" content="dark" />' in html
+
+
+def test_build_static_site_renders_shared_editorial_shell_tokens() -> None:
+    pages = build_static_site(_site_config(), _catalog())
+
+    homepage_html = pages["index.html"]
+    about_html = pages["about/index.html"]
+
+    for html in (homepage_html, about_html):
+        assert "color-scheme: dark;" in html
+        assert "--bg: #000000;" in html
+        assert "--surface: #0b0b0b;" in html
+        assert "--text-400: #a1a1aa;" in html
+        assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in html
+        assert "background: var(--bg);" in html
+        assert ".site-nav a.active::after {" in html
+        assert 'content: "•";' in html
+        assert "article pre {" in html
+        assert "article code {" in html
+        assert 'font-family: Georgia, "Times New Roman", serif;' not in html
 
 
 def test_build_static_site_renders_application_name_metadata_in_document_head() -> None:
@@ -575,7 +595,7 @@ def test_build_static_site_renders_msapplication_tile_color_metadata_in_document
     )
 
     for html in route_html:
-        assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in html
+        assert '<meta name="msapplication-TileColor" content="#0b0b0b" />' in html
 
 
 def test_build_static_site_renders_msapplication_config_metadata_in_document_head() -> None:
@@ -665,7 +685,7 @@ def test_build_static_site_renders_mobile_web_app_metadata_in_document_head() ->
         assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in html
         assert '<meta name="apple-mobile-web-app-title" content="Example" />' in html
         assert (
-            '<meta name="apple-mobile-web-app-status-bar-style" content="default" />'
+            '<meta name="apple-mobile-web-app-status-bar-style" content="black" />'
             in html
         )
 

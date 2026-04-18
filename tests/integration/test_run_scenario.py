@@ -135,21 +135,30 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="generator" content="blog-v2 static builder" />' in homepage_html
     assert '<meta name="author" content="wastingnotime.org" />' in homepage_html
     assert '<meta name="application-name" content="Wasting No Time" />' in homepage_html
-    assert '<meta name="color-scheme" content="light" />' in homepage_html
+    assert '<meta name="color-scheme" content="dark" />' in homepage_html
     assert (
         '<meta name="referrer" content="strict-origin-when-cross-origin" />'
         in homepage_html
     )
     assert '<meta name="format-detection" content="telephone=no" />' in homepage_html
-    assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
-    assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in homepage_html
+    assert '<meta name="theme-color" content="#0b0b0b" />' in homepage_html
+    assert '<meta name="msapplication-TileColor" content="#0b0b0b" />' in homepage_html
     assert (
         '<meta name="msapplication-config" content="https://wastingnotime.org/browserconfig.xml" />'
         in homepage_html
     )
     assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
-    assert '<meta name="apple-mobile-web-app-status-bar-style" content="default" />' in homepage_html
+    assert '<meta name="apple-mobile-web-app-status-bar-style" content="black" />' in homepage_html
+    assert "color-scheme: dark;" in homepage_html
+    assert "--bg: #000000;" in homepage_html
+    assert "--surface: #0b0b0b;" in homepage_html
+    assert "--text-400: #a1a1aa;" in homepage_html
+    assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in homepage_html
+    assert ".site-nav a.active::after {" in homepage_html
+    assert "article pre {" in homepage_html
+    assert 'font-family: Georgia, "Times New Roman", serif;' not in homepage_html
+    assert "color-scheme: dark;" in about_html
     assert '<meta name="robots" content="index,follow" />' in homepage_html
     assert '<meta name="robots" content="noindex,follow" />' in not_found_html
     assert '<meta name="robots" content="index,follow" />' not in not_found_html
@@ -328,12 +337,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         '<square150x150logo src="https://wastingnotime.org/apple-touch-icon.png"/>'
         in browserconfig_xml
     )
-    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
+    assert "<TileColor>#0b0b0b</TileColor>" in browserconfig_xml
     assert webmanifest["name"] == "Wasting No Time"
     assert webmanifest["short_name"] == "Wasting No Time"
     assert webmanifest["start_url"] == "https://wastingnotime.org/"
-    assert webmanifest["theme_color"] == "#fffdf8"
-    assert webmanifest["background_color"] == "#f3efe5"
+    assert webmanifest["theme_color"] == "#0b0b0b"
+    assert webmanifest["background_color"] == "#000000"
     assert webmanifest["icons"][0]["src"] == "https://wastingnotime.org/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "https://wastingnotime.org/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "https://wastingnotime.org/apple-touch-icon.png"
