@@ -50,7 +50,8 @@ def test_build_static_site_orders_recent_content_by_date_desc() -> None:
 def test_build_static_site_limits_homepage_recent_entries() -> None:
     html = build_static_site(_site_config(), _catalog_with_extra_page())["index.html"]
 
-    assert "Experiments in architecture, focus, and growth - built in public, one saga at a time." in html
+    assert "Architecture, focus, and growth in public." in html
+    assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
     assert "[episode] Second Iteration" in html
     assert "[episode] The First Brick" in html
@@ -182,12 +183,17 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
 def test_build_static_site_refines_homepage_editorial_surface() -> None:
     html = build_static_site(_site_config(), _catalog())["index.html"]
 
-    assert "Experiments in architecture, focus, and growth - built in public, one saga at a time." in html
+    assert "Architecture, focus, and growth in public." in html
+    assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
-    assert "search across the publication directly" not in html
-    assert "<h2>RECENT</h2>" in html
-    assert "<h2>SAGAS</h2>" in html
-    assert "<h2>LIBRARY</h2>" in html
+    assert (
+        '<p class="homepage-paths"><a href="https://example.com/search/">Search</a> / '
+        '<a href="https://example.com/archives/">Archives</a> / '
+        '<a href="https://example.com/library/">Library</a></p>'
+    ) in html
+    assert '<h2 class="section-label">RECENT</h2>' in html
+    assert '<h2 class="section-label">SAGAS</h2>' in html
+    assert '<h2 class="section-label">LIBRARY</h2>' in html
     assert "<h2>In Public</h2>" not in html
     assert "<h2>Active Sagas</h2>" not in html
 
@@ -311,14 +317,15 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
 def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -> None:
     html = build_static_site(_site_config(), _catalog())["index.html"]
 
-    assert "Experiments in architecture, focus, and growth - built in public, one saga at a time." in html
+    assert "Architecture, focus, and growth in public." in html
+    assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
-    assert "search across the publication directly" not in html
+    assert '<p class="homepage-intro">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>' in html
     assert 'href="https://example.com/search/"' in html
     assert 'href="https://example.com/archives/"' in html
-    assert "<h2>RECENT</h2>" in html
-    assert "<h2>SAGAS</h2>" in html
-    assert "<h2>LIBRARY</h2>" in html
+    assert '<h2 class="section-label">RECENT</h2>' in html
+    assert '<h2 class="section-label">SAGAS</h2>' in html
+    assert '<h2 class="section-label">LIBRARY</h2>' in html
     assert "2 episodes · last release 2026-04-13 · in-progress" in html
     assert "Deployment target:" not in html
 

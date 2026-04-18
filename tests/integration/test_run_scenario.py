@@ -108,15 +108,21 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert nojekyll == "\n"
     assert cname == "wastingnotime.org\n"
+    assert "Architecture, focus, and growth in public." in homepage_html
     assert (
-        "Experiments in architecture, focus, and growth - built in public, one saga at a time."
+        "Experiments in architecture, focus, and growth, built in public one saga at a time."
         in homepage_html
     )
     assert "This site tracks architecture decisions" not in homepage_html
-    assert "search across the publication directly" not in homepage_html
-    assert "<h2>RECENT</h2>" in homepage_html
-    assert "<h2>SAGAS</h2>" in homepage_html
-    assert "<h2>LIBRARY</h2>" in homepage_html
+    assert (
+        '<p class="homepage-paths"><a href="https://wastingnotime.org/search/">Search</a> / '
+        '<a href="https://wastingnotime.org/archives/">Archives</a> / '
+        '<a href="https://wastingnotime.org/library/">Library</a></p>'
+        in homepage_html
+    )
+    assert '<h2 class="section-label">RECENT</h2>' in homepage_html
+    assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
+    assert '<h2 class="section-label">LIBRARY</h2>' in homepage_html
     assert 'class="active">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/search/"' in homepage_html
     assert 'href="https://wastingnotime.org/archives/"' in homepage_html
@@ -160,6 +166,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "--surface: #0b0b0b;" in homepage_html
     assert "--text-400: #a1a1aa;" in homepage_html
     assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in homepage_html
+    assert ".homepage-paths {" in homepage_html
+    assert ".section-label {" in homepage_html
     assert ".site-nav a.active::after {" in homepage_html
     assert "article pre {" in homepage_html
     assert 'font-family: Georgia, "Times New Roman", serif;' not in homepage_html

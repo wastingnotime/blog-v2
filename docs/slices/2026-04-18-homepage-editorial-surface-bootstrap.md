@@ -38,7 +38,8 @@ shared shell recovery:
 - align homepage summary and opening copy with the predecessor's concise
   editorial tone
 - shift homepage section labels toward the compact uppercase style signaled by
-  the original repo
+  the original repo through one explicit homepage label treatment rather than
+  relying only on heading text content
 - keep the existing recent entries, saga summaries, and library link structure
   intact
 
@@ -54,7 +55,12 @@ that:
 
 - the top-of-page summary and opening copy read as concise publication framing
   rather than generic explanatory text
-- homepage section labels use compact editorial presentation
+- the homepage opening surface stays bounded to:
+  - one concise framing sentence
+  - one short wayfinding line that still links to the current search, archive,
+    and library routes
+- homepage section labels use compact editorial presentation through explicit
+  homepage markup and styling
 - the underlying recent-entry and saga-summary data remain unchanged
 
 ### `BuildStaticSite`
@@ -72,6 +78,8 @@ site output such that:
   generic starter scaffold.
 - Tone recovery should happen through concise copy and section presentation, not
   through layout expansion.
+- The slice should preserve the existing homepage heading, route, and data
+  projections while tightening only the reader-facing framing around them.
 - The slice must stay bounded to homepage editorial surface and must not widen
   into broader discovery-model or content-structure changes.
 - Static-hosting compatibility remains a hard constraint.
@@ -99,8 +107,10 @@ Run the scenario CLI against the in-repo content set and inspect `dist/index.htm
 to verify:
 
 - the homepage summary reads with the concise predecessor tone
-- the homepage opening copy is shorter and more editorial
-- section labels present as compact editorial markers
+- the homepage opening surface is shorter and more editorial than the earlier
+  bootstrap copy while still linking to current discovery routes
+- section labels present as compact editorial markers through explicit homepage
+  styling
 - recent entries, saga summaries, and library navigation remain intact
 
 ## Done Criteria
