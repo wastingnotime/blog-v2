@@ -647,6 +647,11 @@ def test_build_static_site_renders_bounded_json_ld_structured_data() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
     homepage_payloads = _json_ld_payloads(pages["index.html"])
+    archives_payloads = _json_ld_payloads(pages["archives/index.html"])
+    search_payloads = _json_ld_payloads(pages["search/index.html"])
+    library_payloads = _json_ld_payloads(pages["library/index.html"])
+    sagas_payloads = _json_ld_payloads(pages["sagas/index.html"])
+    studio_payloads = _json_ld_payloads(pages["studio/index.html"])
     about_payloads = _json_ld_payloads(pages["about/index.html"])
     episode_payloads = _json_ld_payloads(
         pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"]
@@ -665,6 +670,52 @@ def test_build_static_site_renders_bounded_json_ld_structured_data() -> None:
             "query-input": "required name=search_term_string",
         },
     }
+
+    assert archives_payloads == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Archives",
+            "description": "Chronological archive of published writing and saga episodes.",
+            "url": "https://example.com/archives/",
+        }
+    ]
+    assert search_payloads == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Search",
+            "description": "Search the publication using the static search index.",
+            "url": "https://example.com/search/",
+        }
+    ]
+    assert library_payloads == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Library",
+            "description": "A section for navigating the site's ideas.",
+            "url": "https://example.com/library/",
+        }
+    ]
+    assert sagas_payloads == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Sagas",
+            "description": "Browse active sagas and jump into the first episode.",
+            "url": "https://example.com/sagas/",
+        }
+    ]
+    assert studio_payloads == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Studio",
+            "description": "A section surface for work in public.",
+            "url": "https://example.com/studio/",
+        }
+    ]
 
     assert len(about_payloads) == 1
     assert about_payloads[0]["@context"] == "https://schema.org"
@@ -704,10 +755,9 @@ def test_build_static_site_omits_json_ld_for_structural_and_recovery_routes() ->
     pages = build_static_site(_site_config(), _catalog())
 
     assert _json_ld_payloads(pages["404.html"]) == []
-    assert _json_ld_payloads(pages["search/index.html"]) == []
-    assert _json_ld_payloads(pages["archives/index.html"]) == []
-    assert _json_ld_payloads(pages["library/index.html"]) == []
+    assert _json_ld_payloads(pages["library/architecture/index.html"]) == []
     assert _json_ld_payloads(pages["sagas/hireflow/index.html"]) == []
+    assert _json_ld_payloads(pages["sagas/hireflow/the-origin-blueprint/index.html"]) == []
 
 
 def test_build_static_site_generates_search_index() -> None:

@@ -212,6 +212,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/search/" in archive_html
     assert "/library/" in archive_html
     assert "/api/event" not in archive_html
+    assert _json_ld_payloads(archive_html) == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Archives",
+            "description": "Chronological archive of published writing and saga episodes.",
+            "url": "https://wastingnotime.org/archives/",
+        }
+    ]
     assert "Search the publication" in search_html
     assert 'class="active">Search</a>' in search_html
     assert 'id="search-form"' in search_html
@@ -236,6 +245,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/archives/" in search_html
     assert "/library/" in search_html
     assert "/api/event" not in search_html
+    assert _json_ld_payloads(search_html) == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Search",
+            "description": "Search the publication using the static search index.",
+            "url": "https://wastingnotime.org/search/",
+        }
+    ]
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
     assert "<title>About</title>" in feed_xml
@@ -296,16 +314,37 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/archives/"' in library_html
     assert 'href="https://wastingnotime.org/search/"' in library_html
     assert "architecture" in library_html
+    assert _json_ld_payloads(library_html) == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Library",
+            "description": (
+                "An authored index for navigating the site's ideas and implementation threads."
+            ),
+            "url": "https://wastingnotime.org/library/",
+        }
+    ]
     assert "[page] About" in topic_html
     assert "[episode] Second Iteration" in topic_html
     assert "/archives/" in topic_html
     assert "/search/" in topic_html
+    assert _json_ld_payloads(topic_html) == []
     assert "Active sagas" in sagas_index_html
     assert 'class="active">Sagas</a>' in sagas_index_html
     assert "Other ways in" in sagas_index_html
     assert "start reading" in sagas_index_html
     assert "/archives/" in sagas_index_html
     assert "/search/" in sagas_index_html
+    assert _json_ld_payloads(sagas_index_html) == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Sagas",
+            "description": "Browse active sagas and jump into the first episode.",
+            "url": "https://wastingnotime.org/sagas/",
+        }
+    ]
     assert "Timeline" in saga_html
     assert 'class="active">Sagas</a>' in saga_html
     assert 'href="https://wastingnotime.org/feed.xml"' in saga_html
@@ -332,11 +371,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
+    assert _json_ld_payloads(saga_html) == []
     assert "Episodes" in arc_html
     assert "/archives/" in arc_html
     assert "/search/" in arc_html
     assert "[Ep 01] The First Brick" in arc_html
     assert "The opening arc defines why HireFlow exists" in arc_html
+    assert _json_ld_payloads(arc_html) == []
     assert "Why this site exists" in about_html
     assert 'class="active">About</a>' in about_html
     assert 'href="https://wastingnotime.org/feed.xml"' in about_html
@@ -383,6 +424,17 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Other ways in" in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
     assert 'class="active">Studio</a>' in studio_html
+    assert _json_ld_payloads(studio_html) == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Studio",
+            "description": (
+                "A section surface for the work, systems, and experiments evolving in public."
+            ),
+            "url": "https://wastingnotime.org/studio/",
+        }
+    ]
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "1 min read" in episode_html
     assert 'href="https://wastingnotime.org/library/distributed-systems/"' in episode_html

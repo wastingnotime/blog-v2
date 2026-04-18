@@ -384,6 +384,11 @@ def build_archive_page(
         summary="Browse the publication chronologically from newest to oldest.",
         metadata=f"{len(archive_index.entries)} published entries",
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_webpage_structured_data(
+            title="Archives",
+            description="Chronological archive of published writing and saga episodes.",
+            canonical_url=_absolute_url(config.base_url, "/archives/"),
+        ),
         body_html="\n".join(
             [
                 (
@@ -421,6 +426,11 @@ def build_search_page(
         summary="Use the static index to find pages, sagas, arcs, and episodes.",
         metadata="client-side search",
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_webpage_structured_data(
+            title="Search",
+            description="Search the publication using the static search index.",
+            canonical_url=_absolute_url(config.base_url, "/search/"),
+        ),
         body_html=(
             "        <section>\n"
             "          <h2>Search the publication</h2>\n"
@@ -761,6 +771,11 @@ def build_library_page(
         summary=section_page.summary,
         metadata=f"{len(library_catalog.tags)} topics",
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_webpage_structured_data(
+            title=section_page.title,
+            description=section_page.summary,
+            canonical_url=_absolute_url(config.base_url, "/library/"),
+        ),
         body_html=body_html,
     )
 
@@ -826,6 +841,11 @@ def build_sagas_index_page(
         summary="Long-running efforts, grouped into readable narrative threads.",
         metadata=f"{len(sagas_index.sagas)} active sagas",
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_webpage_structured_data(
+            title="Sagas",
+            description="Browse active sagas and jump into the first episode.",
+            canonical_url=_absolute_url(config.base_url, "/sagas/"),
+        ),
         body_html="\n".join(
             [
                 (
@@ -863,6 +883,11 @@ def build_studio_page(
         summary=section_page.summary,
         metadata="section hub",
         footer_attribution=footer_attribution,
+        structured_data_payload=_project_webpage_structured_data(
+            title=section_page.title,
+            description=section_page.summary,
+            canonical_url=_absolute_url(config.base_url, "/studio/"),
+        ),
         body_html="\n".join(
             [
                 (
@@ -1180,6 +1205,21 @@ def _project_article_structured_data(
             "name": publisher_name,
             "url": publisher_url,
         },
+    }
+
+
+def _project_webpage_structured_data(
+    *,
+    title: str,
+    description: str,
+    canonical_url: str,
+) -> dict[str, object]:
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": title,
+        "description": description,
+        "url": canonical_url,
     }
 
 
