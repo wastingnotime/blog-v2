@@ -439,6 +439,10 @@ def build_search_page(
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
             '            <input id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" />\n'
             "          </form>\n"
+            "          <noscript>\n"
+            "            <p>Live search on this page requires JavaScript. If it is unavailable, browse the chronology or move by topic instead.</p>\n"
+            f'            <p><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a> or <a href="{_absolute_url(config.base_url, "/library/")}">explore the library</a>.</p>\n'
+            "          </noscript>\n"
             '          <p id="search-status">Enter a query to search the publication.</p>\n'
             '          <ul id="search-results"></ul>\n'
             "        </section>\n"

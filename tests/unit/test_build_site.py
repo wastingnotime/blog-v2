@@ -102,6 +102,9 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'action="https://example.com/search/"' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
+    assert "<noscript>" in search_html
+    assert "Live search on this page requires JavaScript." in search_html
+    assert "browse the chronology or move by topic instead." in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://example.com/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
@@ -144,6 +147,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert '<link rel="canonical" href="https://example.com/search/" />' in search_html
     assert "/archives/" in search_html
     assert "/library/" in search_html
+    assert 'href="https://example.com/archives/"' in search_html
+    assert 'href="https://example.com/library/"' in search_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert "Other ways in" in library_html

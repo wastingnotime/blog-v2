@@ -228,6 +228,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'action="https://wastingnotime.org/search/"' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
+    assert "<noscript>" in search_html
+    assert "Live search on this page requires JavaScript." in search_html
+    assert "browse the chronology or move by topic instead." in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://wastingnotime.org/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
@@ -270,6 +273,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<link rel="canonical" href="https://wastingnotime.org/search/" />' in search_html
     assert "/archives/" in search_html
     assert "/library/" in search_html
+    assert 'href="https://wastingnotime.org/archives/"' in search_html
+    assert 'href="https://wastingnotime.org/library/"' in search_html
     assert "/api/event" not in search_html
     assert _json_ld_payloads(search_html) == [
         {
