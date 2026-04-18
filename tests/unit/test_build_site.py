@@ -106,6 +106,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "<noscript>" in search_html
     assert "Live search on this page requires JavaScript." in search_html
     assert "browse the chronology or move by topic instead." in search_html
+    assert 'id="search-status" aria-live="polite" aria-atomic="true"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://example.com/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html

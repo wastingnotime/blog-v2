@@ -444,7 +444,7 @@ def build_search_page(
             "            <p>Live search on this page requires JavaScript. If it is unavailable, browse the chronology or move by topic instead.</p>\n"
             f'            <p><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a> or <a href="{_absolute_url(config.base_url, "/library/")}">explore the library</a>.</p>\n'
             "          </noscript>\n"
-            '          <p id="search-status">Enter a query to search the publication.</p>\n'
+            '          <p id="search-status" aria-live="polite" aria-atomic="true">Enter a query to search the publication.</p>\n'
             '          <ul id="search-results"></ul>\n'
             "        </section>\n"
             f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')))}\n"
