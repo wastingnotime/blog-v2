@@ -439,6 +439,7 @@ def build_search_page(
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
             '            <label for="search-query">Search query</label>\n'
             '            <input id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" aria-describedby="search-helper search-status" />\n'
+            '            <button type="submit">Search</button>\n'
             "          </form>\n"
             "          <noscript>\n"
             "            <p>Live search on this page requires JavaScript. If it is unavailable, browse the chronology or move by topic instead.</p>\n"
