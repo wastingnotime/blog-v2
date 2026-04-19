@@ -8,10 +8,11 @@ BASE_URL="${SITE_BASE_URL:-http://localhost:${PORT}/}"
 
 cd "$ROOT_DIR"
 
-exec python -m src.app.interfaces.cli.serve_dev \
+exec python3 -m src.app.interfaces.cli.serve_dev \
   --host "$HOST" \
   --port "$PORT" \
   --base-url "$BASE_URL" \
   --output-dir "${MRL_SERVE_OUTPUT_DIR:-$ROOT_DIR/dist}" \
   --content-root "${MRL_SERVE_CONTENT_ROOT:-$ROOT_DIR/content}" \
-  --identity-assets-dir "${MRL_SERVE_ASSETS_DIR:-$ROOT_DIR/assets/site/current}"
+  --identity-assets-dir "${MRL_SERVE_ASSETS_DIR:-$ROOT_DIR/assets/site/current}" \
+  "$@"
