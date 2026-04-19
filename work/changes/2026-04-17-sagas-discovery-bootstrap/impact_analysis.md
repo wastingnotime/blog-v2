@@ -2,15 +2,15 @@
 
 ## Summary
 
-The next slice should update the sagas hub so its discovery guidance matches
-the now-expanded static publication surface.
+This slice updates the sagas hub so its discovery guidance matches the
+expanded static publication surface.
 
-Current observed gap:
+Current observed contract:
 
-- the sagas page still acts only as an active-saga listing surface
-- `/archives/` and `/search/` now exist as stable reader-facing routes
-- the sagas hub therefore understates the actual ways readers can move through
-  the publication
+- the sagas page acts as an active-saga listing surface with discovery links
+- `/archives/` and `/search/` exist as stable reader-facing routes
+- the sagas hub reflects the actual ways readers can move through the
+  publication
 
 ## Impacted Areas
 
