@@ -610,14 +610,14 @@ def build_search_page(
             "                item.appendChild(summary);\n"
             "              }\n"
             "              if ((record.tags || []).length) {\n"
-            "                const tags = document.createElement('p');\n"
+            "                const tags = document.createElement('div');\n"
             "                tags.className = 'search-result-tags';\n"
-            "                tags.appendChild(document.createTextNode('Tags: '));\n"
-            "                record.tags.forEach((tag, index) => {\n"
-            "                  if (index > 0) {\n"
-            "                    tags.appendChild(document.createTextNode(', '));\n"
-            "                  }\n"
-            "                  tags.appendChild(createHighlightedFragment(tag, normalizedQuery));\n"
+            "                record.tags.forEach((tag) => {\n"
+            "                  const chip = document.createElement('span');\n"
+            "                  chip.className = 'search-result-tag-chip';\n"
+            "                  chip.appendChild(document.createTextNode('#'));\n"
+            "                  chip.appendChild(createHighlightedFragment(tag, normalizedQuery));\n"
+            "                  tags.appendChild(chip);\n"
             "                });\n"
             "                item.appendChild(tags);\n"
             "              }\n"
@@ -1397,9 +1397,20 @@ def _render_document(
         line-height: 1.6;
       }}
       .search-result-tags {{
-        margin: 0.35rem 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin: 0.5rem 0 0;
+      }}
+      .search-result-tag-chip {{
+        display: inline-block;
+        padding: 0.1rem 0.55rem;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
         color: var(--text-400);
-        font-size: 0.82rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: lowercase;
       }}
       .not-found-list {{
         list-style: none;

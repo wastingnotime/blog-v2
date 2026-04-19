@@ -313,6 +313,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".search-result-meta {" in search_html
     assert ".search-result-summary {" in search_html
     assert ".search-result-tags {" in search_html
+    assert ".search-result-tag-chip {" in search_html
     assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
     assert "item.className = 'search-result-item';" in search_html
     assert "link.className = 'search-result-link';" in search_html
@@ -323,9 +324,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "meta.appendChild(createHighlightedFragment(record.context, normalizedQuery));" in search_html
     assert "summary.appendChild(createHighlightedFragment(record.summary, normalizedQuery));" in search_html
     assert "if ((record.tags || []).length) {" in search_html
-    assert "tags.appendChild(document.createTextNode('Tags: '));" in search_html
-    assert "record.tags.forEach((tag, index) => {" in search_html
-    assert "tags.appendChild(createHighlightedFragment(tag, normalizedQuery));" in search_html
+    assert "const chip = document.createElement('span');" in search_html
+    assert "chip.className = 'search-result-tag-chip';" in search_html
+    assert "chip.appendChild(document.createTextNode('#'));" in search_html
+    assert "record.tags.forEach((tag) => {" in search_html
+    assert "chip.appendChild(createHighlightedFragment(tag, normalizedQuery));" in search_html
+    assert "tags.appendChild(chip);" in search_html
     assert "nextUrl.searchParams.set('q', normalizedQuery);" in search_html
     assert "nextUrl.searchParams.delete('q');" in search_html
     assert "window.history.replaceState(null, '', nextPath);" in search_html
