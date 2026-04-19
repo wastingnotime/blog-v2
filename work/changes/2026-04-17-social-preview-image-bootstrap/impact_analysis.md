@@ -2,15 +2,14 @@
 
 ## Summary
 
-The next slice should add one bounded social preview image so the generated
-static publication completes the shared image side of its social metadata
-surface.
+This slice adds one bounded social preview image so the generated static
+publication completes the shared image side of its social metadata surface.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include bounded Open Graph and Twitter text metadata
-- the shared head still omits `og:image` and `twitter:image`
-- the generated root artifact set contains no shared social preview image
+- generated pages include bounded Open Graph and Twitter text metadata
+- the shared head includes `og:image` and `twitter:image`
+- the generated root artifact set includes a shared social preview image
 
 ## Impacted Areas
 
@@ -21,8 +20,8 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains one new static asset plus additional head metadata. No new
-route or browser-side runtime behavior is required.
+The build gains one static asset plus additional head metadata. No new route
+or browser-side runtime behavior is required.
 
 ## Risks
 
