@@ -2,16 +2,16 @@
 
 ## Summary
 
-The next slice should add bounded Apple mobile-web-app metadata so the
-generated static publication completes another small browser-facing identity
-surface using inputs it already owns.
+This slice adds bounded Apple mobile-web-app metadata so the generated static
+publication completes another small browser-facing identity surface using
+inputs it already owns.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include theme-color, manifest, and identity assets
-- the shared head still omits `apple-mobile-web-app-*` metadata
-- the publication already has a stable title, touch icon, and bounded color
-  identity that can support one deterministic mobile-web-app contract
+- generated pages include theme-color, manifest, and identity assets
+- the shared head includes `apple-mobile-web-app-*` metadata
+- the publication has a stable title, touch icon, and bounded color identity
+  that support one deterministic mobile-web-app contract
 
 ## Impacted Areas
 
@@ -22,7 +22,7 @@ Current observed gap:
 ## Boundary Change
 
 The build gains no new routes or assets. The boundary change is limited to
-additional browser-facing metadata in generated HTML heads.
+browser-facing metadata already present in generated HTML heads.
 
 ## Risks
 
