@@ -24,7 +24,7 @@ Current observed gap:
 The build gains no new route, runtime, or destination data. The boundary
 change is limited to `/studio/` discovery presentation:
 
-- the studio page gets one explicit studio-row markup contract
+- the studio page gets one explicit studio-row shell contract
 - current destination labels and routes remain unchanged
 - shared discovery surfaces on other pages remain unchanged
 

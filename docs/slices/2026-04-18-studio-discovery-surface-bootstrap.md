@@ -34,7 +34,7 @@ the shared generic discovery block:
 This slice restores the minimum studio continuity needed for the current
 publication:
 
-- render the existing studio destinations through explicit hub-row markup
+- render the existing studio destinations through an explicit studio row shell
 - keep the same four discovery routes and labels
 - preserve the current authored studio intro and page metadata
 
@@ -48,7 +48,7 @@ information, or redesign of the shared discovery surface used elsewhere.
 Given the existing studio destinations, render deterministic studio markup such
 that:
 
-- each destination appears as one clear navigation row
+- each destination appears as one clear navigation row with label and path
 - the current labels and destination routes remain unchanged
 - the rows read as part of the studio page rather than a generic fallback
   surface
@@ -69,6 +69,8 @@ site output such that:
 - The slice stays bounded to the studio page and must not silently redesign the
   shared discovery surface used elsewhere.
 - Existing destination labels and routes remain the source of truth.
+- The row shell should remain studio-only and not affect the shared discovery
+  surface.
 - Static-hosting compatibility remains a hard constraint.
 
 ## Required Ports
