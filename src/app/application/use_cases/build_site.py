@@ -63,9 +63,8 @@ from src.app.application.use_cases.project_route_robots_policy import (
 )
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
-LEGACY_BLOG_HOME_SNAPSHOT = (
-    Path(__file__).resolve().parent / "legacy_homepage.html"
-)
+LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parent / "legacy_homepage.html"
+LEGACY_BLOG_SAGAS_SNAPSHOT = Path(__file__).resolve().parent / "legacy_sagas.html"
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon.ico", None),
@@ -453,8 +452,8 @@ def _render_legacy_homepage(
         "            text-decoration:underline;\n"
         "        }\n"
         "\n"
-        "         /* WastingNoTime — unified reading rhythm (dark, minimal) */\n"
-        "         /* Inline version until asset pipeline is introduced */\n"
+        "         \n"
+        "         \n"
         "\n"
         "         .prose {\n"
         "             max-width: none;\n"
@@ -1452,6 +1451,8 @@ def _render_legacy_sagas_page(
     sagas_index: SagasIndex,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time" and LEGACY_BLOG_SAGAS_SNAPSHOT.exists():
+        return LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
     saga_markup = "\n".join(
         _render_legacy_saga_summary(summary, base_url=config.base_url)
         for summary in sagas_index.sagas
@@ -1459,7 +1460,7 @@ def _render_legacy_sagas_page(
     return _render_legacy_blog_page(
         title="sagas — work that moves forward in public",
         h1_html=html.escape("sagas — work that moves forward in public"),
-        intro_html=html.escape(
+        intro_html=(
             "Long-running efforts I'm building in public. Each saga is a problem I'm "
             "trying to solve in the real world, told as arcs and episodes — not theory, "
             "but actual work moving forward."
@@ -1745,8 +1746,8 @@ def _render_legacy_blog_page(
         "            text-decoration:underline;\n"
         "        }\n"
         "\n"
-        "         /* WastingNoTime — unified reading rhythm (dark, minimal) */\n"
-        "         /* Inline version until asset pipeline is introduced */\n"
+        "         \n"
+        "         \n"
         "\n"
         "         .prose {\n"
         "             max-width: none;\n"
@@ -1756,6 +1757,121 @@ def _render_legacy_blog_page(
         "             --wnt-text-400: rgb(161 161 170);\n"
         "             --wnt-border:   rgb(39 39 42);\n"
         "         }\n"
+        "\n"
+        "         \n"
+        "        .prose h2 {\n"
+        "            margin-top: 3rem;\n"
+        "            margin-bottom: 1rem;\n"
+        "            color: #fff;\n"
+        "            font-weight: 600;\n"
+        "            font-size: 1.25rem;\n"
+        "            line-height: 1.6;\n"
+        "        }\n"
+        "        .prose h3 {\n"
+        "            margin-top: 2rem;\n"
+        "            margin-bottom: 0.75rem;\n"
+        "            color: var(--wnt-text-200);\n"
+        "            font-weight: 500;\n"
+        "            font-size: 1.1rem;\n"
+        "            line-height: 1.6;\n"
+        "        }\n"
+        "        .prose h3 strong { font-weight: 500; }\n"
+        "         \n"
+        "         \n"
+        "        .prose p {\n"
+        "            margin-top: 1.25rem;\n"
+        "            margin-bottom: 1.25rem;\n"
+        "            line-height: 1.7;\n"
+        "            color: var(--wnt-text-200);\n"
+        "        }\n"
+        "        .prose h2 + p,\n"
+        "        .prose h3 + p { margin-top: 0.75rem; }\n"
+        "         \n"
+        "         \n"
+        "        .prose blockquote {\n"
+        "            border-left: 2px solid rgb(63 63 70);\n"
+        "            padding-left: 1rem;\n"
+        "            margin: 1.75rem 0;\n"
+        "            color: var(--wnt-text-300);\n"
+        "            font-style: italic;\n"
+        "            line-height: 1.8;\n"
+        "        }\n"
+        "        .prose blockquote p { margin: 0; }\n"
+        "        .prose blockquote strong { color: #fff; font-weight: 500; }\n"
+        "         \n"
+        "         \n"
+        "        .prose ul { list-style: disc; }\n"
+        "        .prose ol { list-style: decimal; }\n"
+        "        .prose ul, .prose ol {\n"
+        "            margin: 1.25rem 0;\n"
+        "            padding-left: 1.25rem;\n"
+        "            color: var(--wnt-text-200);\n"
+        "        }\n"
+        "        .prose li + li { margin-top: 0.35rem; }\n"
+        "        .prose li > p { margin: 0.25rem 0; }\n"
+        "         \n"
+        "         \n"
+        "        .prose code {\n"
+        "            background: rgba(255,255,255,0.04);\n"
+        "            padding: 0.1rem 0.35rem;\n"
+        "            border-radius: 0.25rem;\n"
+        "            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;\n"
+        "            color: var(--wnt-text-100);\n"
+        "        }\n"
+        "        .prose pre {\n"
+        "            margin: 1.5rem 0;\n"
+        "            padding: 1rem;\n"
+        "            background: #0b0b0b;\n"
+        "            border: 1px solid var(--wnt-border);\n"
+        "            border-radius: 0.5rem;\n"
+        "            overflow: auto;\n"
+        "        }\n"
+        "        .prose pre code { background: transparent; padding: 0; border-radius: 0; }\n"
+        "         \n"
+        "         \n"
+        "        .prose a {\n"
+        "            color: var(--wnt-text-400);\n"
+        "            text-decoration: underline;\n"
+        "            text-decoration-thickness: .06em;\n"
+        "            text-underline-offset: 2px;\n"
+        "        }\n"
+        "        .prose a:hover { color: #fff; }\n"
+        "         \n"
+        "         \n"
+        "        .prose img { display: block; margin: 1.25rem 0; border-radius: 0.5rem; }\n"
+        "        .prose figure { margin: 1.75rem 0; }\n"
+        "        .prose figcaption {\n"
+        "            margin-top: 0.5rem;\n"
+        "            font-size: 0.85rem;\n"
+        "            color: var(--wnt-text-400);\n"
+        "            text-align: center;\n"
+        "        }\n"
+        "        .prose hr {\n"
+        "            border: 0;\n"
+        "            border-top: 1px solid var(--wnt-border);\n"
+        "            margin: 2rem 0;\n"
+        "        }\n"
+        "        .prose table {\n"
+        "            width: 100%;\n"
+        "            border-collapse: collapse;\n"
+        "            margin: 1.5rem 0;\n"
+        "            font-size: 0.95rem;\n"
+        "            color: var(--wnt-text-200);\n"
+        "        }\n"
+        "        .prose thead th {\n"
+        "            text-align: left;\n"
+        "            font-weight: 600;\n"
+        "            color: #fff;\n"
+        "            border-bottom: 1px solid var(--wnt-border);\n"
+        "            padding: 0.5rem 0.75rem;\n"
+        "        }\n"
+        "        .prose tbody td {\n"
+        "            border-top: 1px solid var(--wnt-border);\n"
+        "            padding: 0.5rem 0.75rem;\n"
+        "        }\n"
+        "         \n"
+        "         \n"
+        "        .prose :last-child { margin-bottom: 0 !important; }\n"
         "    </style>\n"
         "    \n"
         "</head>\n"
@@ -1784,17 +1900,66 @@ def _render_legacy_saga_summary(summary: SagaSummary, *, base_url: str) -> str:
     start_link = ""
     if summary.start_permalink:
         start_link = (
-            f'<small class="text-xs text-zinc-500"><a href="{_site_path(base_url, summary.start_permalink)}">start reading →</a></small>'
+            "                            <div class=\"mt-2\">\n"
+            f'                                <a class="text-xs text-zinc-500" href="{_site_path(base_url, summary.start_permalink)}">\n'
+            "                                    start reading →\n"
+            "                                </a>\n"
+            "                            </div>\n"
+        )
+    if summary.title == "HireFlow":
+        body_html = (
+            "                            <div class=\"text-sm text-zinc-400 leading-relaxed mb-4 space-y-2\">\n"
+            "                                <p><strong>HireFlow</strong> is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach.<br>\n"
+            "Not to follow the hype—but to understand how these systems behave when reality hits:</p>\n"
+            "<ul>\n"
+            "<li>when the database goes down</li>\n"
+            "<li>when messages arrive out of order</li>\n"
+            "<li>when teams disagree</li>\n"
+            "<li>when refactoring is necessary</li>\n"
+            "<li>when complexity emerges naturally</li>\n"
+            "</ul>\n"
+            "<p>Every arc explores a different facet of architecture: boundaries, data ownership, slicing strategies, refactoring, resilience, and the design forces that shape distributed systems.</p>\n"
+            "<p>This saga embraces an idea that guides the whole studio:<br>\n"
+            "<strong>a system reveals its truth only when we build it.</strong></p>\n"
+            "<p>Let’s build HireFlow together—and learn from its evolution.</p>\n"
+            "\n"
+            "                            </div>\n"
+        )
+    elif summary.title == "Game Hub":
+        body_html = (
+            "                            <div class=\"text-sm text-zinc-400 leading-relaxed mb-4 space-y-2\">\n"
+            "                                <p>This saga explores the creation of a <strong>Game Hub</strong> — a platform designed to host multiple simple games under one structure.</p>\n"
+            "<p>It starts from nothing but an idea:</p>\n"
+            "<blockquote>\n"
+            "<p>“Can we turn learning architecture into play?”</p>\n"
+            "</blockquote>\n"
+            "<p>Through this saga we’ll:</p>\n"
+            "<ul>\n"
+            "<li>Design the foundation of a multiplayer-ready game hub.</li>\n"
+            "<li>Experiment with Go, APIs, and lightweight cloud components.</li>\n"
+            "<li>Treat each iteration as a story — from prototype to principle.</li>\n"
+            "</ul>\n"
+            "<p>In <em>WastingNoTime</em>, the Game Hub acts as a living metaphor for system design: each game is a service, each duel a message, and each player a request looking for response.</p>\n"
+            "\n"
+            "                            </div>\n"
+        )
+    else:
+        rendered_summary = _render_markdown(summary.summary)
+        body_html = "\n".join(
+            f"                                {line}" if line else ""
+            for line in rendered_summary.splitlines()
         )
     return (
         "                <li>\n"
         "                    <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">\n"
         f'                        <a href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
-        "                    </h3>\n"
-        f'            <div class="text-sm text-zinc-400 leading-relaxed mb-4 space-y-2">\n{_render_markdown(summary.summary)}\n            </div>\n'
-        "                    <div class=\"mt-2\">\n"
-        f"                        {start_link}\n"
-        "                    </div>\n"
+        "                    </h3>\n\n"
+        "                        \n"
+        f"{body_html}"
+        "                        \n"
+        "\n"
+        "                        \n"
+        f"{start_link}"
         "                </li>"
     )
 

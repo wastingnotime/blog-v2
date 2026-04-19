@@ -60,7 +60,6 @@ def _first_episode_permalink(
     candidate_arcs.sort(key=lambda arc_view: (arc_view.arc.date, arc_view.arc.slug))
 
     for arc_view in candidate_arcs:
-        if arc_view.episodes:
-            return arc_view.episodes[0].permalink
+        return arc_view.arc.permalink
 
     return None

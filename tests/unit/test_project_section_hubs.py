@@ -6,7 +6,7 @@ from src.app.application.use_cases.project_section_hubs import project_sagas_ind
 from src.app.domain.models.content import Arc, ContentCatalog, Episode, Saga
 
 
-def test_project_sagas_index_uses_first_episode_as_start_reading() -> None:
+def test_project_sagas_index_uses_first_arc_as_start_reading() -> None:
     catalog = _catalog()
     arc_views = project_arc_views(catalog)
     saga_views = project_saga_views(catalog, arc_views)
@@ -16,7 +16,7 @@ def test_project_sagas_index_uses_first_episode_as_start_reading() -> None:
     assert sagas_index.sagas[0].title == "HireFlow"
     assert (
         sagas_index.sagas[0].start_permalink
-        == "/sagas/hireflow/the-origin-blueprint/the-first-brick/"
+        == "/sagas/hireflow/the-origin-blueprint/"
     )
 
 
