@@ -42,6 +42,7 @@ current publication:
 
 - `/search/` should both read and write the same `?q=` contract
 - interactive search should keep results and browser URL state aligned
+- the page should normalize an empty query to `/search/` on load
 - canonical metadata should remain centered on `/search/` rather than creating
   per-query canonical documents
 
@@ -70,6 +71,7 @@ that:
 - the search control can express a shareable `GET`-style query contract
 - the page keeps using the existing static `search.json` artifact for result
   filtering
+- the loaded route normalizes an empty query parameter back to `/search/`
 - route behavior remains valid under static GitHub Pages hosting
 
 ## Main Business Rules

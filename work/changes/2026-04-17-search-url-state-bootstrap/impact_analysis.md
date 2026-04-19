@@ -11,6 +11,7 @@ Current observed gap:
 - `/search/` now hydrates from `?q=` on first load
 - once a reader types a new query, the page filters results in place but leaves
   the browser URL behind
+- an empty `?q=` load still needs to normalize back to `/search/`
 
 That creates one bounded mismatch in the current static search model: the site
 can advertise and accept a deterministic search-entry URL, but the page itself
