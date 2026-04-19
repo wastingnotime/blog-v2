@@ -35,7 +35,7 @@ This slice restores the minimum empty-results recovery behavior needed for the
 current static publication:
 
 - render deterministic recovery guidance when the current query yields no
-  matches
+  matches through an explicit recovery shell
 - point readers toward stable static routes such as archives and library
 - keep the change bounded to zero-results recovery rather than changing search
   ranking, indexing, or route structure
@@ -51,7 +51,8 @@ Given the current `/search/` route and a query with zero matches, render
 bounded recovery behavior such that:
 
 - the page states clearly that no matches were found
-- the recovery surface points readers to stable reader-facing alternatives
+- the recovery surface points readers to stable reader-facing alternatives via
+  explicit rows
 - the behavior remains deterministic for the same query and repository state
 
 ### `RenderSearchPage`
@@ -73,6 +74,8 @@ deterministic client-side search behavior such that:
   `/archives/` and `/library/`.
 - The slice stays bounded to zero-results recovery and must not widen into
   generated suggestions, alternative queries, or backend search changes.
+- The recovery shell should remain search-only and not affect successful
+  results.
 - GitHub Pages compatibility remains a hard constraint.
 
 ## Required Ports
