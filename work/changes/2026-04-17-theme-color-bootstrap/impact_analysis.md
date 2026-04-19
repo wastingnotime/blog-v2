@@ -2,16 +2,14 @@
 
 ## Summary
 
-The next slice should add bounded browser color metadata so the generated static
-publication completes its shared identity contract beyond icons, manifest links,
-and social metadata.
+The generated static publication now exposes the bounded browser color
+metadata contract.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages still omit a `theme-color` meta tag
-- `site.webmanifest` still lacks `theme_color` and `background_color`
-- the publication already has a stable shared palette, so the missing fields are
-  now a metadata gap rather than a design gap
+- generated pages include a `theme-color` meta tag
+- `site.webmanifest` includes `theme_color` and `background_color`
+- the publication uses one stable shared palette across the head and manifest
 
 ## Impacted Areas
 
@@ -21,14 +19,14 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains no new routes or assets. The boundary change is limited to
-additional browser-facing metadata in HTML heads and `site.webmanifest`.
+The build already carries the needed metadata. The boundary is limited to the
+browser-facing color fields in HTML heads and `site.webmanifest`.
 
 ## Risks
 
 - scope could drift into visual redesign or dark-mode policy instead of staying
   bounded to metadata
-- tests could overfit exact CSS implementation details rather than the shared
+- tests could overfit exact CSS implementation details instead of the shared
   color contract
 - manifest and head color values could drift if they stop deriving from one
   bounded identity decision
@@ -36,6 +34,6 @@ additional browser-facing metadata in HTML heads and `site.webmanifest`.
 ## Follow-On Pressure
 
 - a later slice may revisit whether platform-specific mobile-web-app metadata is
-  justified
+  still warranted
 - release review should verify that shared color metadata remains aligned with
   the publication's stable visual identity
