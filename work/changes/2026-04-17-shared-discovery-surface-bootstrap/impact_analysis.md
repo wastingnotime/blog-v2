@@ -2,16 +2,16 @@
 
 ## Summary
 
-The next slice should replace repeated route-discovery fragments with one
-bounded shared discovery surface for generated pages.
+This slice replaces repeated route-discovery fragments with one bounded shared
+discovery surface for generated pages.
 
-Current observed gap:
+Current observed contract:
 
-- recent slices restored discovery links across many routes
-- that behavior now lives in repeated hard-coded HTML fragments inside
-  multiple page builders
-- the publication therefore risks copy drift and inconsistent discovery
-  structure even when the route set itself is stable
+- discovery links are rendered across many routes
+- that behavior lives in one shared helper rather than repeated hard-coded HTML
+  fragments
+- the publication keeps discovery structure aligned even when the route set is
+  stable
 
 ## Impacted Areas
 
