@@ -116,10 +116,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<h2 class="section-label">RECENT</h2>' in homepage_html
     assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
     assert '<ul class="homepage-list">' in homepage_html
-    assert '<div class="homepage-recent-row">' in homepage_html
     assert 'class="homepage-link"' in homepage_html
-    assert 'class="homepage-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in homepage_html
-    assert 'class="homepage-saga-status">2 episodes - last release 2025-11-15 - in-progress</small>' in homepage_html
+    assert '<small class="homepage-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in homepage_html
+    assert '<p class="homepage-summary">The second pass gives the saga explicit navigation instead of isolated pages.</p>' in homepage_html
+    assert '<small class="homepage-saga-status">2 episodes - last release 2025-11-15 - in-progress</small>' in homepage_html
     assert 'class="site-nav-link active" aria-current="page">HOME</a>' in homepage_html
     assert '<span class="site-nav-separator" aria-hidden="true">/</span>' in homepage_html
     assert 'href="/search/"' in homepage_html
@@ -169,7 +169,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".homepage-list {" in homepage_html
     assert ".homepage-meta {" in homepage_html
     assert ".homepage-summary {" in homepage_html
-    assert ".homepage-saga-row {" in homepage_html
     assert ".homepage-saga-status {" in homepage_html
     assert ".section-label {" in homepage_html
     assert ".site-nav-link.active {" in homepage_html
@@ -216,7 +215,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
-    assert "3 recent entries shown" in homepage_html
+    assert "recent entries shown" not in homepage_html
     assert "2 episodes - last release 2025-11-15 - in-progress" in homepage_html
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html

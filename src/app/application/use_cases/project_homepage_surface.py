@@ -31,17 +31,7 @@ def project_homepage_surface(
 
 
 def _build_recent_entries(catalog: ContentCatalog) -> list[RecentContent]:
-    items: list[RecentContent] = [
-        RecentContent(
-            title=page.title,
-            kind="page",
-            summary=page.summary,
-            date=page.date,
-            permalink=page.permalink,
-        )
-        for page in catalog.pages
-    ]
-    items.extend(
+    items = [
         RecentContent(
             title=episode.title,
             kind="episode",
@@ -52,7 +42,7 @@ def _build_recent_entries(catalog: ContentCatalog) -> list[RecentContent]:
             arc_title=episode.arc_title,
         )
         for episode in catalog.episodes
-    )
+    ]
     return sorted(items, key=lambda item: (item.date, item.permalink), reverse=True)
 
 

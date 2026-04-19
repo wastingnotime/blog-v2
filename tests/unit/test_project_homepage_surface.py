@@ -25,6 +25,7 @@ def test_project_homepage_surface_limits_recent_entries_deterministically() -> N
         "Second Iteration",
         "The First Brick",
     )
+    assert all(entry.kind == "episode" for entry in homepage.recent_entries)
 
 
 def test_project_homepage_surface_summarizes_saga_status() -> None:
@@ -50,6 +51,14 @@ def _catalog() -> ContentCatalog:
                 date="2026-04-10",
                 body_markdown="About body.",
                 tags=("architecture",),
+            ),
+            Page(
+                title="Notes",
+                slug="notes",
+                summary="Standalone note.",
+                date="2026-04-15",
+                body_markdown="Notes body.",
+                tags=("writing",),
             ),
         ),
         sagas=(

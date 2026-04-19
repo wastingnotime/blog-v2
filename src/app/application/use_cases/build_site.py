@@ -284,12 +284,6 @@ def build_homepage(
         _render_homepage_saga_summary(summary, base_url=config.base_url)
         for summary in homepage_surface.saga_summaries
     )
-    recent_metadata = (
-        f"{len(recent_items)} recent entries shown"
-        if recent_items
-        else "no recent entries yet"
-    )
-
     return _render_document(
         config=config,
         title=config.title,
@@ -298,7 +292,7 @@ def build_homepage(
         eyebrow="Home",
         heading=config.title,
         summary="Experiments in architecture, focus, and growth — built in public, one saga at a time.",
-        metadata=recent_metadata,
+        metadata="",
         footer_attribution=footer_attribution,
         structured_data_payload=_project_website_structured_data(
             site_title=config.title,
@@ -1191,6 +1185,9 @@ def _render_document(
       .meta, .summary {{
         color: var(--soft);
       }}
+      .meta:empty {{
+        display: none;
+      }}
       .section-label {{
         margin: 0 0 0.75rem;
         color: var(--muted);
@@ -1216,25 +1213,20 @@ def _render_document(
         padding: 0;
       }}
       .homepage-list > li + li {{
-        margin-top: 1rem;
-      }}
-      .homepage-recent-row {{
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 0.45rem;
+        margin-top: 0.9rem;
       }}
       .homepage-link {{
+        display: block;
         color: #d4d4d8;
       }}
       .homepage-meta {{
         display: block;
-        margin-top: 0;
+        margin-top: 0.25rem;
         color: var(--muted);
         font-size: 0.8rem;
       }}
       .homepage-summary {{
-        margin: 0.35rem 0 0;
+        margin: 0.4rem 0 0;
         color: var(--muted);
         font-size: 0.92rem;
         line-height: 1.6;
@@ -2008,11 +2000,9 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
 
     return (
         "          <li>\n"
-        '            <div class="homepage-recent-row">\n'
-                f'              <a class="homepage-link" href="{_site_path(base_url, item.permalink)}">[{html.escape(item.kind)}] '
+        f'            <a class="homepage-link" href="{_site_path(base_url, item.permalink)}">[{html.escape(item.kind)}] '
         f"{html.escape(item.title)}</a>\n"
-        f'              <small class="homepage-meta">{html.escape(item.date)}{html.escape(context)}</small>\n'
-        "            </div>\n"
+        f'            <small class="homepage-meta">{html.escape(item.date)}{html.escape(context)}</small>\n'
         f'            <p class="homepage-summary">{html.escape(item.summary)}</p>\n'
         "          </li>"
     )
