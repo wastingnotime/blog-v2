@@ -331,12 +331,14 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert "Page Not Found" in not_found_html
     assert "Try one of these instead" in not_found_html
     assert '<ul class="not-found-list">' in not_found_html
+    assert '<div class="not-found-row">' in not_found_html
     assert '<a class="not-found-link" href="https://example.com/">Return home</a>' in not_found_html
     assert '<small class="not-found-path">/</small>' in not_found_html
     assert 'href="https://example.com/search/"' in not_found_html
     assert 'href="https://example.com/archives/"' in not_found_html
     assert 'href="https://example.com/sagas/"' in not_found_html
     assert 'href="https://example.com/library/"' in not_found_html
+    assert ".not-found-row {" in not_found_html
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<title>Second Iteration</title>" in feed_xml
     assert "<link>https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml

@@ -339,8 +339,10 @@ def build_not_found_page(
     recovery_rows = "\n".join(
         (
             "            <li>\n"
-            f'              <a class="not-found-link" href="{_absolute_url(config.base_url, path)}">{html.escape(label)}</a>\n'
-            f'              <small class="not-found-path">{html.escape(path)}</small>\n'
+            '              <div class="not-found-row">\n'
+            f'                <a class="not-found-link" href="{_absolute_url(config.base_url, path)}">{html.escape(label)}</a>\n'
+            f'                <small class="not-found-path">{html.escape(path)}</small>\n'
+            "              </div>\n"
             "            </li>"
         )
         for label, path in (
@@ -1444,12 +1446,18 @@ def _render_document(
       .not-found-list > li + li {{
         margin-top: 0.85rem;
       }}
+      .not-found-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
       .not-found-link {{
         color: var(--text-100);
       }}
       .not-found-path {{
         display: block;
-        margin-top: 0.15rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
