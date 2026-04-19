@@ -122,7 +122,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert '<h2 class="section-label">RECENT</h2>' in homepage_html
     assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
-    assert '<h2 class="section-label">LIBRARY</h2>' in homepage_html
     assert '<ul class="homepage-list">' in homepage_html
     assert '<div class="homepage-recent-row">' in homepage_html
     assert 'class="homepage-link"' in homepage_html

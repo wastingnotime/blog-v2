@@ -292,7 +292,6 @@ def test_build_static_site_refines_homepage_editorial_surface() -> None:
     ) in html
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
-    assert '<h2 class="section-label">LIBRARY</h2>' in html
     assert 'class="homepage-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in html
     assert 'class="homepage-saga-row">' in html
     assert 'class="homepage-saga-status">2 episodes - last release 2026-04-13 - in-progress</small>' in html
@@ -442,7 +441,6 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert 'href="/archives/"' in html
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
-    assert '<h2 class="section-label">LIBRARY</h2>' in html
     assert '<a class="homepage-link" href="/sagas/hireflow/">HireFlow</a>' in html
     assert "2 episodes - last release 2026-04-13 - in-progress" in html
     assert "Deployment target:" not in html

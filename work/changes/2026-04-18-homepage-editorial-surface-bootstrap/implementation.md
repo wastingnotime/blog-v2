@@ -17,8 +17,9 @@ without changing homepage data, routing, or the shared static build model.
   - renders the shorter summary `Architecture, focus, and growth in public.`
   - renders one concise editorial intro sentence
   - renders a compact linked wayfinding line for search, archives, and library
-  - applies a dedicated `section-label` treatment to `RECENT`, `SAGAS`, and
-    `LIBRARY`
+  - applies a dedicated `section-label` treatment to `RECENT` and `SAGAS`
+  - keeps the library route discoverable through the shared nav and the
+    wayfinding line instead of a separate homepage section
 - updated unit and integration assertions to cover the refined homepage copy
   and homepage-only styling hooks
 

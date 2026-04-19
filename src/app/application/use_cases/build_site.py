@@ -323,11 +323,6 @@ def build_homepage(
             "          </ul>\n"
             f'          <a href="{_site_path(config.base_url, "/sagas/")}">Browse all sagas</a>\n'
             "        </section>\n"
-            "        <section>\n"
-            "          <h2 class=\"section-label\">LIBRARY</h2>\n"
-            "          <p>Browse ideas and implementation threads by topic.</p>\n"
-            f'          <a href="{_site_path(config.base_url, "/library/")}">Explore the library</a>\n'
-            "        </section>"
         ),
     )
 
