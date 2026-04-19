@@ -34,9 +34,9 @@ the publication.
 
 This slice restores the minimum continuity needed for the current publication:
 
-- render saga arcs through explicit navigation-row hooks
-- render saga timeline entries through explicit navigation-row hooks
-- render arc episode rows through explicit navigation-row hooks
+- render saga arcs through explicit navigation-row shells
+- render saga timeline entries through explicit navigation-row shells
+- render arc episode rows through explicit navigation-row shells
 - preserve the current routes, labels, dates, counts, and discovery links
 
 This slice does not attempt to change saga sequencing, introduce new metadata,
@@ -49,11 +49,12 @@ or redesign the information architecture of sagas.
 Given the existing saga and arc views, render deterministic navigation markup
 such that:
 
-- each arc row has one clear primary label and one supporting status line
+- each arc row has one clear primary label and one supporting status line in a
+  dedicated row shell
 - each timeline row has one clear primary episode line and one supporting
-  chronology line
+  chronology line in a dedicated row shell
 - each arc episode row has one clear primary episode line and one supporting
-  date line
+  date line in a dedicated row shell
 
 ### `BuildStaticSite`
 
@@ -71,6 +72,7 @@ site output such that:
 - The slice stays bounded to presentation and must not widen into narrative or
   chronology rule changes.
 - Existing saga, arc, and episode data remain the source of truth.
+- The row shells should remain saga-only and not affect other list surfaces.
 - Static-hosting compatibility remains a hard constraint.
 
 ## Required Ports

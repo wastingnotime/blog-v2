@@ -26,9 +26,9 @@ Current observed gap:
 The build gains no new route, runtime, or content model. The boundary change is
 limited to presentation on saga and arc routes:
 
-- arc rows get explicit primary-label and supporting-meta hooks
-- timeline rows get explicit primary-label and supporting-meta hooks
-- arc episode rows get explicit primary-label and supporting-meta hooks
+- arc rows get explicit primary-label and supporting-meta row shells
+- timeline rows get explicit primary-label and supporting-meta row shells
+- arc episode rows get explicit primary-label and supporting-meta row shells
 - chronology, counts, labels, and discovery links remain unchanged
 
 ## Risks
