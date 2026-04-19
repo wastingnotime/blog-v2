@@ -841,6 +841,7 @@ def build_saga_page(
                         ("Browse the chronology", "/archives/"),
                         ("Search across the publication", "/search/"),
                     ),
+                    section_class="saga-discovery-shell",
                 ),
             ]
         ),
@@ -892,6 +893,7 @@ def build_arc_page(
                         ("Browse the chronology", "/archives/"),
                         ("Search across the publication", "/search/"),
                     ),
+                    section_class="saga-discovery-shell",
                 ),
             ]
         ),
@@ -1610,6 +1612,10 @@ def _render_document(
         margin-top: 0.15rem;
         color: var(--text-400);
         font-size: 0.8rem;
+      }}
+      .archives-discovery-shell {{
+        display: grid;
+        gap: 0.75rem;
       }}
       .library-discovery-shell {{
         display: grid;
