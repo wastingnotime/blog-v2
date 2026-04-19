@@ -35,6 +35,7 @@ This slice restores the minimum load-failure recovery behavior needed for the
 current static publication:
 
 - render deterministic recovery guidance when `search.json` cannot be loaded
+  through an explicit load-recovery shell
 - point readers toward stable static routes such as archives and library
 - keep the change bounded to load-failure recovery rather than changing the
   search artifact or introducing backend behavior
@@ -50,7 +51,8 @@ Given the existing `/search/` route and a failure to load the static search
 index, render bounded recovery behavior such that:
 
 - the page states clearly that the search index is unavailable
-- recovery guidance points readers toward stable reader-facing alternatives
+- recovery guidance points readers toward stable reader-facing alternatives via
+  explicit rows
 - the behavior remains deterministic for the same repository state
 
 ### `RenderSearchPage`
@@ -71,6 +73,8 @@ deterministic client-side search behavior such that:
   `/archives/` and `/library/`.
 - The slice stays bounded to load-failure recovery and must not widen into
   retries, offline indexing, or backend search changes.
+- The load-recovery shell should remain search-page specific and not affect
+  successful results or zero-results guidance.
 - GitHub Pages compatibility remains a hard constraint.
 
 ## Required Ports

@@ -26,7 +26,7 @@ page:
 
 - `/search/` stays the canonical route
 - `search.json` stays the only search artifact
-- client-side rendering gains one bounded recovery contract for index-load
+- client-side rendering gains one bounded recovery shell for index-load
   failures
 
 ## Risks
