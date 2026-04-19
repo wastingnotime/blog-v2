@@ -1,19 +1,10 @@
-# Implementation Notes
+# Implementation: 2026-04-19 Search Result Row Emphasis Bootstrap
 
-## Summary
+Implemented the refined search result row contract in `build_site.py`:
 
-Implemented a bounded search-result row-shell refinement so `/search/` renders
-its results as explicit cards instead of plain list items.
+- added a `.search-result-header` wrapper inside each `.search-result-item`
+- moved the title link and metadata into that compact header row
+- kept summaries and tag chips as secondary content below the header
+- preserved the existing static search model, ranking, highlighting, and recovery behavior
 
-## Changes
-
-- added `.search-result-item` styling in
-  `src/app/application/use_cases/build_site.py` to give each result a dedicated
-  row shell
-- kept the current ranking, highlighting, tag chips, and recovery behavior
-  unchanged
-- updated unit and integration assertions to verify the row-shell contract
-
-## Validation
-
-- `python3 -m pytest tests/unit/test_build_site.py tests/integration/test_run_scenario.py`
+Updated deterministic unit and integration assertions to cover the new row-header shell without widening the search feature scope.

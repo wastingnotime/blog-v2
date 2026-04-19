@@ -186,6 +186,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "while search is unavailable." in search_html
     assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
     assert "item.className = 'search-result-item';" in search_html
+    assert "header.className = 'search-result-header';" in search_html
     assert "link.className = 'search-result-link';" in search_html
     assert "meta.className = 'search-result-meta';" in search_html
     assert "summary.className = 'search-result-summary';" in search_html
@@ -196,6 +197,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "if ((record.tags || []).length) {" in search_html
     assert ".search-result-list {" in search_html
     assert ".search-result-item {" in search_html
+    assert ".search-result-header {" in search_html
     assert ".search-result-link {" in search_html
     assert ".search-result-meta {" in search_html
     assert ".search-result-summary {" in search_html

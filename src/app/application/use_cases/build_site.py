@@ -582,12 +582,14 @@ def build_search_page(
             "            matches.forEach((record) => {\n"
             "              const item = document.createElement('li');\n"
             "              item.className = 'search-result-item';\n"
+            "              const header = document.createElement('div');\n"
+            "              header.className = 'search-result-header';\n"
             "              const link = document.createElement('a');\n"
             "              link.className = 'search-result-link';\n"
             "              link.href = record.url;\n"
             "              link.appendChild(document.createTextNode(`[${record.type}] `));\n"
             "              link.appendChild(createHighlightedFragment(record.title, normalizedQuery));\n"
-            "              item.appendChild(link);\n"
+            "              header.appendChild(link);\n"
             "              const meta = document.createElement('small');\n"
             "              meta.className = 'search-result-meta';\n"
             "              if (record.date) {\n"
@@ -600,9 +602,9 @@ def build_search_page(
             "                meta.appendChild(createHighlightedFragment(record.context, normalizedQuery));\n"
             "              }\n"
             "              if (meta.childNodes.length) {\n"
-            "                item.appendChild(document.createTextNode(' '));\n"
-            "                item.appendChild(meta);\n"
+            "                header.appendChild(meta);\n"
             "              }\n"
+            "              item.appendChild(header);\n"
             "              if (record.summary) {\n"
             "                const summary = document.createElement('p');\n"
             "                summary.className = 'search-result-summary';\n"
@@ -1390,13 +1392,19 @@ def _render_document(
         border-radius: 0.7rem;
         background: rgba(255, 255, 255, 0.015);
       }}
+      .search-result-header {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
       .search-result-link {{
         display: block;
         color: var(--text-100);
       }}
       .search-result-meta {{
         display: block;
-        margin-top: 0.2rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
