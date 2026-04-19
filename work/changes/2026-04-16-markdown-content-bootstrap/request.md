@@ -32,3 +32,12 @@ and renders a small but real static site surface:
 - one saga/episode path
 
 All of that must remain compatible with pure static GitHub Pages hosting.
+
+## Resolution
+
+This request is satisfied by the current repository state:
+
+- repository-authored markdown content is loaded deterministically
+- homepage recent entries are projected from in-repo content
+- standalone pages and saga episode routes render from markdown sources
+- tests cover content loading and static output generation
