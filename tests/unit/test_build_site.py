@@ -54,6 +54,7 @@ def test_build_static_site_limits_homepage_recent_entries() -> None:
     assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
     assert '<ul class="homepage-list">' in html
+    assert '<div class="homepage-recent-row">' in html
     assert 'class="homepage-link"' in html
     assert 'class="homepage-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in html
     assert 'class="homepage-summary">Follow-up work.</p>' in html

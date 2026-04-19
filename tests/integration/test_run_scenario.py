@@ -124,6 +124,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
     assert '<h2 class="section-label">LIBRARY</h2>' in homepage_html
     assert '<ul class="homepage-list">' in homepage_html
+    assert '<div class="homepage-recent-row">' in homepage_html
     assert 'class="homepage-link"' in homepage_html
     assert 'class="homepage-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in homepage_html
     assert 'class="homepage-saga-status">2 episodes - last release 2025-11-15 - in-progress</small>' in homepage_html

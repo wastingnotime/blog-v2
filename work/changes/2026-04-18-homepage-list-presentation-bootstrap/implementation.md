@@ -1,29 +1,9 @@
-# Implementation
+# Implementation: 2026-04-18 Homepage List Presentation Bootstrap
 
-## Summary
+Implemented the homepage recent-entry row refinement in `build_site.py`:
 
-Implemented a bounded homepage list-presentation refinement by adding
-homepage-specific row markup and secondary-text styling for recent entries and
-saga summaries without changing homepage data, routing, or the static build
-model.
+- added an explicit `homepage-recent-row` shell around recent-entry title and metadata
+- kept the existing homepage recent-entry facts, saga summaries, route, and navigation links unchanged
+- preserved the compact inline saga-summary status treatment already present on the homepage
 
-## Main Changes
-
-- added `docs/slices/2026-04-18-homepage-list-presentation-bootstrap.md` to
-  define the bounded homepage row-presentation contract
-- added `work/changes/2026-04-18-homepage-list-presentation-bootstrap/impact_analysis.md`
-  to record the homepage-only boundary and risks
-- updated `src/app/application/use_cases/build_site.py` so the homepage now:
-  - renders recent entries through explicit homepage-specific `homepage-link`,
-    `homepage-meta`, and `homepage-summary` hooks
-  - renders saga summaries through a compact `homepage-saga-row` with inline
-    status and secondary summary text
-  - scopes the compact row treatment to homepage lists through `homepage-list`
-    styling
-- updated unit and integration assertions to cover the homepage row-presentation
-  contract while leaving non-homepage list surfaces unchanged
-
-## Validation
-
-- `python3 -m pytest tests/unit/test_build_site.py tests/integration/test_run_scenario.py`
-- `python3 -m src.app.interfaces.cli.run_scenario`
+Updated deterministic unit and integration tests to verify the homepage-only recent-entry row shell without widening into archive, topic, or section list rendering.

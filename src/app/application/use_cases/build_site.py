@@ -1204,12 +1204,18 @@ def _render_document(
       .homepage-list > li + li {{
         margin-top: 1rem;
       }}
+      .homepage-recent-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.45rem;
+      }}
       .homepage-link {{
         color: var(--text-100);
       }}
       .homepage-meta {{
         display: block;
-        margin-top: 0.2rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
@@ -1892,9 +1898,11 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
 
     return (
         "          <li>\n"
-        f'            <a class="homepage-link" href="{_absolute_url(base_url, item.permalink)}">[{html.escape(item.kind)}] '
+        '            <div class="homepage-recent-row">\n'
+        f'              <a class="homepage-link" href="{_absolute_url(base_url, item.permalink)}">[{html.escape(item.kind)}] '
         f"{html.escape(item.title)}</a>\n"
-        f'            <small class="homepage-meta">{html.escape(item.date)}{html.escape(context)}</small>\n'
+        f'              <small class="homepage-meta">{html.escape(item.date)}{html.escape(context)}</small>\n'
+        "            </div>\n"
         f'            <p class="homepage-summary">{html.escape(item.summary)}</p>\n'
         "          </li>"
     )
