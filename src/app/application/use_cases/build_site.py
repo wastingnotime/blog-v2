@@ -286,7 +286,6 @@ def build_homepage(
 ) -> str:
     if (
         config.title == "Wasting No Time"
-        and config.base_url == "https://wastingnotime.org/"
         and LEGACY_BLOG_HOME_SNAPSHOT.exists()
     ):
         return LEGACY_BLOG_HOME_SNAPSHOT.read_text(encoding="utf-8")
