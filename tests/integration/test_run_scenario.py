@@ -151,14 +151,14 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="generator" content="blog-v2 static builder" />' in homepage_html
     assert '<meta name="author" content="wastingnotime.org" />' in homepage_html
     assert '<meta name="application-name" content="Wasting No Time" />' in homepage_html
-    assert '<meta name="color-scheme" content="dark" />' in homepage_html
+    assert '<meta name="color-scheme" content="light" />' in homepage_html
     assert (
         '<meta name="referrer" content="strict-origin-when-cross-origin" />'
         in homepage_html
     )
     assert '<meta name="format-detection" content="telephone=no" />' in homepage_html
-    assert '<meta name="theme-color" content="#0b0b0b" />' in homepage_html
-    assert '<meta name="msapplication-TileColor" content="#0b0b0b" />' in homepage_html
+    assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
+    assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in homepage_html
     assert (
         '<meta name="msapplication-config" content="https://wastingnotime.org/browserconfig.xml" />'
         in homepage_html
@@ -166,14 +166,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-status-bar-style" content="black" />' in homepage_html
-    assert "color-scheme: dark;" in homepage_html
-    assert "--bg: #000000;" in homepage_html
-    assert "--surface: #0b0b0b;" in homepage_html
-    assert "--text-400: #a1a1aa;" in homepage_html
-    assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in homepage_html
-    assert "background:" in homepage_html
-    assert "radial-gradient(circle at top, rgba(255, 255, 255, 0.045), transparent 42%)" in homepage_html
-    assert "linear-gradient(180deg, #050505 0%, var(--bg) 72%)" in homepage_html
+    assert "color-scheme: light;" in homepage_html
+    assert "--ink: #111827;" in homepage_html
+    assert "--muted: #4b5563;" in homepage_html
+    assert "--paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);" in homepage_html
+    assert 'font-family: Georgia, "Times New Roman", serif;' in homepage_html
+    assert "background: var(--paper);" in homepage_html
     assert ".homepage-list {" in homepage_html
     assert ".homepage-meta {" in homepage_html
     assert ".homepage-summary {" in homepage_html
@@ -181,10 +179,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".homepage-saga-status {" in homepage_html
     assert ".homepage-paths {" in homepage_html
     assert ".section-label {" in homepage_html
-    assert ".site-nav-link.active::after {" in homepage_html
+    assert ".site-nav-link.active {" in homepage_html
+    assert "text-decoration: underline;" in homepage_html
     assert "article pre {" in homepage_html
-    assert 'font-family: Georgia, "Times New Roman", serif;' not in homepage_html
-    assert "color-scheme: dark;" in about_html
+    assert 'font-family: Georgia, "Times New Roman", serif;' in about_html
+    assert "color-scheme: light;" in about_html
     assert '<meta name="robots" content="index,follow" />' in homepage_html
     assert '<meta name="robots" content="noindex,follow" />' in not_found_html
     assert '<meta name="robots" content="index,follow" />' not in not_found_html
@@ -342,9 +341,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".search-result-summary {" in search_html
     assert ".search-result-tags {" in search_html
     assert ".search-result-tag-chip {" in search_html
-    assert "padding: 1rem 1.05rem;" in search_html
-    assert "border: 1px solid var(--line);" in search_html
-    assert "background: rgba(255, 255, 255, 0.015);" in search_html
+    assert "padding: 0;" in search_html
+    assert "border: 0;" in search_html
+    assert "background: transparent;" in search_html
     assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
     assert "item.className = 'search-result-item';" in search_html
     assert "header.className = 'search-result-header';" in search_html
@@ -415,12 +414,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         '<square150x150logo src="https://wastingnotime.org/apple-touch-icon.png"/>'
         in browserconfig_xml
     )
-    assert "<TileColor>#0b0b0b</TileColor>" in browserconfig_xml
+    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
     assert webmanifest["name"] == "Wasting No Time"
     assert webmanifest["short_name"] == "Wasting No Time"
     assert webmanifest["start_url"] == "https://wastingnotime.org/"
-    assert webmanifest["theme_color"] == "#0b0b0b"
-    assert webmanifest["background_color"] == "#000000"
+    assert webmanifest["theme_color"] == "#fffdf8"
+    assert webmanifest["background_color"] == "#f3efe5"
     assert webmanifest["icons"][0]["src"] == "https://wastingnotime.org/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "https://wastingnotime.org/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "https://wastingnotime.org/apple-touch-icon.png"

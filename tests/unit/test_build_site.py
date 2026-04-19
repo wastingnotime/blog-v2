@@ -234,9 +234,9 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert ".search-result-summary {" in search_html
     assert ".search-result-tags {" in search_html
     assert ".search-result-tag-chip {" in search_html
-    assert "padding: 1rem 1.05rem;" in search_html
-    assert "border: 1px solid var(--line);" in search_html
-    assert "background: rgba(255, 255, 255, 0.015);" in search_html
+    assert "padding: 0;" in search_html
+    assert "border: 0;" in search_html
+    assert "background: transparent;" in search_html
     assert "const chip = document.createElement('span');" in search_html
     assert "chip.className = 'search-result-tag-chip';" in search_html
     assert "chip.appendChild(document.createTextNode('#'));" in search_html
@@ -382,14 +382,14 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert webmanifest["short_name"] == "Example"
     assert webmanifest["start_url"] == "https://example.com/"
     assert webmanifest["display"] == "standalone"
-    assert webmanifest["theme_color"] == "#0b0b0b"
-    assert webmanifest["background_color"] == "#000000"
+    assert webmanifest["theme_color"] == "#fffdf8"
+    assert webmanifest["background_color"] == "#f3efe5"
     assert webmanifest["icons"][0]["src"] == "https://example.com/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "https://example.com/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "https://example.com/apple-touch-icon.png"
     assert "<browserconfig>" in browserconfig_xml
     assert '<square150x150logo src="https://example.com/apple-touch-icon.png"/>' in browserconfig_xml
-    assert "<TileColor>#0b0b0b</TileColor>" in browserconfig_xml
+    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://example.com/archives/</loc>" in sitemap_xml
     assert "<loc>https://example.com/library/</loc>" in sitemap_xml
@@ -623,7 +623,7 @@ def test_build_static_site_renders_theme_color_metadata_in_document_head() -> No
     )
 
     for html in route_html:
-        assert '<meta name="theme-color" content="#0b0b0b" />' in html
+        assert '<meta name="theme-color" content="#fffdf8" />' in html
 
 
 def test_build_static_site_renders_format_detection_metadata_in_document_head() -> None:
@@ -671,7 +671,7 @@ def test_build_static_site_renders_color_scheme_metadata_in_document_head() -> N
     )
 
     for html in route_html:
-        assert '<meta name="color-scheme" content="dark" />' in html
+        assert '<meta name="color-scheme" content="light" />' in html
 
 
 def test_build_static_site_renders_shared_editorial_shell_tokens() -> None:
@@ -681,19 +681,16 @@ def test_build_static_site_renders_shared_editorial_shell_tokens() -> None:
     about_html = pages["about/index.html"]
 
     for html in (homepage_html, about_html):
-        assert "color-scheme: dark;" in html
-        assert "--bg: #000000;" in html
-        assert "--surface: #0b0b0b;" in html
-        assert "--text-400: #a1a1aa;" in html
-        assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in html
-        assert "background:" in html
-        assert "radial-gradient(circle at top, rgba(255, 255, 255, 0.045), transparent 42%)" in html
-        assert "linear-gradient(180deg, #050505 0%, var(--bg) 72%)" in html
-        assert ".site-nav-link.active::after {" in html
-        assert 'content: "•";' in html
+        assert "color-scheme: light;" in html
+        assert "--ink: #111827;" in html
+        assert "--muted: #4b5563;" in html
+        assert "--paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);" in html
+        assert 'font-family: Georgia, "Times New Roman", serif;' in html
+        assert "background: var(--paper);" in html
+        assert ".site-nav-link.active {" in html
+        assert "text-decoration: underline;" in html
         assert "article pre {" in html
         assert "article code {" in html
-        assert 'font-family: Georgia, "Times New Roman", serif;' not in html
 
 
 def test_build_static_site_renders_application_name_metadata_in_document_head() -> None:
@@ -741,7 +738,7 @@ def test_build_static_site_renders_msapplication_tile_color_metadata_in_document
     )
 
     for html in route_html:
-        assert '<meta name="msapplication-TileColor" content="#0b0b0b" />' in html
+        assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in html
 
 
 def test_build_static_site_renders_msapplication_config_metadata_in_document_head() -> None:

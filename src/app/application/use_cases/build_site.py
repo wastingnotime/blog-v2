@@ -68,8 +68,8 @@ IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon-32x32.png", "32x32"),
     ("apple-touch-icon", "/apple-touch-icon.png", None),
 )
-THEME_COLOR = "#0b0b0b"
-BACKGROUND_COLOR = "#000000"
+THEME_COLOR = "#fffdf8"
+BACKGROUND_COLOR = "#f3efe5"
 
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
@@ -1125,7 +1125,7 @@ def _render_document(
     <meta name="generator" content="blog-v2 static builder" />
     <meta name="author" content="{html.escape(_site_host(config.base_url))}" />
     <meta name="application-name" content="{html.escape(config.title)}" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="light" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="{THEME_COLOR}" />
@@ -1147,75 +1147,69 @@ def _render_document(
 {identity_asset_links}
     <style>
       :root {{
-        color-scheme: dark;
-        --bg: #000000;
-        --surface: #0b0b0b;
-        --text-100: #f4f4f5;
-        --text-200: #e4e4e7;
-        --text-300: #d4d4d8;
-        --text-400: #a1a1aa;
-        --line: #27272a;
-        --line-strong: #3f3f46;
+        color-scheme: light;
+        --ink: #111827;
+        --muted: #4b5563;
+        --line: #d1d5db;
+        --paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);
+        --accent: #0f766e;
+        --line-strong: #a8b0ba;
       }}
       * {{ box-sizing: border-box; }}
       body {{
         margin: 0;
         min-height: 100vh;
-        font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-        color: var(--text-200);
-        background:
-          radial-gradient(circle at top, rgba(255, 255, 255, 0.045), transparent 42%),
-          radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.018), transparent 32%),
-          linear-gradient(180deg, #050505 0%, var(--bg) 72%);
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--ink);
+        background: var(--paper);
       }}
       main {{
         width: min(46rem, calc(100vw - 3rem));
         margin: 0 auto;
-        padding: 3.5rem 0 5rem;
+        padding: 4rem 0 5rem;
       }}
       a {{
-        color: var(--text-400);
+        color: var(--muted);
         text-decoration: none;
-        transition: color 0.15s ease;
       }}
       a:hover {{
-        color: #ffffff;
+        color: var(--ink);
         text-decoration: underline;
       }}
       .eyebrow {{
-        color: var(--text-400);
+        display: inline-block;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        color: var(--muted);
         font-size: 0.85rem;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
       }}
       h1 {{
         margin: 1.25rem 0 0.75rem;
         font-size: clamp(2.2rem, 6vw, 4rem);
-        line-height: 1.05;
-        color: #ffffff;
+        line-height: 1;
+        color: var(--ink);
       }}
       .meta, .summary {{
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .homepage-intro {{
         margin: 0;
-        color: var(--text-200);
-        line-height: 1.7;
+        color: var(--ink);
+        line-height: 1.75;
       }}
       .homepage-paths {{
         margin-top: 0.85rem;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }}
-      .homepage-paths a {{
-        color: var(--text-400);
-      }}
       .section-label {{
         margin: 0 0 0.75rem;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
         font-weight: 500;
         letter-spacing: 0.12em;
@@ -1247,17 +1241,17 @@ def _render_document(
         gap: 0.45rem;
       }}
       .homepage-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .homepage-meta {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .homepage-summary {{
         margin: 0.35rem 0 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.92rem;
         line-height: 1.6;
       }}
@@ -1268,7 +1262,7 @@ def _render_document(
         gap: 0.45rem;
       }}
       .homepage-saga-status {{
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .library-topic-list {{
@@ -1284,13 +1278,12 @@ def _render_document(
         padding: 0.45rem 0.75rem;
         border: 1px solid var(--line);
         border-radius: 0.3rem;
-        color: var(--text-100);
+        color: var(--ink);
         text-decoration: none;
-        transition: color 0.15s ease, border-color 0.15s ease;
       }}
       .topic-link:hover {{
-        color: #ffffff;
-        border-color: rgba(255, 255, 255, 0.4);
+        color: var(--ink);
+        border-color: var(--accent);
         text-decoration: underline;
       }}
       .topic-entry-list {{
@@ -1302,17 +1295,17 @@ def _render_document(
         margin-top: 1rem;
       }}
       .topic-entry-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .topic-entry-meta {{
         display: block;
         margin-top: 0.2rem;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .topic-entry-summary {{
         margin: 0.35rem 0 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.92rem;
         line-height: 1.6;
       }}
@@ -1331,22 +1324,22 @@ def _render_document(
         gap: 0.6rem;
       }}
       .saga-index-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .saga-index-summary {{
         margin: 0.35rem 0 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.92rem;
         line-height: 1.6;
       }}
       .saga-index-start {{
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
         letter-spacing: 0.04em;
         text-transform: lowercase;
       }}
       .saga-index-start a {{
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .saga-arc-list {{
         list-style: none;
@@ -1363,12 +1356,12 @@ def _render_document(
         gap: 0.55rem;
       }}
       .saga-arc-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .saga-arc-meta {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .saga-timeline-list {{
@@ -1386,12 +1379,12 @@ def _render_document(
         gap: 0.55rem;
       }}
       .saga-timeline-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .saga-timeline-meta {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .arc-episode-list {{
@@ -1409,12 +1402,12 @@ def _render_document(
         gap: 0.55rem;
       }}
       .arc-episode-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .arc-episode-meta {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .archive-entry-list {{
@@ -1432,17 +1425,17 @@ def _render_document(
         gap: 0.55rem;
       }}
       .archive-entry-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .archive-entry-meta {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .archive-entry-summary {{
         margin: 0.35rem 0 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.92rem;
         line-height: 1.6;
       }}
@@ -1456,11 +1449,11 @@ def _render_document(
       }}
       .search-empty-recovery-message {{
         margin: 0 0 0.75rem;
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .search-load-recovery-message {{
         margin: 0 0 0.75rem;
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .search-empty-recovery-row {{
         display: flex;
@@ -1472,12 +1465,12 @@ def _render_document(
         margin-top: 0.5rem;
       }}
       .search-empty-recovery-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .search-empty-recovery-path {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .search-noscript-recovery {{
@@ -1485,7 +1478,7 @@ def _render_document(
       }}
       .search-noscript-recovery-message {{
         margin: 0 0 0.75rem;
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .search-noscript-recovery-row {{
         display: flex;
@@ -1497,12 +1490,12 @@ def _render_document(
         margin-top: 0.5rem;
       }}
       .search-noscript-recovery-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .search-noscript-recovery-path {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .search-query-label {{
@@ -1518,10 +1511,10 @@ def _render_document(
         margin-top: 1rem;
       }}
       .search-result-item {{
-        padding: 1rem 1.05rem;
-        border: 1px solid var(--line);
-        border-radius: 0.7rem;
-        background: rgba(255, 255, 255, 0.015);
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
       }}
       .search-result-header {{
         display: flex;
@@ -1531,17 +1524,17 @@ def _render_document(
       }}
       .search-result-link {{
         display: block;
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .search-result-meta {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .search-result-summary {{
         margin: 0.35rem 0 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.92rem;
         line-height: 1.6;
       }}
@@ -1552,14 +1545,14 @@ def _render_document(
         margin: 0.5rem 0 0;
       }}
       .search-result-tag-chip {{
-        display: inline-block;
-        padding: 0.1rem 0.55rem;
-        border: 1px solid var(--line-strong);
-        border-radius: 999px;
-        color: var(--text-400);
+        display: inline;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        color: var(--muted);
         font-size: 0.8rem;
-        letter-spacing: 0.04em;
-        text-transform: lowercase;
+        letter-spacing: 0;
+        text-transform: none;
       }}
       .not-found-list {{
         list-style: none;
@@ -1576,12 +1569,12 @@ def _render_document(
         gap: 0.55rem;
       }}
       .not-found-link {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .not-found-path {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .discovery-list {{
@@ -1593,12 +1586,12 @@ def _render_document(
         margin-top: 0.85rem;
       }}
       .discovery-label {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .discovery-path {{
         display: block;
         margin-top: 0.15rem;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .studio-discovery-list {{
@@ -1616,12 +1609,12 @@ def _render_document(
         gap: 0.55rem;
       }}
       .studio-discovery-label {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .studio-discovery-path {{
         display: block;
         margin-top: 0;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.8rem;
       }}
       .site-frame {{
@@ -1638,17 +1631,15 @@ def _render_document(
         border-bottom: 1px solid var(--line);
       }}
       .site-nav-link {{
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .site-nav-link.active {{
-        color: #ffffff;
-        font-weight: 500;
+        color: var(--ink);
+        font-weight: 600;
+        text-decoration: underline;
       }}
       .site-nav-link.active::after {{
-        content: "•";
-        margin-left: 0.4em;
-        opacity: 0.6;
-        font-weight: 400;
+        content: "";
       }}
       .breadcrumbs {{
         display: flex;
@@ -1656,25 +1647,25 @@ def _render_document(
         align-items: center;
         gap: 0.4rem;
         margin-bottom: 1rem;
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .episode-breadcrumbs {{
         margin-bottom: 1rem;
       }}
       .breadcrumb-link {{
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .breadcrumb-separator {{
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .entry-meta {{
         margin-bottom: 1.5rem;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.95rem;
         line-height: 1.8;
       }}
       .entry-meta a {{
-        color: var(--text-400);
+        color: var(--muted);
       }}
       .entry-tags {{
         display: inline-flex;
@@ -1683,16 +1674,16 @@ def _render_document(
         vertical-align: middle;
       }}
       .entry-tag-chip {{
-        display: inline-block;
-        padding: 0.1rem 0.55rem;
-        border: 1px solid var(--line-strong);
-        border-radius: 999px;
+        display: inline;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
         font-size: 0.82rem;
-        letter-spacing: 0.04em;
-        text-transform: lowercase;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--muted);
       }}
       .entry-tag-chip:hover {{
-        border-color: var(--text-300);
         text-decoration: none;
       }}
       .nav-grid {{
@@ -1704,13 +1695,13 @@ def _render_document(
         border-top: 1px solid var(--line);
       }}
       .nav-grid a {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .episode-adjacent-nav {{
         margin-top: 2rem;
       }}
       .episode-adjacent-nav a {{
-        color: var(--text-100);
+        color: var(--ink);
       }}
       .adjacent-nav-link {{
         display: inline-block;
@@ -1732,52 +1723,51 @@ def _render_document(
       }}
       footer {{
         margin-top: 2.5rem;
-        color: var(--text-400);
+        color: var(--muted);
         font-size: 0.85rem;
       }}
       article h2 {{
         margin-top: 3rem;
         margin-bottom: 1rem;
-        color: #ffffff;
-        font-weight: 600;
+        color: var(--ink);
+        font-weight: 700;
         font-size: 1.25rem;
         line-height: 1.6;
       }}
       article h3 {{
         margin-top: 2rem;
         margin-bottom: 0.75rem;
-        color: var(--text-200);
-        font-weight: 500;
+        color: var(--ink);
+        font-weight: 600;
         font-size: 1.1rem;
         line-height: 1.6;
       }}
       article p, article li, article blockquote {{
-        font-size: 1rem;
-        line-height: 1.7;
-        color: var(--text-200);
+        font-size: 1.08rem;
+        line-height: 1.75;
+        color: var(--ink);
       }}
       article blockquote {{
         margin-left: 0;
         padding-left: 1rem;
-        border-left: 2px solid var(--line-strong);
-        color: var(--text-300);
+        border-left: 4px solid var(--accent);
+        color: var(--muted);
         font-style: italic;
       }}
       article pre {{
         margin: 1.5rem 0;
         padding: 1rem;
-        background: var(--surface);
+        background: #fbfaf7;
         border: 1px solid var(--line);
         border-radius: 0.5rem;
         overflow: auto;
       }}
       article code {{
-        font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-        background: rgba(255, 255, 255, 0.04);
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        background: rgba(15, 23, 42, 0.06);
         padding: 0.1rem 0.35rem;
         border-radius: 0.25rem;
-        color: var(--text-100);
+        color: var(--ink);
       }}
       article pre code {{
         background: transparent;
