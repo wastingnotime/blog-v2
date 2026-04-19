@@ -14,6 +14,43 @@ from src.app.domain.models.content import (
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
 from src.app.interfaces.cli.run_scenario import load_site_config
 
+LEGACY_BLOG_SAGA_HIREFLOW_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent
+    / "blog"
+    / "public"
+    / "sagas"
+    / "hireflow"
+    / "index.html"
+)
+LEGACY_BLOG_ARC_HIREFLOW_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent
+    / "blog"
+    / "public"
+    / "sagas"
+    / "hireflow"
+    / "the-origin-blueprint"
+    / "index.html"
+)
+LEGACY_BLOG_ARC_GAME_HUB_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent
+    / "blog"
+    / "public"
+    / "sagas"
+    / "game-hub"
+    / "the-first-breath"
+    / "index.html"
+)
+LEGACY_BLOG_EPISODE_FIRST_BRICK_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent
+    / "blog"
+    / "public"
+    / "sagas"
+    / "hireflow"
+    / "the-origin-blueprint"
+    / "the-first-brick"
+    / "index.html"
+)
+
 
 def test_build_static_site_omits_same_origin_api_when_analytics_disabled() -> None:
     html = build_static_site(_site_config(), _catalog())["index.html"]
@@ -479,6 +516,15 @@ def test_build_static_site_renders_legacy_saga_detail_snapshots() -> None:
     assert pages["sagas/game-hub/index.html"] == (
         legacy_blog_root / "public/sagas/game-hub/index.html"
     ).read_text(encoding="utf-8")
+    assert pages["sagas/hireflow/the-origin-blueprint/index.html"] == (
+        LEGACY_BLOG_ARC_HIREFLOW_SNAPSHOT.read_text(encoding="utf-8")
+    )
+    assert pages["sagas/game-hub/the-first-breath/index.html"] == (
+        LEGACY_BLOG_ARC_GAME_HUB_SNAPSHOT.read_text(encoding="utf-8")
+    )
+    assert pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"] == (
+        LEGACY_BLOG_EPISODE_FIRST_BRICK_SNAPSHOT.read_text(encoding="utf-8")
+    )
 
 
 def test_build_static_site_uses_shared_discovery_surface_with_route_specific_links() -> None:

@@ -16,6 +16,25 @@ LEGACY_BLOG_SAGA_HIREFLOW_SNAPSHOT = (
     / "hireflow"
     / "index.html"
 )
+LEGACY_BLOG_ARC_HIREFLOW_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent
+    / "blog"
+    / "public"
+    / "sagas"
+    / "hireflow"
+    / "the-origin-blueprint"
+    / "index.html"
+)
+LEGACY_BLOG_EPISODE_FIRST_BRICK_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent
+    / "blog"
+    / "public"
+    / "sagas"
+    / "hireflow"
+    / "the-origin-blueprint"
+    / "the-first-brick"
+    / "index.html"
+)
 
 
 def test_static_site_builder_generates_static_routes_from_markdown(
@@ -368,20 +387,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_index_html
     assert "start reading →" in sagas_index_html
     assert saga_html == LEGACY_BLOG_SAGA_HIREFLOW_SNAPSHOT.read_text(encoding="utf-8")
-    assert "Episodes" in arc_html
-    assert "/archives/" in arc_html
-    assert "/search/" in arc_html
-    assert "[Ep 01] The First Brick" in arc_html
-    assert '<a class="breadcrumb-link" href="/sagas/hireflow/">' in arc_html
-    assert '<ul class="arc-episode-list">' in arc_html
-    assert '<div class="arc-episode-row">' in arc_html
-    assert '<a class="arc-episode-link" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in arc_html
-    assert 'class="arc-episode-meta">2025-11-14</small>' in arc_html
-    assert ".arc-episode-list {" in arc_html
-    assert ".arc-episode-row {" in arc_html
-    assert ".arc-episode-link {" in arc_html
-    assert ".arc-episode-meta {" in arc_html
-    assert "Every system begins with a question: <em>why does this exist?</em>" in arc_html
+    assert arc_html == LEGACY_BLOG_ARC_HIREFLOW_SNAPSHOT.read_text(encoding="utf-8")
     assert _json_ld_payloads(arc_html) == []
     assert 'The story behind <span class="text-zinc-100">wasting no time</span>' in about_html
     assert '<a class="active" href="/about/">ABOUT</a>' in about_html
@@ -401,65 +407,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "wasting no time studio" in studio_html
     assert "codingzen labs" in studio_html
     assert "experiments" in studio_html
-    assert "HireFlow / The Origin Blueprint" in episode_html
-    assert "3 min read" in episode_html
-    assert 'href="/library/distributed-systems/"' in episode_html
-    assert '<span class="entry-tags">' in episode_html
-    assert '<a class="entry-tag-chip" href="/library/architecture/">#architecture</a>' in episode_html
-    assert '<a class="entry-tag-chip" href="/library/distributed-systems/">#distributed-systems</a>' in episode_html
-    assert 'href="/archives/"' in episode_html
-    assert 'href="/search/"' in episode_html
-    assert "Other ways in" in episode_html
-    assert '<a class="breadcrumb-link" href="/sagas/hireflow/">' in episode_html
-    assert '<span class="breadcrumb-separator">/</span>' in episode_html
-    assert '<a class="breadcrumb-link" href="/sagas/hireflow/the-origin-blueprint/">' in episode_html
-    assert 'href="/favicon-16x16.png"' in episode_html
-    assert '<meta property="og:title" content="The First Brick" />' in episode_html
-    assert (
-        '<meta property="og:description" content="We explore why HireFlow exists, what it will simulate, and how microservices architecture will emerge through iterative design." />'
-        in episode_html
+    assert episode_html == LEGACY_BLOG_EPISODE_FIRST_BRICK_SNAPSHOT.read_text(
+        encoding="utf-8"
     )
-    assert (
-        '<meta property="og:url" content="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
-        in episode_html
-    )
-    assert '<meta property="og:type" content="website" />' in episode_html
-    assert '<meta property="og:image" content="/social-preview.png" />' in episode_html
-    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in episode_html
-    assert '<meta name="twitter:card" content="summary" />' in episode_html
-    assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
-    assert (
-        '<meta name="twitter:description" content="We explore why HireFlow exists, what it will simulate, and how microservices architecture will emerge through iterative design." />'
-        in episode_html
-    )
-    assert (
-        '<meta name="twitter:url" content="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
-        in episode_html
-    )
-    assert '<meta name="twitter:image" content="/social-preview.png" />' in episode_html
-    episode_structured_data = _json_ld_payloads(episode_html)
-    assert len(episode_structured_data) == 1
-    assert episode_structured_data[0]["@context"] == "https://schema.org"
-    assert episode_structured_data[0]["@type"] == "Article"
-    assert episode_structured_data[0]["headline"] == "The First Brick"
-    assert episode_structured_data[0]["description"] == (
-        "We explore why HireFlow exists, what it will simulate, and how "
-        "microservices architecture will emerge through iterative design."
-    )
-    assert episode_structured_data[0]["datePublished"] == "2025-11-14"
-    assert episode_structured_data[0]["url"] == (
-        "https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/"
-    )
-    assert "Ep 02 Interpreting the Briefing" in episode_html
-    assert '<nav class="breadcrumbs episode-breadcrumbs">' in episode_html
-    assert '<nav class="nav-grid episode-adjacent-nav">' in episode_html
-    assert 'class="adjacent-nav-link next" href="/sagas/hireflow/the-origin-blueprint/interpreting-the-briefing/"' in episode_html
-    assert ".breadcrumb-link {" in episode_html
-    assert ".breadcrumb-separator {" in episode_html
-    assert ".episode-breadcrumbs {" in episode_html
-    assert ".adjacent-nav-link {" in episode_html
-    assert ".adjacent-nav-link.next {" in episode_html
-    assert ".episode-adjacent-nav {" in episode_html
     assert "/api/event" not in episode_html
     assert (output_dir / "favicon.ico").read_bytes() == (
         identity_assets_dir / "favicon.ico"

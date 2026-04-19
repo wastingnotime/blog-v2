@@ -62,7 +62,9 @@ from src.app.application.use_cases.project_route_robots_policy import (
     project_route_robots_policy,
 )
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
+from src.app.application.use_cases.legacy_arc_pages import render_legacy_arc_page
 from src.app.application.use_cases.legacy_saga_pages import render_legacy_saga_page
+from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
 
 LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parent / "legacy_homepage.html"
 LEGACY_BLOG_SAGAS_SNAPSHOT = Path(__file__).resolve().parent / "legacy_sagas.html"
@@ -1097,6 +1099,11 @@ def build_episode_page(
     arc_view: ArcView,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        try:
+            return render_legacy_episode_page(episode.permalink)
+        except KeyError:
+            pass
     entry_metadata = project_episode_metadata(episode)
     metadata = (
         f"{episode.date} · {episode.saga_title} / {episode.arc_title} · "
@@ -1217,6 +1224,11 @@ def build_arc_page(
     arc_view: ArcView,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        try:
+            return render_legacy_arc_page(arc_view.arc.saga_slug, arc_view.arc.slug)
+        except KeyError:
+            pass
     episode_markup = "\n".join(
         _render_arc_episode(episode, base_url=config.base_url)
         for episode in arc_view.episodes
