@@ -164,7 +164,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "<noscript>" in search_html
     assert "Live search on this page requires JavaScript." in search_html
     assert "browse the chronology or move by topic instead." in search_html
-    assert 'id="search-status" aria-live="polite" aria-atomic="true"' in search_html
+    assert 'id="search-status" role="status" aria-live="polite" aria-atomic="true"' in search_html
     assert '<h3 id="search-results-heading" class="visually-hidden">Search results</h3>' in search_html
     assert 'id="search-results" class="search-result-list" aria-labelledby="search-results-heading"' in search_html
     assert "Enter a query to search the publication." in search_html

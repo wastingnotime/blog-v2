@@ -456,7 +456,7 @@ def build_search_page(
             "            <p>Live search on this page requires JavaScript. If it is unavailable, browse the chronology or move by topic instead.</p>\n"
             f'            <p><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a> or <a href="{_absolute_url(config.base_url, "/library/")}">explore the library</a>.</p>\n'
             "          </noscript>\n"
-            '          <p id="search-status" aria-live="polite" aria-atomic="true">Enter a query to search the publication.</p>\n'
+            '          <p id="search-status" role="status" aria-live="polite" aria-atomic="true">Enter a query to search the publication.</p>\n'
             '          <h3 id="search-results-heading" class="visually-hidden">Search results</h3>\n'
             '          <ul id="search-results" class="search-result-list" aria-labelledby="search-results-heading"></ul>\n'
             "        </section>\n"
