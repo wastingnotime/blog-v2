@@ -319,7 +319,11 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     sagas_html = pages["sagas/index.html"]
     studio_html = pages["studio/index.html"]
     assert "sagas — work that moves forward in public" in sagas_html
-    assert "Long-running efforts I&#x27;m building in public." in sagas_html
+    assert "<p><strong>HireFlow</strong> is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach." in sagas_html
+    assert "<li>when the database goes down</li>" in sagas_html
+    assert "<strong>a system reveals its truth only when we build it.</strong>" in sagas_html
+    assert "Let’s build HireFlow together—and learn from its evolution." in sagas_html
+    assert "<p>This saga explores the creation of a <strong>Game Hub</strong> — a platform designed to host multiple simple games under one structure.</p>" in sagas_html
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_html
     assert "<h3 class=\"text-lg text-zinc-100 font-normal mb-1\">" in sagas_html
     assert "start reading →" in sagas_html
@@ -456,7 +460,8 @@ def test_build_static_site_renders_narrative_container_body_content() -> None:
     saga_html = pages["sagas/hireflow/index.html"]
     arc_html = pages["sagas/hireflow/the-origin-blueprint/index.html"]
 
-    assert "Saga body." in saga_html
+    assert "Not to follow the hype" in saga_html
+    assert "<li>when the database goes down</li>" in saga_html
     assert "Other ways in" in saga_html
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
@@ -1055,7 +1060,39 @@ def _catalog() -> ContentCatalog:
                 summary="Architecture in public.",
                 date="2026-04-11",
                 status="in-progress",
-                body_markdown="Saga body.",
+                body_markdown=(
+                    "**HireFlow** is a hands-on laboratory where we build a hiring "
+                    "platform from scratch using a microservices approach.  \n"
+                    "Not to follow the hype—but to understand how these systems behave when reality hits:\n\n"
+                    "- when the database goes down\n"
+                    "- when messages arrive out of order\n"
+                    "- when teams disagree\n"
+                    "- when refactoring is necessary\n"
+                    "- when complexity emerges naturally\n\n"
+                    "Every arc explores a different facet of architecture: boundaries, "
+                    "data ownership, slicing strategies, refactoring, resilience, and "
+                    "the design forces that shape distributed systems.\n\n"
+                    "This saga embraces an idea that guides the whole studio:  \n"
+                    "**a system reveals its truth only when we build it.**\n\n"
+                    "Let’s build HireFlow together—and learn from its evolution."
+                ),
+            ),
+            Saga(
+                title="Game Hub",
+                slug="game-hub",
+                summary="Building a modular hub where multiple games can live, share logic, and evolve in the cloud — from the first API call to distributed systems patterns.",
+                date="2026-04-10",
+                status="in progress",
+                body_markdown=(
+                    "This saga explores the creation of a **Game Hub** — a platform designed to host multiple simple games under one structure.\n\n"
+                    "It starts from nothing but an idea:\n"
+                    "> “Can we turn learning architecture into play?”\n\n"
+                    "Through this saga we’ll:\n"
+                    "- Design the foundation of a multiplayer-ready game hub.\n"
+                    "- Experiment with Go, APIs, and lightweight cloud components.\n"
+                    "- Treat each iteration as a story — from prototype to principle.\n\n"
+                    "In *WastingNoTime*, the Game Hub acts as a living metaphor for system design: each game is a service, each duel a message, and each player a request looking for response."
+                ),
             ),
         ),
         arcs=(
@@ -1067,6 +1104,21 @@ def _catalog() -> ContentCatalog:
                 saga_slug="hireflow",
                 saga_title="HireFlow",
                 body_markdown="Arc body.",
+            ),
+            Arc(
+                title="The First Breath",
+                slug="the-first-breath",
+                summary="Where the Game Hub comes to life — setting the tone, philosophy, and first challenge: a Trivia Duel to validate the platform.",
+                date="2026-04-09",
+                saga_slug="game-hub",
+                saga_title="Game Hub",
+                body_markdown=(
+                    "Every creation starts with a breath.  \n"
+                    "In this first arc, the **Game Hub** awakens — from concept to code.\n\n"
+                    "We define what *WastingNoTime* stands for: learning through building, embracing mistakes, and turning each idea into a working prototype.\n\n"
+                    "The first experiment? **Trivia Duel** — a small competitive game used to give the hub its pulse.  \n"
+                    "This arc documents the first steps of the system’s life: from intention to implementation."
+                ),
             ),
         ),
         episodes=(
@@ -1095,6 +1147,62 @@ def _catalog() -> ContentCatalog:
                 number=2,
                 body_markdown="More episode body.",
                 tags=("architecture",),
+            ),
+            Episode(
+                title="The First Steps",
+                slug="the-first-steps",
+                summary="Every creation starts with a breath. This episode shares how WastingNoTime came to life through curiosity, challenge, and a bit of rebellion - choosing to build a Game Hub as a living lab for ideas and code.",
+                date="2026-04-09",
+                saga_slug="game-hub",
+                saga_title="Game Hub",
+                arc_slug="the-first-breath",
+                arc_title="The First Breath",
+                number=1,
+                body_markdown=(
+                    "### The First Steps\n\n"
+                    "There’s nothing like a challenge to wake us up — to stretch our skills, flip our perspective, and remind us how it feels to build something from zero.  \n"
+                    "That’s exactly what we’ll do here.\n\n"
+                    "From infinite possibilities, I chose one simple act: **take an idea and make it real.**  \n"
+                    "That’s the whole mission.  \n"
+                    "From now on, we’ll think, design, test, break, and rebuild — together.\n\n"
+                    "Sometimes the model won’t fit reality. Sometimes reality will whisper, _“No, not that way.”_  \n"
+                    "And that’s part of the process.  \n"
+                    "The only way to never walk the wrong path is to have already mapped it — and no one starts with a map.  \n"
+                    "Every first time carries a chance to fail, but failure isn’t the end; it’s the moment the compass finally points the right direction.\n\n"
+                    "Across the next episodes, we’ll explore and reason side by side, turning ideas into code, and code into understanding.\n\n"
+                    "As a starting point, I wanted something ambitious but playful — something that mixes architecture, fun, and learning.  \n"
+                    "So I thought: **why not build a small Game Hub?**  \n"
+                    "A space where multiple games can live, grow, and talk to each other — like a tiny ecosystem in the cloud.\n\n"
+                    "### Why a Game Hub?\n\n"
+                    "Choosing what to build is harder than building itself.  \n"
+                    "Many creators freeze in front of a blank page, thinking, _“Where do I even start?”_\n\n"
+                    "To make it simpler, I created one rule: **no more to-do lists.**  \n"
+                    "They’re the go-to demo, but too sterile — no emotion, no tension, no story.  \n"
+                    "And if we don’t even use them ourselves, what’s the point?\n\n"
+                    "On the other hand, going too far — like an ERP or banking system — would be too heavy.  \n"
+                    "We’d lose the spark of experimentation.  \n"
+                    "And here at _WastingNoTime_, there’s one non-negotiable rule:\n\n"
+                    "> **We must have fun, or we’re doing it wrong.**\n\n"
+                    "So by balancing complexity, size, and joy, games became the perfect playground.  \n"
+                    "But instead of building _a_ game, we’ll build _the place where games live_: a **Game Hub**.\n\n"
+                    "It’s the perfect middle ground — technically rich, creatively open, and built to evolve.\n\n"
+                    "### So What’s a Game Hub?\n\n"
+                    "Imagine a small digital arcade in the cloud.  \n"
+                    "Players arrive, pick a game, challenge each other, maybe check their scores — all in one connected space.  \n"
+                    "The hub doesn’t care if the game is trivia, cards, or chess — it just handles what every game needs: identity, communication, matches, and results.\n\n"
+                    "That’s our canvas.\n\n"
+                    "### The Journey Ahead\n\n"
+                    "In the real world, software starts from requirements; someone already knows what the customer wants.  \n"
+                    "But here, we’ve chosen a different mode: **exploration.**  \n"
+                    "We’ll discover what we need as we build it.  \n"
+                    "That takes maturity, curiosity, and a bit of bravery — the same values that shape _WastingNoTime_ itself.\n\n"
+                    "And to give our Game Hub its first breath, we need one simple thing: a game.  \n"
+                    "Something we can use to test, validate, and grow the hub.\n\n"
+                    "That’s when our AI partner leaned in and said:\n\n"
+                    "> “Hey human, to validate your hub, skip the hard graphics and physics. Go with something that’s simple, fun, and competitive — like a **Trivia Duel.**”\n\n"
+                    "And just like that, our first duel was born.  \n"
+                    "A spark. A breath. The first steps of something that will keep evolving."
+                ),
             ),
         ),
     )

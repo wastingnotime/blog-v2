@@ -2,9 +2,9 @@
 title: "HireFlow"
 type: "saga"
 studio: "WastingNoTime Studio"
+status: "in-progress"
 order: 1
 summary: "A fictional hiring platform built as a real-world laboratory for exploring microservices architecture, trade-offs, and emergent design."
-status: "in-progress"
 date: "2025-11-14"
 tags:
   - microservices
@@ -12,8 +12,8 @@ tags:
   - distributed-systems
 ---
 
-**HireFlow** is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach.
-Not to follow the hype-but to understand how these systems behave when reality hits:
+**HireFlow** is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach.  
+Not to follow the hype—but to understand how these systems behave when reality hits:
 
 - when the database goes down
 - when messages arrive out of order
@@ -23,7 +23,7 @@ Not to follow the hype-but to understand how these systems behave when reality h
 
 Every arc explores a different facet of architecture: boundaries, data ownership, slicing strategies, refactoring, resilience, and the design forces that shape distributed systems.
 
-This saga embraces an idea that guides the whole studio:
+This saga embraces an idea that guides the whole studio:  
 **a system reveals its truth only when we build it.**
 
-Let’s build HireFlow together-and learn from its evolution.
+Let’s build HireFlow together—and learn from its evolution.

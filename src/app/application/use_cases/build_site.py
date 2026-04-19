@@ -1786,13 +1786,12 @@ def _render_legacy_saga_summary(summary: SagaSummary, *, base_url: str) -> str:
         start_link = (
             f'<small class="text-xs text-zinc-500"><a href="{_site_path(base_url, summary.start_permalink)}">start reading →</a></small>'
         )
-    description = f'            <div class="text-sm text-zinc-400 leading-relaxed mb-4 space-y-2">{html.escape(summary.summary)}</div>'
     return (
         "                <li>\n"
         "                    <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">\n"
         f'                        <a href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
         "                    </h3>\n"
-        f"{description}\n"
+        f'            <div class="text-sm text-zinc-400 leading-relaxed mb-4 space-y-2">\n{_render_markdown(summary.summary)}\n            </div>\n'
         "                    <div class=\"mt-2\">\n"
         f"                        {start_link}\n"
         "                    </div>\n"
@@ -2927,7 +2926,7 @@ def _render_saga_summary(summary: object, *, base_url: str) -> str:
         '              <div class="saga-index-row">\n'
         f'                <a class="saga-index-link" href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>{start_link}\n'
         "              </div>\n"
-        f'              <p class="saga-index-summary">{html.escape(summary.summary)}</p>\n'
+        f'              <div class="text-sm text-zinc-400 leading-relaxed mb-4 space-y-2">\n{_render_markdown(summary.summary)}\n              </div>\n'
         "            </li>"
     )
 

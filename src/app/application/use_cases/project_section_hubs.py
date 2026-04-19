@@ -19,7 +19,7 @@ def project_sagas_index(
                 SagaSummary(
                     title=saga_view.saga.title,
                     permalink=saga_view.saga.permalink,
-                    summary=saga_view.saga.summary,
+                    summary=saga_view.saga.body_markdown or saga_view.saga.summary,
                     start_permalink=start_permalink,
                 ),
             )
