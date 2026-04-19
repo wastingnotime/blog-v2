@@ -2,18 +2,17 @@
 
 ## Summary
 
-The next slice should add bounded author metadata so the generated static
-publication completes another small publication-identity surface in the shared
-document head.
+This slice adds bounded author metadata so the generated static publication
+completes another small publication-identity surface in the shared document
+head.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include viewport, application-name, color-scheme,
-  referrer, theme-color, Windows tile color, and mobile-web-app metadata
-- the shared head still omits `meta name="author"`
-- the publication already operates with a shared site-level identity, so the
-  next gap is explicit browser-facing metadata rather than per-entry author
-  modeling
+- generated pages include viewport, application-name, color-scheme, referrer,
+  theme-color, Windows tile color, and mobile-web-app metadata
+- the shared head includes `meta name="author"`
+- the publication operates with a shared site-level identity rather than
+  per-entry author modeling
 
 ## Impacted Areas
 
@@ -26,7 +25,7 @@ Current observed gap:
 ## Boundary Change
 
 The build gains no new routes or assets. The boundary change is limited to
-additional browser-facing metadata in generated HTML heads.
+browser-facing metadata already present in generated HTML heads.
 
 ## Risks
 
