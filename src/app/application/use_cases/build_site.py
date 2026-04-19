@@ -1492,12 +1492,18 @@ def _render_document(
       .studio-discovery-list > li + li {{
         margin-top: 0.85rem;
       }}
+      .studio-discovery-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
       .studio-discovery-label {{
         color: var(--text-100);
       }}
       .studio-discovery-path {{
         display: block;
-        margin-top: 0.15rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
@@ -1842,8 +1848,10 @@ def _render_studio_discovery_surface(
     items = "\n".join(
         (
             "            <li>\n"
-            f'              <a class="studio-discovery-label" href="{_absolute_url(base_url, path)}">{html.escape(label)}</a>\n'
-            f'              <small class="studio-discovery-path">{html.escape(path)}</small>\n'
+            '              <div class="studio-discovery-row">\n'
+            f'                <a class="studio-discovery-label" href="{_absolute_url(base_url, path)}">{html.escape(label)}</a>\n'
+            f'                <small class="studio-discovery-path">{html.escape(path)}</small>\n'
+            "              </div>\n"
             "            </li>"
         )
         for label, path in destinations

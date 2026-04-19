@@ -308,8 +308,10 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "/search/" in studio_html
     assert "<h2>In the studio</h2>" in studio_html
     assert '<ul class="studio-discovery-list">' in studio_html
+    assert '<div class="studio-discovery-row">' in studio_html
     assert '<a class="studio-discovery-label" href="https://example.com/sagas/">See active sagas</a>' in studio_html
     assert '<small class="studio-discovery-path">/sagas/</small>' in studio_html
+    assert ".studio-discovery-row {" in studio_html
     assert "Other ways in" not in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
 

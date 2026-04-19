@@ -574,8 +574,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/search/" in studio_html
     assert "<h2>In the studio</h2>" in studio_html
     assert '<ul class="studio-discovery-list">' in studio_html
+    assert '<div class="studio-discovery-row">' in studio_html
     assert '<a class="studio-discovery-label" href="https://wastingnotime.org/sagas/">See active sagas</a>' in studio_html
     assert '<small class="studio-discovery-path">/sagas/</small>' in studio_html
+    assert ".studio-discovery-row {" in studio_html
     assert "Other ways in" not in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
     assert 'class="active">Studio</a>' in studio_html
