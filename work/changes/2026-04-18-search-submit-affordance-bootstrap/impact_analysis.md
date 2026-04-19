@@ -3,7 +3,7 @@
 ## Summary
 
 The next coherent slice is to give the existing search form an explicit submit
-control so the route has a clearer visible search action.
+control and stable hook so the route has a clearer visible search action.
 
 Current observed gap:
 
@@ -11,7 +11,7 @@ Current observed gap:
 - the form still relies on Enter or live input changes as the only practical
   submission path
 - the page therefore keeps a weaker visible form-action contract than the rest
-  of the search surface
+  of the search surface and lacks a stable submit hook
 
 ## Impacted Areas
 

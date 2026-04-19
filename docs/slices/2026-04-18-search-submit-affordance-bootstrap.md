@@ -17,8 +17,8 @@ Bounded form-affordance improvement for the existing static search route:
 - keep `/search/` backed by the published `search.json` artifact
 - preserve the current deterministic query, ranking, highlighting, tag-surface,
   recovery, and form-semantics contracts
-- add one explicit submit affordance to the existing search form without
-  changing the current route or client-side search behavior
+- add one explicit submit affordance and stable hook to the existing search
+  form without changing the current route or client-side search behavior
 
 ## Discovery Scope
 
@@ -38,6 +38,7 @@ publication:
 - add one explicit submit control to the existing search form
 - preserve the current query-state behavior, placeholder, and search-result
   rendering
+- expose the submit control through a stable class hook
 - keep the change bounded to form affordance rather than redesigning the search
   page
 
@@ -54,6 +55,7 @@ form markup such that:
 - the form exposes one explicit submit control
 - the existing search input remains the same field targeted by current
   client-side behavior
+- the submit control exposes a stable class hook for the page shell
 - the submit affordance remains stable for the same repository state
 
 ### `RenderSearchPage`
