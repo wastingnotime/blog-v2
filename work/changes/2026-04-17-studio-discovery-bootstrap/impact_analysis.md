@@ -2,15 +2,14 @@
 
 ## Summary
 
-The next slice should update the studio hub so its discovery guidance matches
-the now-expanded static publication surface.
+The studio hub now reflects the expanded static publication surface.
 
-Current observed gap:
+Current observed contract:
 
-- the studio page still guides readers only toward sagas and library
-- `/archives/` and `/search/` now exist as stable reader-facing routes
-- the studio hub therefore understates the actual ways readers can move through
-  the publication
+- the studio page guides readers toward sagas, topics, chronology, and search
+- `/archives/` and `/search/` appear alongside the existing hub destinations
+- the studio hub matches the actual reader-facing routes now available in the
+  publication
 
 ## Impacted Areas
 
@@ -20,21 +19,21 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains no new route or data projection. The boundary change is limited
-to the discovery copy and outbound links rendered on `studio/index.html`.
+The build already exposes the relevant routes. The boundary stays limited to
+the discovery copy and outbound links rendered on `studio/index.html`.
 
 ## Risks
 
-- scope could drift into a broader studio redesign instead of a bounded
-  discovery update
-- studio copy could become repetitive with shared navigation if the slice
-  overstates route lists
-- tests could assert overly specific prose instead of the core discoverability
-  contract
+- scope could drift into a broader studio redesign instead of the bounded
+  discovery surface
+- studio copy could become repetitive with shared navigation if it overstates
+  the route list
+- tests could assert overly specific prose instead of the discoverability
+  contract that matters
 
 ## Follow-On Pressure
 
 - a later slice may revisit richer studio composition once the top-level
-  information architecture stabilizes further
+  information architecture changes again
 - release review should verify that studio guidance stays aligned with the
   current reader-facing route set
