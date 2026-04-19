@@ -297,6 +297,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<h3 id="search-results-heading" class="visually-hidden">Search results</h3>' in search_html
     assert 'id="search-results" class="search-result-list" aria-labelledby="search-results-heading"' in search_html
     assert "Enter a query to search the publication." in search_html
+    assert '<section class="search-discovery-shell">' in search_html
     assert "https://wastingnotime.org/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
     assert "const normalizeSearchText = (value) => (value || '').trim().toLowerCase();" in search_html
@@ -340,6 +341,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".search-page-shell {" in search_html
     assert ".search-query-label {" in search_html
     assert 'class="search-submit-button"' in search_html
+    assert ".search-discovery-shell {" in search_html
     assert ".visually-hidden {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html

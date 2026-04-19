@@ -470,7 +470,7 @@ def build_search_page(
             '          <h3 id="search-results-heading" class="visually-hidden">Search results</h3>\n'
             '          <ul id="search-results" class="search-result-list" aria-labelledby="search-results-heading"></ul>\n'
             "        </section>\n"
-            f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')))}\n"
+        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')), section_class='search-discovery-shell')}\n"
             "        <script>\n"
             f"          const searchIndexUrl = {json.dumps(search_index_url)};\n"
             "          const searchForm = document.getElementById('search-form');\n"
@@ -1611,6 +1611,10 @@ def _render_document(
         font-size: 0.8rem;
       }}
       .library-discovery-shell {{
+        display: grid;
+        gap: 0.75rem;
+      }}
+      .search-discovery-shell {{
         display: grid;
         gap: 0.75rem;
       }}
