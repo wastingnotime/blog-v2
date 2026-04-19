@@ -306,7 +306,7 @@ def build_homepage(
             base_url=config.base_url,
         ),
         body_html=(
-            "        <section class=\"homepage-discovery-shell\">\n"
+            "        <section>\n"
             "          <p class=\"homepage-intro\">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>\n"
             f'          <p class="homepage-paths"><a href="{_absolute_url(config.base_url, "/search/")}">Search</a> / <a href="{_absolute_url(config.base_url, "/archives/")}">Archives</a> / <a href="{_absolute_url(config.base_url, "/library/")}">Library</a></p>\n'
             "        </section>\n"
@@ -416,7 +416,6 @@ def build_archive_page(
                         ("Search across the publication", "/search/"),
                         ("Move by topic instead", "/library/"),
                     ),
-                    section_class="archives-discovery-shell",
                 ),
             ]
         ),
@@ -445,7 +444,7 @@ def build_search_page(
             canonical_url=_absolute_url(config.base_url, "/search/"),
         ),
         body_html=(
-            "        <section class=\"search-page-shell\">\n"
+            "        <section>\n"
             "          <h2>Search the publication</h2>\n"
             '          <p id="search-helper">Type to filter the static index published with the site.</p>\n'
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
@@ -470,7 +469,7 @@ def build_search_page(
             '          <h3 id="search-results-heading" class="visually-hidden">Search results</h3>\n'
             '          <ul id="search-results" class="search-result-list" aria-labelledby="search-results-heading"></ul>\n'
             "        </section>\n"
-        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')), section_class='search-discovery-shell')}\n"
+        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')))}\n"
             "        <script>\n"
             f"          const searchIndexUrl = {json.dumps(search_index_url)};\n"
             "          const searchForm = document.getElementById('search-form');\n"
@@ -722,7 +721,6 @@ def build_content_page(
                         ("Browse the chronology", "/archives/"),
                         ("Search across the publication", "/search/"),
                     ),
-                    section_class="saga-discovery-shell",
                 ),
             ]
         ),
@@ -841,7 +839,6 @@ def build_saga_page(
                         ("Browse the chronology", "/archives/"),
                         ("Search across the publication", "/search/"),
                     ),
-                    section_class="saga-discovery-shell",
                 ),
             ]
         ),
@@ -893,7 +890,6 @@ def build_arc_page(
                         ("Browse the chronology", "/archives/"),
                         ("Search across the publication", "/search/"),
                     ),
-                    section_class="saga-discovery-shell",
                 ),
             ]
         ),
@@ -919,14 +915,14 @@ def build_library_page(
         f"{tag_markup}\n"
         "          </ul>\n"
         "        </section>\n"
-        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')), section_class='library-discovery-shell')}"
+        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')))}"
         if library_catalog.tags
         else (
             "        <section>\n"
             f"{_render_markdown(section_page.body_markdown)}\n"
             "        </section>\n"
             "        <p>No tags available yet.</p>\n"
-            f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')), section_class='library-discovery-shell')}"
+            f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')))}"
         )
     )
     return _render_document(
@@ -1213,10 +1209,6 @@ def _render_document(
         font-size: 0.8rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-      }}
-      .homepage-discovery-shell {{
-        display: grid;
-        gap: 0.75rem;
       }}
       .homepage-paths a {{
         color: var(--text-400);
@@ -1517,10 +1509,6 @@ def _render_document(
         display: block;
         margin-bottom: 0.35rem;
       }}
-      .search-page-shell {{
-        display: grid;
-        gap: 1rem;
-      }}
       .search-result-list {{
         list-style: none;
         margin: 0;
@@ -1612,22 +1600,6 @@ def _render_document(
         margin-top: 0.15rem;
         color: var(--text-400);
         font-size: 0.8rem;
-      }}
-      .archives-discovery-shell {{
-        display: grid;
-        gap: 0.75rem;
-      }}
-      .library-discovery-shell {{
-        display: grid;
-        gap: 0.75rem;
-      }}
-      .search-discovery-shell {{
-        display: grid;
-        gap: 0.75rem;
-      }}
-      .saga-discovery-shell {{
-        display: grid;
-        gap: 0.75rem;
       }}
       .studio-discovery-list {{
         list-style: none;

@@ -148,13 +148,10 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
     assert "HireFlow / The Origin Blueprint" in archive_html
-    assert '<section class="archives-discovery-shell">' in archive_html
     assert "/search/" in archive_html
     assert "/library/" in archive_html
-    assert ".archives-discovery-shell {" in archive_html
     assert ".archive-entry-row {" in archive_html
     assert "Search the publication" in search_html
-    assert '<section class="search-page-shell">' in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
     assert 'action="https://example.com/search/"' in search_html
@@ -176,7 +173,6 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert '<h3 id="search-results-heading" class="visually-hidden">Search results</h3>' in search_html
     assert 'id="search-results" class="search-result-list" aria-labelledby="search-results-heading"' in search_html
     assert "Enter a query to search the publication." in search_html
-    assert '<section class="search-discovery-shell">' in search_html
     assert "https://example.com/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
     assert "const normalizeSearchText = (value) => (value || '').trim().toLowerCase();" in search_html
@@ -228,10 +224,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "summary.appendChild(createHighlightedFragment(record.summary, normalizedQuery));" in search_html
     assert "if ((record.tags || []).length) {" in search_html
     assert ".search-result-list {" in search_html
-    assert ".search-page-shell {" in search_html
     assert ".search-query-label {" in search_html
     assert 'class="search-submit-button"' in search_html
-    assert ".search-discovery-shell {" in search_html
     assert ".visually-hidden {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html
@@ -266,11 +260,9 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'href="https://example.com/library/"' in search_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
-    assert '<section class="library-discovery-shell">' in library_html
     assert "Other ways in" in library_html
     assert 'href="https://example.com/archives/"' in library_html
     assert 'href="https://example.com/search/"' in library_html
-    assert ".library-discovery-shell {" in library_html
     assert '<ul class="library-topic-list">' in library_html
     assert '<a class="topic-link" href="https://example.com/library/architecture/">#architecture</a>' in library_html
     assert '<a class="breadcrumb-link" href="https://example.com/library/">' in topic_html
@@ -423,7 +415,6 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'class="site-nav-link active" aria-current="page">Archives</a>' in archive_html
     assert 'class="site-nav-link active" aria-current="page">About</a>' in about_html
     assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in saga_html
-    assert '<section class="saga-discovery-shell">' in saga_html
     assert 'href="https://example.com/library/"' in saga_html
     assert 'href="https://example.com/feed.xml"' in home_html
     assert 'href="https://example.com/feed.xml"' in about_html
@@ -431,7 +422,6 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in home_html
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in about_html
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in saga_html
-    assert ".saga-discovery-shell {" in saga_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in home_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in about_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in saga_html
@@ -446,7 +436,6 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert "Architecture, focus, and growth in public." in html
     assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
-    assert '<section class="homepage-discovery-shell">' in html
     assert '<p class="homepage-intro">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>' in html
     assert 'href="https://example.com/search/"' in html
     assert 'href="https://example.com/archives/"' in html
@@ -455,7 +444,6 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert '<h2 class="section-label">LIBRARY</h2>' in html
     assert '<a class="homepage-link" href="https://example.com/sagas/hireflow/">HireFlow</a>' in html
     assert "2 episodes - last release 2026-04-13 - in-progress" in html
-    assert ".homepage-discovery-shell {" in html
     assert "Deployment target:" not in html
 
 

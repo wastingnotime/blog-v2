@@ -120,7 +120,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         '<a href="https://wastingnotime.org/library/">Library</a></p>'
         in homepage_html
     )
-    assert '<section class="homepage-discovery-shell">' in homepage_html
     assert '<h2 class="section-label">RECENT</h2>' in homepage_html
     assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
     assert '<h2 class="section-label">LIBRARY</h2>' in homepage_html
@@ -181,7 +180,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".homepage-saga-row {" in homepage_html
     assert ".homepage-saga-status {" in homepage_html
     assert ".homepage-paths {" in homepage_html
-    assert ".homepage-discovery-shell {" in homepage_html
     assert ".section-label {" in homepage_html
     assert ".site-nav-link.active::after {" in homepage_html
     assert "article pre {" in homepage_html
@@ -255,13 +253,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
     assert "HireFlow / The Origin Blueprint" in archive_html
-    assert '<section class="archives-discovery-shell">' in archive_html
     assert '<ul class="discovery-list">' in archive_html
     assert '<a class="discovery-label" href="https://wastingnotime.org/search/">Search across the publication</a>' in archive_html
     assert '<small class="discovery-path">/search/</small>' in archive_html
     assert "/search/" in archive_html
     assert "/library/" in archive_html
-    assert ".archives-discovery-shell {" in archive_html
     assert ".archive-entry-row {" in archive_html
     assert "/api/event" not in archive_html
     assert _json_ld_payloads(archive_html) == [
@@ -274,7 +270,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "Search the publication" in search_html
-    assert '<section class="search-page-shell">' in search_html
     assert 'class="site-nav-link active" aria-current="page">Search</a>' in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
@@ -297,7 +292,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<h3 id="search-results-heading" class="visually-hidden">Search results</h3>' in search_html
     assert 'id="search-results" class="search-result-list" aria-labelledby="search-results-heading"' in search_html
     assert "Enter a query to search the publication." in search_html
-    assert '<section class="search-discovery-shell">' in search_html
     assert "https://wastingnotime.org/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
     assert "const normalizeSearchText = (value) => (value || '').trim().toLowerCase();" in search_html
@@ -338,10 +332,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "search-empty-recovery-path" in search_html
     assert "search-load-recovery-message" in search_html
     assert ".search-result-list {" in search_html
-    assert ".search-page-shell {" in search_html
     assert ".search-query-label {" in search_html
     assert 'class="search-submit-button"' in search_html
-    assert ".search-discovery-shell {" in search_html
     assert ".visually-hidden {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html
@@ -450,12 +442,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "https://wastingnotime.org/search/" not in sitemap_xml
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
-    assert '<section class="library-discovery-shell">' in library_html
     assert 'class="site-nav-link active" aria-current="page">Library</a>' in library_html
     assert "Other ways in" in library_html
     assert 'href="https://wastingnotime.org/archives/"' in library_html
     assert 'href="https://wastingnotime.org/search/"' in library_html
-    assert ".library-discovery-shell {" in library_html
     assert '<ul class="library-topic-list">' in library_html
     assert '<a class="topic-link" href="https://wastingnotime.org/library/architecture/">#architecture</a>' in library_html
     assert _json_ld_payloads(library_html) == [
@@ -540,8 +530,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".saga-timeline-row {" in saga_html
     assert ".saga-timeline-link {" in saga_html
     assert ".saga-timeline-meta {" in saga_html
-    assert '<section class="saga-discovery-shell">' in saga_html
-    assert ".saga-discovery-shell {" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
