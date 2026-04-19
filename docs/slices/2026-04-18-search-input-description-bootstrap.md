@@ -34,7 +34,6 @@ region, but one form-semantics gap still remains:
 This slice restores the minimum description behavior needed for the current
 static publication:
 
-- give the existing helper text a stable identifier
 - associate the existing search input with helper and status text through one
   explicit description contract
 - keep the change bounded to form semantics rather than redesigning the search
@@ -51,7 +50,7 @@ Given the existing static `/search/` route and search form, render deterministic
 form markup such that:
 
 - the current search input is explicitly associated with its helper and status
-  surfaces
+  surfaces through description semantics
 - existing helper and status text remain unchanged
 - the association remains stable for the same repository state
 
@@ -73,6 +72,8 @@ deterministic page markup such that:
   must not invent a second competing guidance surface.
 - The slice stays bounded to input-description semantics and must not widen into
   broader form redesign or search behavior changes.
+- The description contract should remain search-page specific and not affect
+  other form surfaces.
 - GitHub Pages compatibility remains a hard constraint.
 
 ## Required Ports

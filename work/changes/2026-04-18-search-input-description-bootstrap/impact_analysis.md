@@ -9,7 +9,7 @@ Current observed gap:
 
 - `/search/` now has a label, helper copy, and a live status region
 - the input itself still does not explicitly reference those descriptive
-  surfaces
+  surfaces through description semantics
 - the page therefore keeps a weaker form-description contract than the rest of
   the search surface
 
@@ -28,7 +28,7 @@ search page:
 - `/search/` stays the canonical route
 - `search.json` stays the only search artifact
 - page markup gains one bounded description contract for the existing search
-  input
+  input via explicit description attributes
 
 ## Risks
 
