@@ -292,7 +292,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "const projectSearchUrlState = (query) => {" in search_html
     assert "const scoreSearchRecord = (record, normalizedQuery) => {" in search_html
     assert "const createHighlightedFragment = (value, normalizedQuery) => {" in search_html
-    assert "const searchRecovery = document.createElement('p');" in search_html
+    assert "const searchRecovery = document.createElement('div');" in search_html
+    assert "searchRecovery.className = 'search-empty-recovery';" in search_html
+    assert "const createSearchRecoveryRow = (label, path) => {" in search_html
     assert "const fragment = document.createDocumentFragment();" in search_html
     assert "const mark = document.createElement('mark');" in search_html
     assert "mark.textContent = sourceText.slice(matchIndex, matchIndex + normalizedQuery.length);" in search_html
@@ -310,12 +312,16 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "return (left.record.url || '').localeCompare(right.record.url || '');" in search_html
     assert "searchRecovery.replaceChildren();" in search_html
     assert "if (!matches.length) {" in search_html
-    assert "searchRecovery.appendChild(document.createTextNode('Try '));" in search_html
-    assert "archivesLink.textContent = 'the archives';" in search_html
-    assert "libraryLink.textContent = 'the library';" in search_html
+    assert "message.className = 'search-empty-recovery-message';" in search_html
+    assert "message.textContent = `No results for \"${query}\". Try these routes instead.`;" in search_html
+    assert "searchRecovery.appendChild(createSearchRecoveryRow('the archives'," in search_html
+    assert "searchRecovery.appendChild(createSearchRecoveryRow('the library'," in search_html
     assert "searchResults.appendChild(searchRecovery);" in search_html
     assert "Search index could not be loaded." in search_html
-    assert "while search is unavailable." in search_html
+    assert "Search is unavailable right now. Try these routes instead." in search_html
+    assert "search-empty-recovery-row" in search_html
+    assert "search-empty-recovery-link" in search_html
+    assert "search-empty-recovery-path" in search_html
     assert ".search-result-list {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html

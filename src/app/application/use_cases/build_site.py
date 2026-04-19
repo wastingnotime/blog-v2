@@ -466,10 +466,25 @@ def build_search_page(
             "          const searchInput = document.getElementById('search-query');\n"
             "          const searchStatus = document.getElementById('search-status');\n"
             "          const searchResults = document.getElementById('search-results');\n"
-            "          const searchRecovery = document.createElement('p');\n"
+            "          const searchRecovery = document.createElement('div');\n"
+            "          searchRecovery.className = 'search-empty-recovery';\n"
             "          const initialQuery = new URLSearchParams(window.location.search).get('q') ?? '';\n"
             "          let searchRecords = [];\n"
             "          const normalizeSearchText = (value) => (value || '').trim().toLowerCase();\n"
+            "          const createSearchRecoveryRow = (label, path) => {\n"
+            "            const row = document.createElement('div');\n"
+            "            row.className = 'search-empty-recovery-row';\n"
+            "            const link = document.createElement('a');\n"
+            "            link.className = 'search-empty-recovery-link';\n"
+            "            link.href = path;\n"
+            "            link.textContent = label;\n"
+            "            const meta = document.createElement('small');\n"
+            "            meta.className = 'search-empty-recovery-path';\n"
+            "            meta.textContent = new URL(path).pathname;\n"
+            "            row.appendChild(link);\n"
+            "            row.appendChild(meta);\n"
+            "            return row;\n"
+            "          };\n"
             "          const projectSearchUrlState = (query) => {\n"
             "            const nextUrl = new URL(window.location.href);\n"
             "            const normalizedQuery = query.trim();\n"
@@ -571,13 +586,12 @@ def build_search_page(
             "              ? `${matches.length} result${matches.length === 1 ? '' : 's'} for \"${query}\"`\n"
             "              : `No results for \"${query}\"`;\n"
             "            if (!matches.length) {\n"
-            "              searchRecovery.appendChild(document.createTextNode('Try '));\n"
-            f"              const archivesLink = document.createElement('a'); archivesLink.href = {json.dumps(_absolute_url(config.base_url, '/archives/'))}; archivesLink.textContent = 'the archives';\n"
-            "              searchRecovery.appendChild(archivesLink);\n"
-            "              searchRecovery.appendChild(document.createTextNode(' or '));\n"
-            f"              const libraryLink = document.createElement('a'); libraryLink.href = {json.dumps(_absolute_url(config.base_url, '/library/'))}; libraryLink.textContent = 'the library';\n"
-            "              searchRecovery.appendChild(libraryLink);\n"
-            "              searchRecovery.appendChild(document.createTextNode(' for another way in.'));\n"
+            "              const message = document.createElement('p');\n"
+            "              message.className = 'search-empty-recovery-message';\n"
+            "              message.textContent = `No results for \"${query}\". Try these routes instead.`;\n"
+            "              searchRecovery.appendChild(message);\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the archives', {json.dumps(_absolute_url(config.base_url, '/archives/'))}));\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the library', {json.dumps(_absolute_url(config.base_url, '/library/'))}));\n"
             "              searchResults.appendChild(searchRecovery);\n"
             "              return;\n"
             "            }\n"
@@ -637,13 +651,12 @@ def build_search_page(
             "            .catch(() => {\n"
             "              searchStatus.textContent = 'Search index could not be loaded.';\n"
             "              searchRecovery.replaceChildren();\n"
-            "              searchRecovery.appendChild(document.createTextNode('Try '));\n"
-            f"              const archivesLink = document.createElement('a'); archivesLink.href = {json.dumps(_absolute_url(config.base_url, '/archives/'))}; archivesLink.textContent = 'the archives';\n"
-            "              searchRecovery.appendChild(archivesLink);\n"
-            "              searchRecovery.appendChild(document.createTextNode(' or '));\n"
-            f"              const libraryLink = document.createElement('a'); libraryLink.href = {json.dumps(_absolute_url(config.base_url, '/library/'))}; libraryLink.textContent = 'the library';\n"
-            "              searchRecovery.appendChild(libraryLink);\n"
-            "              searchRecovery.appendChild(document.createTextNode(' while search is unavailable.'));\n"
+            "              const message = document.createElement('p');\n"
+            "              message.className = 'search-empty-recovery-message';\n"
+            "              message.textContent = 'Search is unavailable right now. Try these routes instead.';\n"
+            "              searchRecovery.appendChild(message);\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the archives', {json.dumps(_absolute_url(config.base_url, '/archives/'))}));\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the library', {json.dumps(_absolute_url(config.base_url, '/library/'))}));\n"
             "              searchResults.appendChild(searchRecovery);\n"
             "            });\n"
             "          searchInput.value = initialQuery;\n"
@@ -1391,6 +1404,32 @@ def _render_document(
         color: var(--text-400);
         font-size: 0.92rem;
         line-height: 1.6;
+      }}
+      .search-empty-recovery {{
+        margin: 0;
+        padding: 0;
+      }}
+      .search-empty-recovery-message {{
+        margin: 0 0 0.75rem;
+        color: var(--text-400);
+      }}
+      .search-empty-recovery-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
+      .search-empty-recovery-row + .search-empty-recovery-row {{
+        margin-top: 0.5rem;
+      }}
+      .search-empty-recovery-link {{
+        color: var(--text-100);
+      }}
+      .search-empty-recovery-path {{
+        display: block;
+        margin-top: 0;
+        color: var(--text-400);
+        font-size: 0.8rem;
       }}
       .search-result-list {{
         list-style: none;
