@@ -156,7 +156,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
     assert 'action="https://example.com/search/"' in search_html
-    assert '<label for="search-query">Search query</label>' in search_html
+    assert '<label class="search-query-label" for="search-query">Search query</label>' in search_html
+    assert '<input class="search-query-input" id="search-query"' in search_html
     assert '<p id="search-helper">Type to filter the static index published with the site.</p>' in search_html
     assert 'aria-describedby="search-helper search-status"' in search_html
     assert 'aria-description="Search titles, summaries, and topics."' in search_html
@@ -225,6 +226,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "if ((record.tags || []).length) {" in search_html
     assert ".search-result-list {" in search_html
     assert ".search-page-shell {" in search_html
+    assert ".search-query-label {" in search_html
     assert ".visually-hidden {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html

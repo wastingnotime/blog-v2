@@ -448,8 +448,8 @@ def build_search_page(
             "          <h2>Search the publication</h2>\n"
             '          <p id="search-helper">Type to filter the static index published with the site.</p>\n'
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
-            '            <label for="search-query">Search query</label>\n'
-            '            <input id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" aria-describedby="search-helper search-status" aria-description="Search titles, summaries, and topics." />\n'
+            '            <label class="search-query-label" for="search-query">Search query</label>\n'
+            '            <input class="search-query-input" id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" aria-describedby="search-helper search-status" aria-description="Search titles, summaries, and topics." />\n'
             '            <button type="submit">Search</button>\n'
             "          </form>\n"
             "          <noscript>\n"
@@ -1503,6 +1503,10 @@ def _render_document(
         margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
+      }}
+      .search-query-label {{
+        display: block;
+        margin-bottom: 0.35rem;
       }}
       .search-page-shell {{
         display: grid;
