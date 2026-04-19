@@ -148,8 +148,10 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
     assert "HireFlow / The Origin Blueprint" in archive_html
+    assert '<section class="archives-discovery-shell">' in archive_html
     assert "/search/" in archive_html
     assert "/library/" in archive_html
+    assert ".archives-discovery-shell {" in archive_html
     assert ".archive-entry-row {" in archive_html
     assert "Search the publication" in search_html
     assert '<section class="search-page-shell">' in search_html

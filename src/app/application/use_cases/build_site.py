@@ -416,6 +416,7 @@ def build_archive_page(
                         ("Search across the publication", "/search/"),
                         ("Move by topic instead", "/library/"),
                     ),
+                    section_class="archives-discovery-shell",
                 ),
             ]
         ),
@@ -1946,6 +1947,8 @@ def _render_structured_data_script(
 def _render_discovery_surface(
     base_url: str,
     destinations: tuple[tuple[str, str], ...],
+    *,
+    section_class: str | None = None,
 ) -> str:
     items = "\n".join(
         (
@@ -1956,8 +1959,11 @@ def _render_discovery_surface(
         )
         for label, path in destinations
     )
+    section_class_markup = (
+        f' class="{section_class}"' if section_class is not None else ""
+    )
     return (
-        "        <section>\n"
+        f"        <section{section_class_markup}>\n"
         "          <h2>Other ways in</h2>\n"
         "          <ul class=\"discovery-list\">\n"
         f"{items}\n"

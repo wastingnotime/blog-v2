@@ -255,11 +255,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
     assert "HireFlow / The Origin Blueprint" in archive_html
+    assert '<section class="archives-discovery-shell">' in archive_html
     assert '<ul class="discovery-list">' in archive_html
     assert '<a class="discovery-label" href="https://wastingnotime.org/search/">Search across the publication</a>' in archive_html
     assert '<small class="discovery-path">/search/</small>' in archive_html
     assert "/search/" in archive_html
     assert "/library/" in archive_html
+    assert ".archives-discovery-shell {" in archive_html
     assert ".archive-entry-row {" in archive_html
     assert "/api/event" not in archive_html
     assert _json_ld_payloads(archive_html) == [
