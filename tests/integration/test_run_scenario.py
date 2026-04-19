@@ -8,22 +8,6 @@ from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilde
 from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
 
 LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parents[2].parent / "blog" / "public" / "index.html"
-LEGACY_BLOG_STUDIO_SNAPSHOT = (
-    Path(__file__).resolve().parents[2]
-    / "src"
-    / "app"
-    / "application"
-    / "use_cases"
-    / "legacy_studio.html"
-)
-LEGACY_BLOG_SAGAS_SNAPSHOT = (
-    Path(__file__).resolve().parents[2]
-    / "src"
-    / "app"
-    / "application"
-    / "use_cases"
-    / "legacy_sagas.html"
-)
 
 
 def test_static_site_builder_generates_static_routes_from_markdown(
@@ -96,7 +80,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     sagas_index_html = (
         output_dir / "sagas" / "index.html"
     ).read_text(encoding="utf-8")
-    legacy_sagas_html = LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
     saga_html = (
         output_dir / "sagas" / "hireflow" / "index.html"
     ).read_text(encoding="utf-8")
@@ -376,7 +359,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/archives/" in topic_html
     assert "/search/" in topic_html
     assert _json_ld_payloads(topic_html) == []
-    assert sagas_index_html == legacy_sagas_html
+    assert "sagas — work that moves forward in public" in sagas_index_html
+    assert "Long-running efforts I&#x27;m building in public." in sagas_index_html
+    assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_index_html
+    assert "start reading →" in sagas_index_html
     assert "Timeline" in saga_html
     assert 'class="site-nav-link active" aria-current="page">SAGAS</a>' in saga_html
     assert 'href="/feed.xml"' in saga_html
@@ -479,8 +465,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".entry-tags {" in about_html
     assert ".entry-tag-chip {" in about_html
     assert 'href="/favicon-32x32.png"' in about_html
-    assert sagas_index_html == LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
-    assert studio_html == LEGACY_BLOG_STUDIO_SNAPSHOT.read_text(encoding="utf-8")
+    assert "studio — building systems in public" in studio_html
+    assert "Parallel spaces evolving at their own pace." in studio_html
+    assert "wasting no time studio" in studio_html
+    assert "codingzen labs" in studio_html
+    assert "experiments" in studio_html
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "3 min read" in episode_html
     assert 'href="/library/distributed-systems/"' in episode_html

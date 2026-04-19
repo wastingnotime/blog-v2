@@ -66,12 +66,6 @@ from src.app.application.use_cases.project_section_hubs import project_sagas_ind
 LEGACY_BLOG_HOME_SNAPSHOT = (
     Path(__file__).resolve().parent / "legacy_homepage.html"
 )
-LEGACY_BLOG_STUDIO_SNAPSHOT = (
-    Path(__file__).resolve().parent / "legacy_studio.html"
-)
-LEGACY_BLOG_SAGAS_SNAPSHOT = (
-    Path(__file__).resolve().parent / "legacy_sagas.html"
-)
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon.ico", None),
@@ -1353,8 +1347,8 @@ def build_sagas_index_page(
     sagas_index: SagasIndex,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if config.title == "Wasting No Time" and LEGACY_BLOG_SAGAS_SNAPSHOT.exists():
-        return LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
+    if config.title == "Wasting No Time":
+        return _render_legacy_sagas_page(config, sagas_index, footer_attribution)
 
     saga_markup = "\n".join(
         _render_saga_summary(summary, base_url=config.base_url)
@@ -1402,8 +1396,8 @@ def build_studio_page(
     section_page: SectionPage,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if config.title == "Wasting No Time" and LEGACY_BLOG_STUDIO_SNAPSHOT.exists():
-        return LEGACY_BLOG_STUDIO_SNAPSHOT.read_text(encoding="utf-8")
+    if config.title == "Wasting No Time":
+        return _render_legacy_studio_page(config, footer_attribution)
 
     studio_destinations = (
         ("See active sagas", "/sagas/"),
@@ -1439,6 +1433,271 @@ def build_studio_page(
                 ),
             ]
         ),
+    )
+
+
+def _render_legacy_sagas_page(
+    config: SiteConfig,
+    sagas_index: SagasIndex,
+    footer_attribution: FooterAttribution,
+) -> str:
+    saga_markup = "\n".join(
+        _render_legacy_saga_summary(summary, base_url=config.base_url)
+        for summary in sagas_index.sagas
+    )
+    return _render_legacy_blog_page(
+        title="sagas — work that moves forward in public",
+        h1="sagas — work that moves forward in public",
+        intro=(
+            "Long-running efforts I'm building in public. Each saga is a problem I'm "
+            "trying to solve in the real world, told as arcs and episodes — not theory, "
+            "but actual work moving forward."
+        ),
+        section_html=(
+            "    <main>\n"
+            "        <section>\n"
+            "            <h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>\n"
+            "\n"
+            "            <ul class=\"space-y-6\">\n"
+            f"{saga_markup}\n"
+            "            </ul>\n"
+            "        </section>\n"
+            "    </main>\n"
+        ),
+        active_section="sagas",
+        footer_attribution=footer_attribution,
+    )
+
+
+def _render_legacy_studio_page(
+    config: SiteConfig,
+    footer_attribution: FooterAttribution,
+) -> str:
+    return _render_legacy_blog_page(
+        title="studio — building systems in public",
+        h1="studio — building systems in public",
+        intro=(
+            "Parallel spaces evolving at their own pace. This is where I build in public "
+            "— architecture, Go, experiments, and things that might become products."
+        ),
+        section_html=(
+            "    <main>\n"
+            "        <section class=\"page-body\">\n"
+            "\n"
+            "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">wasting no time studio</h3>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                Architecture, integration, performance, and the discipline of focus.<br>\n"
+            "                This is where systems are shaped and decisions are made in public.\n"
+            "            </p>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            f"                see active sagas → <a href=\"{_site_path(config.base_url, '/sagas/')}\">/sagas</a><br>\n"
+            f"                explore topics → <a href=\"{_site_path(config.base_url, '/library/')}\">/library</a>\n"
+            "            </p>\n"
+            "\n"
+            "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">codingzen labs</h3>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                Golang, runtime behavior, experiments, and small playable things.<br>\n"
+            "                This space will also cover Go-based game development.\n"
+            "            </p>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                visit <a href=\"https://codingzen.org/\">codingzen.org</a>\n"
+            "            </p>\n"
+            "\n"
+            "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">experiments</h3>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                Prototypes and explorations that might become products — or might just prove a point.<br>\n"
+            "                Sometimes useful. Sometimes just curiosity with teeth.\n"
+            "            </p>\n"
+            "\n"
+            "        </section>\n"
+            "    </main>\n"
+        ),
+        active_section="studio",
+        footer_attribution=footer_attribution,
+    )
+
+
+def _render_legacy_blog_page(
+    *,
+    title: str,
+    h1: str,
+    intro: str,
+    section_html: str,
+    active_section: str,
+    footer_attribution: FooterAttribution,
+) -> str:
+    nav_items = []
+    for label, path, section in (
+        ("HOME", "/", "home"),
+        ("STUDIO", "/studio/", "studio"),
+        ("SAGAS", "/sagas/", "sagas"),
+        ("LIBRARY", "/library/", "library"),
+        ("ABOUT", "/about/", "about"),
+    ):
+        active_class = "active" if section == active_section else ""
+        nav_items.append(
+            f'            <a class="{active_class}" href="{path}">{label}</a>'
+        )
+        nav_items.append(
+            '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>'
+        )
+    nav_items.append('            <a href="/feed.xml">RSS</a>')
+
+    return (
+        "\n    \n<!doctype html>\n"
+        '<html lang="en">\n'
+        "<head>\n"
+        '    <meta charset="utf-8" />\n'
+        '    <meta name="viewport" content="width=device-width, initial-scale=1" />\n'
+        f"    <title>{html.escape(title)}</title>\n"
+        '    <link rel="icon" href="/favicon.ico">\n'
+        '    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n'
+        '    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n'
+        '    <link rel="apple-touch-icon" href="/apple-touch-icon.png">\n'
+        '    <script src="https://cdn.tailwindcss.com"></script>\n'
+        '    <script>tailwind.config={theme:{extend:{fontFamily:{mono:["ui-monospace","SFMono-Regular","Menlo","Monaco","Consolas","Liberation Mono","Courier New","monospace"]}}}};</script>\n'
+        "    <style>\n"
+        "        html { font-kerning: normal; }\n"
+        "\n"
+        "        .menu a {\n"
+        "            color:#a1a1aa;\n"
+        "            text-decoration:none;\n"
+        "            transition: color .15s ease;\n"
+        "        }\n"
+        "        .menu a:hover {\n"
+        "            color:#fff;\n"
+        "            text-decoration:underline;\n"
+        "        }\n"
+        "        .menu a.active {\n"
+        "            color:#fff;\n"
+        "            font-weight:500;\n"
+        "        }\n"
+        "        .menu a.active::after {\n"
+        '            content:"•";\n'
+        "            margin-left:0.4em;\n"
+        "            opacity:0.6;\n"
+        "            font-weight:400;\n"
+        "        }\n"
+        "\n"
+        "        a {\n"
+        "            color:#a1a1aa;\n"
+        "            text-decoration:none;\n"
+        "            transition: color .15s ease;\n"
+        "        }\n"
+        "        a:hover {\n"
+        "            color:#fff;\n"
+        "            text-decoration:underline;\n"
+        "        }\n"
+        "\n"
+        "        ul {\n"
+        "            list-style:none;\n"
+        "            padding-left:0;\n"
+        "            margin:0;\n"
+        "        }\n"
+        "\n"
+        "        .intro:empty {\n"
+        "            display:none;\n"
+        "        }\n"
+        "\n"
+        "        .space-y-1 > * + * { margin-top: .25rem; }\n"
+        "        .space-y-2 > * + * { margin-top: .5rem; }\n"
+        "        .space-y-3 > * + * { margin-top: .75rem; }\n"
+        "        .space-y-6 > * + * { margin-top: 1.5rem; }\n"
+        "\n"
+        "        .breadcrumb {\n"
+        "            font-size:0.9rem;\n"
+        "            color:#888;\n"
+        "            margin-bottom:1.5rem;\n"
+        "        }\n"
+        "        .breadcrumb a {\n"
+        "            color:#aaa;\n"
+        "            text-decoration:none;\n"
+        "        }\n"
+        "        .breadcrumb a:hover {\n"
+        "            text-decoration:underline;\n"
+        "            color:#fff;\n"
+        "        }\n"
+        "        .breadcrumb .sep {\n"
+        "            margin:0 .4rem;\n"
+        "            color:#555;\n"
+        "        }\n"
+        "\n"
+        "        .arc-name,\n"
+        "        .episode-title {\n"
+        "            color:#fff;\n"
+        "            font-weight:500;\n"
+        "            margin:0 0 1rem 0;\n"
+        "            font-size:1.1rem;\n"
+        "        }\n"
+        "\n"
+        "        .topic-link {\n"
+        "            border-width:1px;\n"
+        "            border-color: rgb(39 39 42);\n"
+        "            border-style: solid;\n"
+        "            border-radius:.25rem;\n"
+        "            padding:.5rem .75rem;\n"
+        "            color: rgb(244 244 245);\n"
+        "            text-decoration:none;\n"
+        "            transition: color .15s ease, border-color .15s ease;\n"
+        "        }\n"
+        "        .topic-link:hover {\n"
+        "            border-color: rgba(255,255,255,.4);\n"
+        "            color:#fff;\n"
+        "            text-decoration:underline;\n"
+        "        }\n"
+        "\n"
+        "         /* WastingNoTime — unified reading rhythm (dark, minimal) */\n"
+        "         /* Inline version until asset pipeline is introduced */\n"
+        "\n"
+        "         .prose {\n"
+        "             max-width: none;\n"
+        "             --wnt-text-100: rgb(244 244 245);\n"
+        "             --wnt-text-200: rgb(228 228 231);\n"
+        "             --wnt-text-300: rgb(212 212 216);\n"
+        "             --wnt-text-400: rgb(161 161 170);\n"
+        "             --wnt-border:   rgb(39 39 42);\n"
+        "         }\n"
+        "    </style>\n"
+        "    \n"
+        "</head>\n"
+        '<body class="bg-black text-zinc-100 font-mono selection:bg-white/20">\n'
+        '<div class="max-w-3xl mx-auto px-4 py-6">\n'
+        '    <header class="mb-6">\n'
+        '        <nav class="menu text-sm text-zinc-400">\n'
+        f"{chr(10).join(nav_items)}\n"
+        "        </nav>\n\n"
+        f'        <h1 class="mt-3 text-xl tracking-tight text-zinc-300">{html.escape(h1)}</h1>\n'
+        "    </header>\n\n"
+        '    <p class="intro text-base text-zinc-200 leading-relaxed mb-8">\n'
+        f"{html.escape(intro)}\n"
+        "    </p>\n\n"
+        f"{section_html}\n"
+        '    <footer class="mt-10 text-xs text-zinc-500">\n'
+        f"        © {footer_attribution.year} {footer_attribution.site_name} — built with Go\n"
+        "    </footer>\n"
+        "</div>\n"
+        "</body>\n"
+        "</html>\n"
+    )
+
+
+def _render_legacy_saga_summary(summary: SagaSummary, *, base_url: str) -> str:
+    start_link = ""
+    if summary.start_permalink:
+        start_link = (
+            f'<small class="text-xs text-zinc-500"><a href="{_site_path(base_url, summary.start_permalink)}">start reading →</a></small>'
+        )
+    description = f'            <div class="text-sm text-zinc-400 leading-relaxed mb-4 space-y-2">{html.escape(summary.summary)}</div>'
+    return (
+        "                <li>\n"
+        "                    <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">\n"
+        f'                        <a href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+        "                    </h3>\n"
+        f"{description}\n"
+        "                    <div class=\"mt-2\">\n"
+        f"                        {start_link}\n"
+        "                    </div>\n"
+        "                </li>"
     )
 
 

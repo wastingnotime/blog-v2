@@ -318,25 +318,16 @@ def test_build_static_site_generates_section_hub_pages() -> None:
 
     sagas_html = pages["sagas/index.html"]
     studio_html = pages["studio/index.html"]
-    legacy_sagas_html = (
-        Path(__file__).resolve().parents[2]
-        / "src"
-        / "app"
-        / "application"
-        / "use_cases"
-        / "legacy_sagas.html"
-    ).read_text(encoding="utf-8")
-    legacy_studio_html = (
-        Path(__file__).resolve().parents[2]
-        / "src"
-        / "app"
-        / "application"
-        / "use_cases"
-        / "legacy_studio.html"
-    ).read_text(encoding="utf-8")
-
-    assert sagas_html == legacy_sagas_html
-    assert studio_html == legacy_studio_html
+    assert "sagas — work that moves forward in public" in sagas_html
+    assert "Long-running efforts I&#x27;m building in public." in sagas_html
+    assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_html
+    assert "<h3 class=\"text-lg text-zinc-100 font-normal mb-1\">" in sagas_html
+    assert "start reading →" in sagas_html
+    assert "studio — building systems in public" in studio_html
+    assert "Parallel spaces evolving at their own pace." in studio_html
+    assert "wasting no time studio" in studio_html
+    assert "codingzen labs" in studio_html
+    assert "experiments" in studio_html
 
 
 def test_build_static_site_generates_feed_and_sitemap() -> None:
