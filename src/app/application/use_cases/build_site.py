@@ -1333,12 +1333,18 @@ def _render_document(
       .saga-arc-list > li + li {{
         margin-top: 1rem;
       }}
+      .saga-arc-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
       .saga-arc-link {{
         color: var(--text-100);
       }}
       .saga-arc-meta {{
         display: block;
-        margin-top: 0.2rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
@@ -1350,12 +1356,18 @@ def _render_document(
       .saga-timeline-list > li + li {{
         margin-top: 1rem;
       }}
+      .saga-timeline-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
       .saga-timeline-link {{
         color: var(--text-100);
       }}
       .saga-timeline-meta {{
         display: block;
-        margin-top: 0.2rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
@@ -1367,12 +1379,18 @@ def _render_document(
       .arc-episode-list > li + li {{
         margin-top: 1rem;
       }}
+      .arc-episode-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
       .arc-episode-link {{
         color: var(--text-100);
       }}
       .arc-episode-meta {{
         display: block;
-        margin-top: 0.2rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
@@ -2050,8 +2068,10 @@ def _render_arc_summary(arc: object, *, base_url: str) -> str:
     last_release = arc.last_release_date or "n/a"
     return (
         "            <li>\n"
+        '              <div class="saga-arc-row">\n'
         f'              <a class="saga-arc-link" href="{_absolute_url(base_url, arc.permalink)}">{html.escape(arc.title)}</a>\n'
         f'              <small class="saga-arc-meta">{arc.episode_count} episodes · last {html.escape(last_release)}</small>\n'
+        "              </div>\n"
         "            </li>"
     )
 
@@ -2059,8 +2079,10 @@ def _render_arc_summary(arc: object, *, base_url: str) -> str:
 def _render_timeline_entry(entry: object, *, base_url: str) -> str:
     return (
         "            <li>\n"
-        f'              <a class="saga-timeline-link" href="{_absolute_url(base_url, entry.permalink)}">[Ep {entry.number:02d}] {html.escape(entry.title)}</a>\n'
-        f'              <small class="saga-timeline-meta">{html.escape(entry.arc_title)} · {html.escape(entry.date)}</small>\n'
+        '              <div class="saga-timeline-row">\n'
+        f'                <a class="saga-timeline-link" href="{_absolute_url(base_url, entry.permalink)}">[Ep {entry.number:02d}] {html.escape(entry.title)}</a>\n'
+        f'                <small class="saga-timeline-meta">{html.escape(entry.arc_title)} · {html.escape(entry.date)}</small>\n'
+        "              </div>\n"
         "            </li>"
     )
 
@@ -2068,8 +2090,10 @@ def _render_timeline_entry(entry: object, *, base_url: str) -> str:
 def _render_arc_episode(episode: Episode, *, base_url: str) -> str:
     return (
         "            <li>\n"
-        f'              <a class="arc-episode-link" href="{_absolute_url(base_url, episode.permalink)}">[Ep {episode.number:02d}] {html.escape(episode.title)}</a>\n'
-        f'              <small class="arc-episode-meta">{html.escape(episode.date)}</small>\n'
+        '              <div class="arc-episode-row">\n'
+        f'                <a class="arc-episode-link" href="{_absolute_url(base_url, episode.permalink)}">[Ep {episode.number:02d}] {html.escape(episode.title)}</a>\n'
+        f'                <small class="arc-episode-meta">{html.escape(episode.date)}</small>\n'
+        "              </div>\n"
         "            </li>"
     )
 

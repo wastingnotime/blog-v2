@@ -1,32 +1,9 @@
-# Implementation
+# Implementation: 2026-04-18 Saga Navigation Presentation Bootstrap
 
-## Summary
+Implemented the saga-navigation refinement in `build_site.py`:
 
-Implemented a bounded saga-navigation refinement by rendering saga arc rows,
-timeline entries, and arc episode rows through explicit presentation hooks
-while preserving current routes, chronology, labels, counts, and discovery
-behavior.
+- added explicit row shells for saga arc rows, saga timeline rows, and arc episode rows
+- kept the existing chronology, counts, labels, routes, and discovery links unchanged
+- preserved the saga and arc routes as static navigation surfaces with no new runtime dependency
 
-## Main Changes
-
-- added `docs/slices/2026-04-18-saga-navigation-presentation-bootstrap.md` to
-  define the bounded saga-navigation row contract
-- added `work/changes/2026-04-18-saga-navigation-presentation-bootstrap/impact_analysis.md`
-  to record the presentation-only boundary and risks
-- updated `src/app/application/use_cases/build_site.py` so saga and arc routes
-  now:
-  - render arc lists through `saga-arc-list`, `saga-arc-link`, and
-    `saga-arc-meta`
-  - render timeline rows through `saga-timeline-list`, `saga-timeline-link`,
-    and `saga-timeline-meta`
-  - render arc episode rows through `arc-episode-list`, `arc-episode-link`,
-    and `arc-episode-meta`
-  - add matching document styles for the bounded saga-navigation surface
-  - preserve current narrative structure, dates, counts, and discovery links
-- updated unit and integration assertions to cover the new saga and arc
-  presentation hooks in generated output
-
-## Validation
-
-- `python3 -m pytest tests/unit/test_build_site.py tests/integration/test_run_scenario.py`
-- `python3 -m src.app.interfaces.cli.run_scenario`
+Updated deterministic unit and integration tests to verify the saga-only row shells without widening into chronology or information-architecture changes.
