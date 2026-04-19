@@ -64,7 +64,7 @@ from src.app.application.use_cases.project_route_robots_policy import (
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
 
 LEGACY_BLOG_HOME_SNAPSHOT = (
-    Path(__file__).resolve().parents[5] / "blog" / "public" / "index.html"
+    Path(__file__).resolve().parent / "legacy_homepage.html"
 )
 LEGACY_BLOG_STUDIO_SNAPSHOT = (
     Path(__file__).resolve().parents[5] / "blog" / "public" / "studio" / "index.html"
@@ -101,7 +101,12 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
         "CNAME": build_cname(config),
         "404.html": build_not_found_page(config, footer_attribution),
         "browserconfig.xml": build_browserconfig(config),
-        "index.html": build_homepage(config, homepage_surface, footer_attribution),
+        "index.html": build_homepage(
+            config,
+            catalog,
+            homepage_surface,
+            footer_attribution,
+        ),
         "opensearch.xml": build_opensearch_description(config),
         "archives/index.html": build_archive_page(
             config,
@@ -281,13 +286,11 @@ def build_browserconfig(config: SiteConfig) -> str:
 
 def build_homepage(
     config: SiteConfig,
+    catalog: ContentCatalog,
     homepage_surface: HomepageSurface,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if (
-        config.title == "Wasting No Time"
-        and LEGACY_BLOG_HOME_SNAPSHOT.exists()
-    ):
+    if config.title == "Wasting No Time":
         return LEGACY_BLOG_HOME_SNAPSHOT.read_text(encoding="utf-8")
 
     recent_items = homepage_surface.recent_entries
@@ -327,6 +330,364 @@ def build_homepage(
             "          </ul>\n"
             "        </section>\n"
         ),
+    )
+
+
+def _render_legacy_homepage(
+    catalog: ContentCatalog,
+    footer_attribution: FooterAttribution,
+) -> str:
+    recent_items = _legacy_home_recent_items(catalog)
+    saga_items = _legacy_home_summaries(catalog)
+    recent_markup = "\n".join(
+        _render_legacy_home_recent_item(item) for item in recent_items
+    )
+    saga_markup = "\n".join(_render_legacy_home_saga_item(item) for item in saga_items)
+    return (
+        "<!doctype html>\n"
+        '<html lang="en">\n'
+        "<head>\n"
+        '    <meta charset="utf-8" />\n'
+        '    <meta name="viewport" content="width=device-width, initial-scale=1" />\n'
+        "    <title>wasting no time — architecture, focus, and growth in public</title>\n"
+        '    <link rel="icon" href="/favicon.ico">\n'
+        '    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n'
+        '    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n'
+        '    <link rel="apple-touch-icon" href="/apple-touch-icon.png">\n'
+        '    <script src="https://cdn.tailwindcss.com"></script>\n'
+        '    <script>tailwind.config={theme:{extend:{fontFamily:{mono:["ui-monospace","SFMono-Regular","Menlo","Monaco","Consolas","Liberation Mono","Courier New","monospace"]}}}};</script>\n'
+        "    <style>\n"
+        "        html { font-kerning: normal; }\n"
+        "\n"
+        "        /* nav links and normal links should look the same */\n"
+        "        .menu a {\n"
+        "            color:#a1a1aa;\n"
+        "            text-decoration:none;\n"
+        "            transition: color .15s ease;\n"
+        "        }\n"
+        "        .menu a:hover {\n"
+        "            color:#fff;\n"
+        "            text-decoration:underline;\n"
+        "        }\n"
+        "        .menu a.active {\n"
+        "            color:#fff;\n"
+        "            font-weight:500;\n"
+        "        }\n"
+        '        .menu a.active::after {\n'
+        '            content:"•";\n'
+        "            margin-left:0.4em;\n"
+        "            opacity:0.6;\n"
+        "            font-weight:400;\n"
+        "        }\n"
+        "\n"
+        "        /* global link style */\n"
+        "        a {\n"
+        "            color:#a1a1aa;\n"
+        "            text-decoration:none;\n"
+        "            transition: color .15s ease;\n"
+        "        }\n"
+        "        a:hover {\n"
+        "            color:#fff;\n"
+        "            text-decoration:underline;\n"
+        "        }\n"
+        "\n"
+        "        /* remove bullets / left padding across lists */\n"
+        "        ul {\n"
+        "            list-style:none;\n"
+        "            padding-left:0;\n"
+        "            margin:0;\n"
+        "        }\n"
+        "\n"
+        "        /* hide empty intro paragraphs */\n"
+        "        .intro:empty {\n"
+        "            display:none;\n"
+        "        }\n"
+        "\n"
+        "        /* utility fallbacks for pages that rely on spacing in lists */\n"
+        "        .space-y-1 > * + * { margin-top: .25rem; }\n"
+        "        .space-y-2 > * + * { margin-top: .5rem; }\n"
+        "        .space-y-3 > * + * { margin-top: .75rem; }\n"
+        "        .space-y-6 > * + * { margin-top: 1.5rem; }\n"
+        "\n"
+        "        .breadcrumb {\n"
+        "            font-size:0.9rem;\n"
+        "            color:#888;\n"
+        "            margin-bottom:1.5rem;\n"
+        "        }\n"
+        "        .breadcrumb a {\n"
+        "            color:#aaa;\n"
+        "            text-decoration:none;\n"
+        "        }\n"
+        "        .breadcrumb a:hover {\n"
+        "            text-decoration:underline;\n"
+        "            color:#fff;\n"
+        "        }\n"
+        "        .breadcrumb .sep {\n"
+        "            margin:0 .4rem;\n"
+        "            color:#555;\n"
+        "        }\n"
+        "\n"
+        "        .arc-name,\n"
+        "        .episode-title {\n"
+        "            color:#fff;\n"
+        "            font-weight:500;\n"
+        "            margin:0 0 1rem 0;\n"
+        "            font-size:1.1rem;\n"
+        "        }\n"
+        "\n"
+        "        .topic-link {\n"
+        "            border-width:1px;\n"
+        "            border-color: rgb(39 39 42);\n"
+        "            border-style: solid;\n"
+        "            border-radius:.25rem;\n"
+        "            padding:.5rem .75rem;\n"
+        "            color: rgb(244 244 245);\n"
+        "            text-decoration:none;\n"
+        "            transition: color .15s ease, border-color .15s ease;\n"
+        "        }\n"
+        "        .topic-link:hover {\n"
+        "            border-color: rgba(255,255,255,.4);\n"
+        "            color:#fff;\n"
+        "            text-decoration:underline;\n"
+        "        }\n"
+        "\n"
+        "         /* WastingNoTime — unified reading rhythm (dark, minimal) */\n"
+        "         /* Inline version until asset pipeline is introduced */\n"
+        "\n"
+        "         .prose {\n"
+        "             max-width: none;\n"
+        "             --wnt-text-100: rgb(244 244 245);\n"
+        "             --wnt-text-200: rgb(228 228 231);\n"
+        "             --wnt-text-300: rgb(212 212 216);\n"
+        "             --wnt-text-400: rgb(161 161 170);\n"
+        "             --wnt-border:   rgb(39 39 42);\n"
+        "         }\n"
+        "\n"
+        "        /* Headings */\n"
+        "        .prose h2 {\n"
+        "            margin-top: 3rem;\n"
+        "            margin-bottom: 1rem;\n"
+        "            color: #fff;\n"
+        "            font-weight: 600;\n"
+        "            font-size: 1.25rem;\n"
+        "            line-height: 1.6;\n"
+        "        }\n"
+        "        .prose h3 {\n"
+        "            margin-top: 2rem;\n"
+        "            margin-bottom: 0.75rem;\n"
+        "            color: var(--wnt-text-200);\n"
+        "            font-weight: 500;\n"
+        "            font-size: 1.1rem;\n"
+        "            line-height: 1.6;\n"
+        "        }\n"
+        "        .prose h3 strong { font-weight: 500; }\n"
+        "\n"
+        "        /* Paragraph rhythm */\n"
+        "        .prose p {\n"
+        "            margin-top: 1.25rem;\n"
+        "            margin-bottom: 1.25rem;\n"
+        "            line-height: 1.7;\n"
+        "            color: var(--wnt-text-200);\n"
+        "        }\n"
+        "        .prose h2 + p,\n"
+        "        .prose h3 + p { margin-top: 0.75rem; }\n"
+        "\n"
+        "        /* Blockquotes */\n"
+        "        .prose blockquote {\n"
+        "            border-left: 2px solid rgb(63 63 70);\n"
+        "            padding-left: 1rem;\n"
+        "            margin: 1.75rem 0;\n"
+        "            color: var(--wnt-text-300);\n"
+        "            font-style: italic;\n"
+        "            line-height: 1.8;\n"
+        "        }\n"
+        "        .prose blockquote p { margin: 0; }\n"
+        "        .prose blockquote strong { color: #fff; font-weight: 500; }\n"
+        "\n"
+        "        /* Lists */\n"
+        "        .prose ul { list-style: disc; }\n"
+        "        .prose ol { list-style: decimal; }\n"
+        "        .prose ul, .prose ol {\n"
+        "            margin: 1.25rem 0;\n"
+        "            padding-left: 1.25rem;\n"
+        "            color: var(--wnt-text-200);\n"
+        "        }\n"
+        "        .prose li + li { margin-top: 0.35rem; }\n"
+        "        .prose li > p { margin: 0.25rem 0; }\n"
+        "\n"
+        "        /* Code */\n"
+        "        .prose code {\n"
+        "            background: rgba(255,255,255,0.04);\n"
+        "            padding: 0.1rem 0.35rem;\n"
+        "            border-radius: 0.25rem;\n"
+        "            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;\n"
+        "            color: var(--wnt-text-100);\n"
+        "        }\n"
+        "        .prose pre {\n"
+        "            margin: 1.5rem 0;\n"
+        "            padding: 1rem;\n"
+        "            background: #0b0b0b;\n"
+        "            border: 1px solid var(--wnt-border);\n"
+        "            border-radius: 0.5rem;\n"
+        "            overflow: auto;\n"
+        "        }\n"
+        "        .prose pre code { background: transparent; padding: 0; border-radius: 0; }\n"
+        "\n"
+        "        /* Links */\n"
+        "        .prose a {\n"
+        "            color: var(--wnt-text-400);\n"
+        "            text-decoration: underline;\n"
+        "            text-decoration-thickness: .06em;\n"
+        "            text-underline-offset: 2px;\n"
+        "        }\n"
+        "        .prose a:hover { color: #fff; }\n"
+        "\n"
+        "        /* Images, figures, hr, tables */\n"
+        "        .prose img { display: block; margin: 1.25rem 0; border-radius: 0.5rem; }\n"
+        "        .prose figure { margin: 1.75rem 0; }\n"
+        "        .prose figcaption {\n"
+        "            margin-top: 0.5rem;\n"
+        "            font-size: 0.85rem;\n"
+        "            color: var(--wnt-text-400);\n"
+        "            text-align: center;\n"
+        "        }\n"
+        "        .prose hr {\n"
+        "            border: 0;\n"
+        "            border-top: 1px solid var(--wnt-border);\n"
+        "            margin: 2rem 0;\n"
+        "        }\n"
+        "        .prose table {\n"
+        "            width: 100%;\n"
+        "            border-collapse: collapse;\n"
+        "            margin: 1.5rem 0;\n"
+        "            font-size: 0.95rem;\n"
+        "            color: var(--wnt-text-200);\n"
+        "        }\n"
+        "        .prose thead th {\n"
+        "            text-align: left;\n"
+        "            font-weight: 600;\n"
+        "            color: #fff;\n"
+        "            border-bottom: 1px solid var(--wnt-border);\n"
+        "            padding: 0.5rem 0.75rem;\n"
+        "        }\n"
+        "        .prose tbody td {\n"
+        "            border-top: 1px solid var(--wnt-border);\n"
+        "            padding: 0.5rem 0.75rem;\n"
+        "        }\n"
+        "\n"
+        "        /* Trim trailing space */\n"
+        "        .prose :last-child { margin-bottom: 0 !important; }\n"
+        "    </style>\n"
+        "</head>\n"
+        '<body class="bg-black text-zinc-100 font-mono selection:bg-white/20">\n'
+        '<div class="max-w-3xl mx-auto px-4 py-6">\n'
+        '    <header class="mb-6">\n'
+        '        <nav class="menu text-sm text-zinc-400">\n'
+        '            <a class="active" href="/">HOME</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="" href="/studio/">STUDIO</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="" href="/sagas/">SAGAS</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="" href="/library/">LIBRARY</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="" href="/about/">ABOUT</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a href="/feed.xml">RSS</a>\n'
+        "        </nav>\n\n"
+        '        <h1 class="mt-3 text-xl tracking-tight text-zinc-300">wasting no time — architecture, focus, and growth in public</h1>\n'
+        "    </header>\n\n"
+        '    <p class="intro text-base text-zinc-200 leading-relaxed mb-8">\n'
+        "Experiments in architecture, focus, and growth — built in public, one saga at a time.\n\n"
+        "    </p>\n\n"
+        "    <section>\n"
+        '        <h2 class="text-sm text-zinc-400 mb-2">RECENT</h2>\n'
+        '        <ul class="space-y-3">\n'
+        f"{recent_markup}\n"
+        "        </ul>\n"
+        "    </section>\n\n"
+        '    <section class="mt-6">\n'
+        '        <h2 class="text-sm text-zinc-400 mb-2">SAGAS</h2>\n'
+        '        <ul class="space-y-1">\n'
+        f"{saga_markup}\n"
+        "        </ul>\n"
+        "    </section>\n\n"
+        '    <footer class="mt-10 text-xs text-zinc-500">\n'
+        f"        © {footer_attribution.year} wastingnotime.org — built with Go\n"
+        "    </footer>\n"
+        "</div>\n"
+        "</body>\n"
+        "</html>\n"
+    )
+
+
+def _legacy_home_recent_items(catalog: ContentCatalog) -> list[Episode]:
+    items = sorted(
+        catalog.episodes,
+        key=lambda episode: (episode.date, episode.title),
+        reverse=True,
+    )
+    return items[:10]
+
+
+def _legacy_home_summaries(
+    catalog: ContentCatalog,
+) -> list[tuple[str, str, str, int, str | None, str]]:
+    items: list[tuple[str, str, str, int, str | None, str]] = []
+    for saga in catalog.sagas:
+        episode_dates = [episode.date for episode in catalog.episodes if episode.saga_slug == saga.slug]
+        last_release_date = max(episode_dates) if episode_dates else None
+        episode_count = sum(1 for episode in catalog.episodes if episode.saga_slug == saga.slug)
+        items.append(
+            (
+                saga.title,
+                saga.permalink,
+                saga.summary,
+                episode_count,
+                last_release_date,
+                saga.status,
+            )
+        )
+
+    def sort_key(item: tuple[str, str, str, int, str | None, str]) -> tuple[str, str]:
+        last_release = item[4] or "0000-00-00"
+        return (last_release, item[0])
+
+    return sorted(items, key=sort_key, reverse=True)
+
+
+def _render_legacy_home_recent_item(episode: Episode) -> str:
+    return (
+        "                <li>\n"
+        f'                    <a href="{episode.permalink}">\n'
+        f"                        [Episode] {html.escape(episode.title)}\n"
+        "                    </a>\n"
+        "                    <span class=\"block text-zinc-500 text-xs mt-0.5\">\n"
+        f"                        {episode.date} · {html.escape(episode.saga_title)} / {html.escape(episode.arc_title)}\n"
+        "                    </span>\n"
+        "                    \n"
+        "                        <p class=\"text-sm text-zinc-400 leading-relaxed mt-1\">\n"
+        f"                            {html.escape(episode.summary)}\n"
+        "                        </p>\n"
+        "                    \n"
+        "                </li>"
+    )
+
+
+def _render_legacy_home_saga_item(
+    item: tuple[str, str, str, int, str | None, str]
+) -> str:
+    title, permalink, summary, episode_count, last_release_date, status = item
+    last_release = last_release_date or "n/a"
+    return (
+        "                <li>\n"
+        f'                    <a href="{permalink}">\n'
+        f"                        {html.escape(title)}\n"
+        "                    </a>\n"
+        "                    <span class=\"text-zinc-500 text-xs\">\n"
+        f"                        — {episode_count} eps; last {last_release}; {html.escape(status)}\n"
+        "                    </span>\n"
+        "                </li>"
     )
 
 
