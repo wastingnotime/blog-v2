@@ -248,6 +248,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "nextUrl.searchParams.set('q', normalizedQuery);" in search_html
     assert "nextUrl.searchParams.delete('q');" in search_html
     assert "window.history.replaceState(null, '', nextPath);" in search_html
+    assert "projectSearchUrlState(searchInput.value);" in search_html
     assert "searchForm.addEventListener('submit', (event) => {" in search_html
     assert "searchInput.value = initialQuery;" in search_html
     assert "renderResults(searchInput.value);" in search_html

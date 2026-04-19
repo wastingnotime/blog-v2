@@ -671,6 +671,7 @@ def build_search_page(
             "              searchResults.appendChild(searchRecovery);\n"
             "            });\n"
             "          searchInput.value = initialQuery;\n"
+            "          projectSearchUrlState(searchInput.value);\n"
             "          searchForm.addEventListener('submit', (event) => {\n"
             "            event.preventDefault();\n"
             "            projectSearchUrlState(searchInput.value);\n"
