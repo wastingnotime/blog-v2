@@ -2,15 +2,15 @@
 
 ## Summary
 
-The next slice should add a deterministic `.nojekyll` artifact so the GitHub
-Pages publication contract is explicit about serving the generated output as raw
+This slice adds a deterministic `.nojekyll` artifact so the GitHub Pages
+publication contract is explicit about serving the generated output as raw
 static files.
 
-Current observed gap:
+Current observed contract:
 
-- the build already emits multiple root deployment artifacts
+- the build emits multiple root deployment artifacts
 - the GitHub Pages workflow deploys `dist/` directly
-- the generated artifact set still lacks `.nojekyll`
+- the generated artifact set includes `.nojekyll`
 
 ## Impacted Areas
 
