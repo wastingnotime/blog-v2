@@ -134,12 +134,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'class="site-nav-link active" aria-current="page">ARCHIVES</a>' in archive_html
     assert '<ul class="archive-entry-list">' in archive_html
     assert '<div class="archive-entry-row">' in archive_html
-    assert '<a class="archive-entry-link" href="/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
-    assert 'class="archive-entry-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in archive_html
-    assert 'class="archive-entry-summary">The second pass gives the saga explicit navigation instead of isolated pages.</p>' in archive_html
-    assert "[episode] Second Iteration" in archive_html
+    assert '<a class="archive-entry-link" href="/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/">[episode] Architecture Diagram &amp; Narrative</a>' in archive_html
+    assert 'class="archive-entry-meta">2025-12-29 · HireFlow / The Origin Blueprint</small>' in archive_html
+    assert 'class="archive-entry-summary">We consolidate the Origin Blueprint into a coherent MVP architecture. This episode presents the system map, explains the architectural intent, and defines what &#x27;done&#x27; means for Hireflow&#x27;s first milestone.</p>' in archive_html
+    assert "[episode] Architecture Diagram &amp; Narrative" in archive_html
     assert "[page] About" in archive_html
-    assert archive_html.index("[episode] Second Iteration") < archive_html.index("[page] About")
+    assert archive_html.index("[episode] Architecture Diagram &amp; Narrative") < archive_html.index("[page] About")
     assert "HireFlow / The Origin Blueprint" in archive_html
     assert '<ul class="discovery-list">' in archive_html
     assert '<a class="discovery-label" href="/search/">Search across the publication</a>' in archive_html
@@ -276,8 +276,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "<rss version=\"2.0\">" in feed_xml
-    assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
-    assert "<title>About</title>" in feed_xml
+    assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/</link>" in feed_xml
+    assert "<title>Architecture Diagram &amp; Narrative</title>" in feed_xml
     assert "/api/event" not in feed_xml
     assert "User-agent: *" in robots_txt
     assert "Allow: /" in robots_txt
@@ -317,8 +317,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert any(entry["title"] == "About" for entry in search_index)
     assert any(entry["title"] == "HireFlow" and entry["type"] == "saga" for entry in search_index)
     assert any(
-        entry["title"] == "Second Iteration"
-        and entry["url"] == "/sagas/hireflow/the-origin-blueprint/second-iteration/"
+        entry["title"] == "Architecture Diagram & Narrative"
+        and entry["url"] == "/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/"
         for entry in search_index
     )
     assert "/api/event" not in search_json
@@ -326,7 +326,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "<loc>https://wastingnotime.org/</loc>" in sitemap_xml
     assert "<loc>https://wastingnotime.org/archives/</loc>" in sitemap_xml
     assert "<loc>https://wastingnotime.org/library/architecture/</loc>" in sitemap_xml
-    assert "<lastmod>2025-11-15</lastmod>" in sitemap_xml
+    assert "<lastmod>2025-11-14</lastmod>" in sitemap_xml
     assert "https://wastingnotime.org/search/" not in sitemap_xml
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
@@ -342,7 +342,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
             "@type": "WebPage",
             "name": "Library",
             "description": (
-                "An authored index for navigating the site's ideas and implementation threads."
+                "Full index of all sagas, arcs, and episodes."
             ),
             "url": "https://wastingnotime.org/library/",
         }
@@ -351,11 +351,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<a class="breadcrumb-link" href="/library/">' in topic_html
     assert '<a class="topic-entry-link" href="/about/">[page] About</a>' in topic_html
     assert 'class="topic-entry-meta">2025-10-25</small>' in topic_html
-    assert '<a class="topic-entry-link" href="/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in topic_html
-    assert 'class="topic-entry-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in topic_html
-    assert 'class="topic-entry-summary">The second pass gives the saga explicit navigation instead of isolated pages.</p>' in topic_html
+    assert '<a class="topic-entry-link" href="/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/">[episode] Architecture Diagram &amp; Narrative</a>' in topic_html
+    assert 'class="topic-entry-meta">2025-12-29 · HireFlow / The Origin Blueprint</small>' in topic_html
+    assert 'class="topic-entry-summary">We consolidate the Origin Blueprint into a coherent MVP architecture. This episode presents the system map, explains the architectural intent, and defines what &#x27;done&#x27; means for Hireflow&#x27;s first milestone.</p>' in topic_html
     assert "[page] About" in topic_html
-    assert "[episode] Second Iteration" in topic_html
+    assert "[episode] Architecture Diagram &amp; Narrative" in topic_html
     assert "/archives/" in topic_html
     assert "/search/" in topic_html
     assert _json_ld_payloads(topic_html) == []
@@ -365,7 +365,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<ul class="saga-index-list">' in sagas_index_html
     assert '<div class="saga-index-row">' in sagas_index_html
     assert '<a class="saga-index-link" href="/sagas/hireflow/">HireFlow</a>' in sagas_index_html
-    assert 'class="saga-index-summary">A fictional hiring platform used as a laboratory for architecture trade-offs and emergent design.</p>' in sagas_index_html
+    assert 'class="saga-index-summary">A fictional hiring platform built as a real-world laboratory for exploring microservices architecture, trade-offs, and emergent design.</p>' in sagas_index_html
     assert '<small class="saga-index-start"><a href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_index_html
     assert ".saga-index-row {" in sagas_index_html
     assert "/archives/" in sagas_index_html
@@ -385,7 +385,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="/feed.xml"' in saga_html
     assert '<meta property="og:title" content="HireFlow" />' in saga_html
     assert (
-        '<meta property="og:description" content="A fictional hiring platform used as a laboratory for architecture trade-offs and emergent design." />'
+        '<meta property="og:description" content="A fictional hiring platform built as a real-world laboratory for exploring microservices architecture, trade-offs, and emergent design." />'
         in saga_html
     )
     assert '<meta property="og:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
@@ -395,7 +395,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="twitter:card" content="summary" />' in saga_html
     assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
     assert (
-        '<meta name="twitter:description" content="A fictional hiring platform used as a laboratory for architecture trade-offs and emergent design." />'
+        '<meta name="twitter:description" content="A fictional hiring platform built as a real-world laboratory for exploring microservices architecture, trade-offs, and emergent design." />'
         in saga_html
     )
     assert '<meta name="twitter:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
@@ -405,7 +405,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<ul class="saga-arc-list">' in saga_html
     assert '<div class="saga-arc-row">' in saga_html
     assert '<a class="saga-arc-link" href="/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in saga_html
-    assert 'class="saga-arc-meta">2 episodes · last 2025-11-15</small>' in saga_html
+    assert 'class="saga-arc-meta">5 episodes · last 2025-12-29</small>' in saga_html
     assert '<ul class="saga-timeline-list">' in saga_html
     assert '<div class="saga-timeline-row">' in saga_html
     assert '<a class="saga-timeline-link" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in saga_html
@@ -418,7 +418,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".saga-timeline-row {" in saga_html
     assert ".saga-timeline-link {" in saga_html
     assert ".saga-timeline-meta {" in saga_html
-    assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
+    assert "<strong>HireFlow</strong> is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach." in saga_html
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
     assert _json_ld_payloads(saga_html) == []
@@ -435,15 +435,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".arc-episode-row {" in arc_html
     assert ".arc-episode-link {" in arc_html
     assert ".arc-episode-meta {" in arc_html
-    assert "The opening arc defines why HireFlow exists" in arc_html
+    assert "Every system begins with a question: <em>why does this exist?</em>" in arc_html
     assert _json_ld_payloads(arc_html) == []
-    assert "Why this site exists" in about_html
+    assert "Why this site exists, what you’ll find here, and how to reach me." in about_html
     assert 'class="site-nav-link active" aria-current="page">ABOUT</a>' in about_html
     assert 'href="/feed.xml"' in about_html
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="/feed.xml"' in about_html
     assert '<meta property="og:title" content="About" />' in about_html
     assert (
-        '<meta property="og:description" content="Why this site exists and how the work is published in public." />'
+        '<meta property="og:description" content="Why this site exists, what you’ll find here, and how to reach me." />'
         in about_html
     )
     assert '<meta property="og:url" content="https://wastingnotime.org/about/" />' in about_html
@@ -453,7 +453,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="twitter:card" content="summary" />' in about_html
     assert '<meta name="twitter:title" content="About" />' in about_html
     assert (
-        '<meta name="twitter:description" content="Why this site exists and how the work is published in public." />'
+        '<meta name="twitter:description" content="Why this site exists, what you’ll find here, and how to reach me." />'
         in about_html
     )
     assert '<meta name="twitter:url" content="https://wastingnotime.org/about/" />' in about_html
@@ -464,14 +464,14 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert about_structured_data[0]["@type"] == "Article"
     assert about_structured_data[0]["headline"] == "About"
     assert about_structured_data[0]["description"] == (
-        "Why this site exists and how the work is published in public."
+        "Why this site exists, what you’ll find here, and how to reach me."
     )
     assert about_structured_data[0]["datePublished"] == "2025-10-25"
     assert about_structured_data[0]["url"] == "https://wastingnotime.org/about/"
     assert "(c) 2025 wastingnotime.org - published as a static site" in about_html
     assert "1 min read" in about_html
     assert "homepage, saga index, library, archive, and search surfaces" in about_html
-    assert "how to reach me" not in about_html
+    assert "how to reach me" in about_html
     assert 'href="/archives/"' in about_html
     assert 'href="/search/"' in about_html
     assert 'href="/library/architecture/"' in about_html
@@ -492,21 +492,19 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<small class="studio-discovery-path">/sagas/</small>' in studio_html
     assert ".studio-discovery-row {" in studio_html
     assert "Other ways in" not in studio_html
-    assert "Wasting No Time is a studio for architecture" in studio_html
+    assert "parallel spaces evolving at their own pace." in studio_html
     assert 'class="site-nav-link active" aria-current="page">STUDIO</a>' in studio_html
     assert _json_ld_payloads(studio_html) == [
         {
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "Studio",
-            "description": (
-                "A section surface for the work, systems, and experiments evolving in public."
-            ),
+            "name": "studio",
+            "description": "parallel spaces evolving at their own pace.",
             "url": "https://wastingnotime.org/studio/",
         }
     ]
     assert "HireFlow / The Origin Blueprint" in episode_html
-    assert "1 min read" in episode_html
+    assert "3 min read" in episode_html
     assert 'href="/library/distributed-systems/"' in episode_html
     assert '<span class="entry-tags">' in episode_html
     assert '<a class="entry-tag-chip" href="/library/architecture/">#architecture</a>' in episode_html
@@ -520,7 +518,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="/favicon-16x16.png"' in episode_html
     assert '<meta property="og:title" content="The First Brick" />' in episode_html
     assert (
-        '<meta property="og:description" content="We explore why HireFlow exists, what it will simulate, and how the architecture will emerge through iterative design." />'
+        '<meta property="og:description" content="We explore why HireFlow exists, what it will simulate, and how microservices architecture will emerge through iterative design." />'
         in episode_html
     )
     assert (
@@ -533,7 +531,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="twitter:card" content="summary" />' in episode_html
     assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
     assert (
-        '<meta name="twitter:description" content="We explore why HireFlow exists, what it will simulate, and how the architecture will emerge through iterative design." />'
+        '<meta name="twitter:description" content="We explore why HireFlow exists, what it will simulate, and how microservices architecture will emerge through iterative design." />'
         in episode_html
     )
     assert (
@@ -548,16 +546,16 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert episode_structured_data[0]["headline"] == "The First Brick"
     assert episode_structured_data[0]["description"] == (
         "We explore why HireFlow exists, what it will simulate, and how "
-        "the architecture will emerge through iterative design."
+        "microservices architecture will emerge through iterative design."
     )
     assert episode_structured_data[0]["datePublished"] == "2025-11-14"
     assert episode_structured_data[0]["url"] == (
         "https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/"
     )
-    assert "Ep 02 Second Iteration" in episode_html
+    assert "Ep 02 Interpreting the Briefing" in episode_html
     assert '<nav class="breadcrumbs episode-breadcrumbs">' in episode_html
     assert '<nav class="nav-grid episode-adjacent-nav">' in episode_html
-    assert 'class="adjacent-nav-link next" href="/sagas/hireflow/the-origin-blueprint/second-iteration/"' in episode_html
+    assert 'class="adjacent-nav-link next" href="/sagas/hireflow/the-origin-blueprint/interpreting-the-briefing/"' in episode_html
     assert ".breadcrumb-link {" in episode_html
     assert ".breadcrumb-separator {" in episode_html
     assert ".episode-breadcrumbs {" in episode_html

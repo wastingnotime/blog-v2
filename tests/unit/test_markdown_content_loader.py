@@ -125,7 +125,7 @@ def test_markdown_content_loader_reads_repository_about_page_summary() -> None:
     about_page = next(page for page in catalog.pages if page.slug == "about")
 
     assert about_page.summary == (
-        "Why this site exists and how the work is published in public."
+        "Why this site exists, what you’ll find here, and how to reach me."
     )
 
 

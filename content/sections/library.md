@@ -1,7 +1,10 @@
 ---
 title: "Library"
 type: "section"
-summary: "An authored index for navigating the site's ideas and implementation threads."
+summary: "Full index of all sagas, arcs, and episodes."
+tags:
+  - index
+  - library
 ---
 
 The library is the fastest way to move by idea instead of chronology.

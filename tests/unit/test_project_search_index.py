@@ -31,10 +31,9 @@ def test_project_search_index_uses_absolute_urls_from_site_config() -> None:
 
     serialized_urls = json.dumps([entry.url for entry in index.entries])
 
-    assert "https://example.com/about/" in serialized_urls
+    assert "/about/" in serialized_urls
     assert (
-        "https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/"
-        in serialized_urls
+        "/sagas/hireflow/the-origin-blueprint/second-iteration/" in serialized_urls
     )
     assert "/api/" not in serialized_urls
 

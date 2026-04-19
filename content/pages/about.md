@@ -1,7 +1,8 @@
 ---
 title: "About"
 type: "page"
-summary: "Why this site exists and how the work is published in public."
+studio: "WastingNoTime"
+summary: "Why this site exists, what you’ll find here, and how to reach me."
 date: "2025-10-25"
 tags:
   - architecture
