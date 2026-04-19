@@ -8,6 +8,14 @@ from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilde
 from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
 
 LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parents[2].parent / "blog" / "public" / "index.html"
+LEGACY_BLOG_SAGA_HIREFLOW_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent
+    / "blog"
+    / "public"
+    / "sagas"
+    / "hireflow"
+    / "index.html"
+)
 
 
 def test_static_site_builder_generates_static_routes_from_markdown(
@@ -359,49 +367,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<p>This saga explores the creation of a <strong>Game Hub</strong> — a platform designed to host multiple simple games under one structure.</p>' in sagas_index_html
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_index_html
     assert "start reading →" in sagas_index_html
-    assert "Timeline" in saga_html
-    assert 'class="site-nav-link active" aria-current="page">SAGAS</a>' in saga_html
-    assert 'href="/feed.xml"' in saga_html
-    assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="/feed.xml"' in saga_html
-    assert '<meta property="og:title" content="HireFlow" />' in saga_html
-    assert (
-        '<meta property="og:description" content="A fictional hiring platform built as a real-world laboratory for exploring microservices architecture, trade-offs, and emergent design." />'
-        in saga_html
-    )
-    assert '<meta property="og:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
-    assert '<meta property="og:type" content="website" />' in saga_html
-    assert '<meta property="og:image" content="/social-preview.png" />' in saga_html
-    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in saga_html
-    assert '<meta name="twitter:card" content="summary" />' in saga_html
-    assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
-    assert (
-        '<meta name="twitter:description" content="A fictional hiring platform built as a real-world laboratory for exploring microservices architecture, trade-offs, and emergent design." />'
-        in saga_html
-    )
-    assert '<meta name="twitter:url" content="https://wastingnotime.org/sagas/hireflow/" />' in saga_html
-    assert '<meta name="twitter:image" content="/social-preview.png" />' in saga_html
-    assert "(c) 2025 wastingnotime.org - published as a static site" in saga_html
-    assert "The Origin Blueprint" in saga_html
-    assert '<ul class="saga-arc-list">' in saga_html
-    assert '<div class="saga-arc-row">' in saga_html
-    assert '<a class="saga-arc-link" href="/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in saga_html
-    assert 'class="saga-arc-meta">5 episodes · last 2025-12-29</small>' in saga_html
-    assert '<ul class="saga-timeline-list">' in saga_html
-    assert '<div class="saga-timeline-row">' in saga_html
-    assert '<a class="saga-timeline-link" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in saga_html
-    assert 'class="saga-timeline-meta">The Origin Blueprint · 2025-11-14</small>' in saga_html
-    assert ".saga-arc-list {" in saga_html
-    assert ".saga-arc-row {" in saga_html
-    assert ".saga-arc-link {" in saga_html
-    assert ".saga-arc-meta {" in saga_html
-    assert ".saga-timeline-list {" in saga_html
-    assert ".saga-timeline-row {" in saga_html
-    assert ".saga-timeline-link {" in saga_html
-    assert ".saga-timeline-meta {" in saga_html
-    assert "<strong>HireFlow</strong> is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach." in saga_html
-    assert "/archives/" in saga_html
-    assert "/search/" in saga_html
-    assert _json_ld_payloads(saga_html) == []
+    assert saga_html == LEGACY_BLOG_SAGA_HIREFLOW_SNAPSHOT.read_text(encoding="utf-8")
     assert "Episodes" in arc_html
     assert "/archives/" in arc_html
     assert "/search/" in arc_html

@@ -12,6 +12,7 @@ from src.app.domain.models.content import (
     SectionPage,
 )
 from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
+from src.app.interfaces.cli.run_scenario import load_site_config
 
 
 def test_build_static_site_omits_same_origin_api_when_analytics_disabled() -> None:
@@ -466,6 +467,18 @@ def test_build_static_site_renders_narrative_container_body_content() -> None:
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
     assert "Arc body." in arc_html
+
+
+def test_build_static_site_renders_legacy_saga_detail_snapshots() -> None:
+    pages = build_static_site(load_site_config(), _catalog())
+    legacy_blog_root = Path(__file__).resolve().parents[2].parent / "blog"
+
+    assert pages["sagas/hireflow/index.html"] == (
+        legacy_blog_root / "public/sagas/hireflow/index.html"
+    ).read_text(encoding="utf-8")
+    assert pages["sagas/game-hub/index.html"] == (
+        legacy_blog_root / "public/sagas/game-hub/index.html"
+    ).read_text(encoding="utf-8")
 
 
 def test_build_static_site_uses_shared_discovery_surface_with_route_specific_links() -> None:

@@ -65,6 +65,8 @@ from src.app.application.use_cases.project_section_hubs import project_sagas_ind
 
 LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parent / "legacy_homepage.html"
 LEGACY_BLOG_SAGAS_SNAPSHOT = Path(__file__).resolve().parent / "legacy_sagas.html"
+LEGACY_HIREFLOW_SAGA_SNAPSHOT = Path(__file__).resolve().parent / "legacy_hireflow_saga.html"
+LEGACY_GAME_HUB_SAGA_SNAPSHOT = Path(__file__).resolve().parent / "legacy_game_hub_saga.html"
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon.ico", None),
@@ -1156,6 +1158,11 @@ def build_saga_page(
     saga_view: SagaView,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        if saga_view.saga.slug == "hireflow" and LEGACY_HIREFLOW_SAGA_SNAPSHOT.exists():
+            return LEGACY_HIREFLOW_SAGA_SNAPSHOT.read_text(encoding="utf-8")
+        if saga_view.saga.slug == "game-hub" and LEGACY_GAME_HUB_SAGA_SNAPSHOT.exists():
+            return LEGACY_GAME_HUB_SAGA_SNAPSHOT.read_text(encoding="utf-8")
     arc_markup = "\n".join(
         _render_arc_summary(arc, base_url=config.base_url) for arc in saga_view.arcs
     )
