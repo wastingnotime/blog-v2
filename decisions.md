@@ -140,3 +140,39 @@ publish the blog and conflicts with the desired GitHub Pages deployment shape.
 If a future slice reintroduces server-side capabilities, that should be
 documented as a new decision rather than silently undoing the static-site
 assumption.
+
+## DEC-0005 - Keep The Static Site Generator In Python
+
+- Date: 2026-04-19
+- Status: accepted
+- Owners: both
+
+### Context
+The predecessor repository used Go for static generation, but `blog-v2` already
+has its content model, build logic, CLI, tests, and dev tooling in Python. The
+generator is part of an active refinement loop, so iteration speed and low
+ceremony matter more than packaging the build tool as a standalone binary.
+
+### Decision
+`blog-v2` will keep the static site generator in Python. The build pipeline,
+local dev server, and supporting tests should continue to use the existing
+Python implementation rather than being rewritten in Go or Node.js.
+
+### Consequences
+The repository keeps one language across the build loop, which reduces friction
+for slice-level changes, testing, and local development. The generator remains
+easy to inspect and evolve, and the dev-server reload path can reuse the same
+Python code path as the production build.
+
+### Alternatives considered
+Rewrite the generator in Go. That would improve standalone binary packaging,
+but it would add ceremony without solving a current problem in the repository.
+
+Rewrite the generator in Node.js. That would align more closely with browser
+tooling, but it would introduce a second runtime and dependency model without a
+clear benefit for the current Python-shaped codebase.
+
+### Notes
+If the generator later becomes a distributed tool or build performance becomes a
+measured bottleneck, revisit this decision as a separate entry rather than
+implicit drift.
