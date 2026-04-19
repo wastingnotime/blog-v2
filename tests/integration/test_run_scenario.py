@@ -276,6 +276,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "<rss version=\"2.0\">" in feed_xml
+    assert "<title>wasting no time</title>" in feed_xml
+    assert "<description>Latest posts and episodes from wasting no time</description>" in feed_xml
     assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/</link>" in feed_xml
     assert "<title>Architecture Diagram &amp; Narrative</title>" in feed_xml
     assert "/api/event" not in feed_xml

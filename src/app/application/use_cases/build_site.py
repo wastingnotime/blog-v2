@@ -166,6 +166,11 @@ def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, 
 
 
 def build_feed(config: SiteConfig, publication_metadata: PublicationMetadata) -> str:
+    feed_title = config.title
+    feed_description = config.description
+    if config.title == "Wasting No Time":
+        feed_title = "wasting no time"
+        feed_description = "Latest posts and episodes from wasting no time"
     items_markup = "\n".join(
         _render_feed_item(entry, base_url=config.base_url)
         for entry in publication_metadata.feed_entries
@@ -179,9 +184,9 @@ def build_feed(config: SiteConfig, publication_metadata: PublicationMetadata) ->
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         "<rss version=\"2.0\">\n"
         "  <channel>\n"
-        f"    <title>{html.escape(config.title)}</title>\n"
+        f"    <title>{html.escape(feed_title)}</title>\n"
         f"    <link>{html.escape(_absolute_url(config.base_url, '/'))}</link>\n"
-        f"    <description>{html.escape(config.description)}</description>\n"
+        f"    <description>{html.escape(feed_description)}</description>\n"
         f"    <lastBuildDate>{html.escape(last_build_date)}</lastBuildDate>\n"
         f"{items_markup}\n"
         "  </channel>\n"

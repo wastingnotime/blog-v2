@@ -357,6 +357,8 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert 'href="/library/"' in not_found_html
     assert ".not-found-row {" in not_found_html
     assert "<rss version=\"2.0\">" in feed_xml
+    assert "<title>Example</title>" in feed_xml
+    assert "<description>Static site</description>" in feed_xml
     assert "<title>Second Iteration</title>" in feed_xml
     assert "<link>https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/</link>" in feed_xml
     assert "Fri, 11 Apr 2026" not in feed_xml
