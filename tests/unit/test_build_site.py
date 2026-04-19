@@ -644,7 +644,9 @@ def test_build_static_site_renders_shared_editorial_shell_tokens() -> None:
         assert "--surface: #0b0b0b;" in html
         assert "--text-400: #a1a1aa;" in html
         assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in html
-        assert "background: var(--bg);" in html
+        assert "background:" in html
+        assert "radial-gradient(circle at top, rgba(255, 255, 255, 0.045), transparent 42%)" in html
+        assert "linear-gradient(180deg, #050505 0%, var(--bg) 72%)" in html
         assert ".site-nav a.active::after {" in html
         assert 'content: "•";' in html
         assert "article pre {" in html

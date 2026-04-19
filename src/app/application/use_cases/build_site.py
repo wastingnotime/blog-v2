@@ -1135,7 +1135,10 @@ def _render_document(
         font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
           "Liberation Mono", "Courier New", monospace;
         color: var(--text-200);
-        background: var(--bg);
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.045), transparent 42%),
+          radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.018), transparent 32%),
+          linear-gradient(180deg, #050505 0%, var(--bg) 72%);
       }}
       main {{
         width: min(46rem, calc(100vw - 3rem));

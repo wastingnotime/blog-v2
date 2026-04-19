@@ -170,6 +170,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "--surface: #0b0b0b;" in homepage_html
     assert "--text-400: #a1a1aa;" in homepage_html
     assert 'font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,' in homepage_html
+    assert "background:" in homepage_html
+    assert "radial-gradient(circle at top, rgba(255, 255, 255, 0.045), transparent 42%)" in homepage_html
+    assert "linear-gradient(180deg, #050505 0%, var(--bg) 72%)" in homepage_html
     assert ".homepage-list {" in homepage_html
     assert ".homepage-meta {" in homepage_html
     assert ".homepage-summary {" in homepage_html
