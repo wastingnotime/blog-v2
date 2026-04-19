@@ -6,6 +6,7 @@
 - deployment workflow
 - initial implementation scaffold
 - deterministic tests for generated output
+- local and CI build entry points
 
 ## Non-Goals In This Slice
 
@@ -20,6 +21,8 @@
   provider integration
 - the repository starts with a static build boundary rather than an API or
   server boundary
+- local execution stays compatible with the same static build output that CI
+  deploys
 
 ## Risks
 
@@ -27,3 +30,5 @@
   richer page rendering
 - direct analytics integration may still require provider-specific validation
   before production use
+- local development should continue to use the same generated `dist/` output
+  that GitHub Pages deploys
