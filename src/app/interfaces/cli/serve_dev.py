@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import mimetypes
 import os
 from pathlib import Path
+import subprocess
 import threading
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -22,6 +23,7 @@ DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8080
 DEFAULT_BASE_URL = "http://localhost:8080/"
 POLL_INTERVAL_SECONDS = 1.0
+DEV_STATUS_PATH = "/__dev_status__"
 RELOAD_CHECK_PATH = "/__dev_reload__"
 RELOAD_SCRIPT = """
 <script>
@@ -79,6 +81,7 @@ class ReloadState:
 class DevRequestHandler(SimpleHTTPRequestHandler):
     directory: ClassVar[str]
     reload_state: ClassVar[ReloadState]
+    repository_revision: ClassVar[str] = "unknown"
 
     def __init__(self, *args, directory: str, reload_state: ReloadState, **kwargs):
         self.directory = directory
@@ -88,6 +91,19 @@ class DevRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         if urlsplit(self.path).path == RELOAD_CHECK_PATH:
             payload = f"{self.reload_state.current()}\n".encode("utf-8")
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+            return
+
+        if urlsplit(self.path).path == DEV_STATUS_PATH:
+            payload = (
+                f"commit={self.repository_revision}\n"
+                f"reload={self.reload_state.current()}\n"
+            ).encode("utf-8")
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-Type", "text/plain; charset=utf-8")
             self.send_header("Cache-Control", "no-store")
@@ -165,6 +181,7 @@ def main(argv: list[str] | None = None) -> None:
         content_root=config.content_root,
     )
     reload_state = ReloadState()
+    repository_revision = _current_repository_revision()
     builder.build(site_config, catalog)
     reload_state.bump()
 
@@ -186,12 +203,16 @@ def main(argv: list[str] | None = None) -> None:
         *handler_args,
         directory=str(config.output_dir),
         reload_state=reload_state,
+        repository_revision=repository_revision,
         **handler_kwargs,
     )
     server = ThreadingHTTPServer((config.host, config.port), handler_factory)
 
     try:
-        print(f"serving {config.output_dir} at http://{config.host}:{config.port}/")
+        print(
+            f"serving {config.output_dir} at http://{config.host}:{config.port}/ "
+            f"[commit {repository_revision}]"
+        )
         server.serve_forever()
     except KeyboardInterrupt:
         pass
@@ -245,6 +266,33 @@ def _inject_reload_script(html: str) -> str:
     if "</body>" in html:
         return html.replace("</body>", f"{RELOAD_SCRIPT}\n  </body>")
     return html + "\n" + RELOAD_SCRIPT
+
+
+def _current_repository_revision() -> str:
+    repo_root = Path(__file__).resolve().parents[4]
+    try:
+        commit = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        dirty = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo_root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+
+    if not commit:
+        return "unknown"
+    if dirty:
+        return f"{commit}-dirty"
+    return commit
 
 
 if __name__ == "__main__":
