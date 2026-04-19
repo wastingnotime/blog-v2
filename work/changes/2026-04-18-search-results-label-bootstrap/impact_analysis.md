@@ -26,8 +26,8 @@ search page:
 
 - `/search/` stays the canonical route
 - `search.json` stays the only search artifact
-- page markup gains one bounded label contract for the existing results
-  container
+- page markup gains one bounded heading-backed label contract for the existing
+  results container
 
 ## Risks
 

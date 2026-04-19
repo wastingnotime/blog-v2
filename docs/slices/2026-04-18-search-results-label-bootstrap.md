@@ -34,7 +34,7 @@ one result-structure detail still remains implicit:
 This slice restores the minimum results-labeling behavior needed for the
 current static publication:
 
-- add one explicit label reference for the existing results container
+- add one explicit heading-backed label for the existing results container
 - preserve the current item rendering, status text, and recovery behavior
 - keep the change bounded to container semantics rather than redesigning result
   layout
@@ -49,7 +49,8 @@ virtualization, or changes to search ranking or recovery behavior.
 Given the existing static `/search/` route and results list, render
 deterministic markup such that:
 
-- the results container has one explicit accessible label
+- the results container has one explicit accessible label tied to a visible or
+  assistive heading
 - the current container identity remains stable for the same repository state
 - existing result and recovery rendering still target the same node
 
@@ -70,6 +71,8 @@ deterministic page markup such that:
   container.
 - The slice stays bounded to results-container semantics and must not widen into
   broader result-layout or search behavior changes.
+- The label should remain search-page specific and not affect other list
+  surfaces.
 - GitHub Pages compatibility remains a hard constraint.
 
 ## Required Ports
