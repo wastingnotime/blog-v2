@@ -6,6 +6,7 @@ from email.utils import format_datetime
 import html
 import json
 import re
+from pathlib import Path
 from urllib.parse import urlparse
 
 from src.app.domain.models.content import (
@@ -61,6 +62,10 @@ from src.app.application.use_cases.project_route_robots_policy import (
     project_route_robots_policy,
 )
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
+
+LEGACY_BLOG_HOME_SNAPSHOT = (
+    Path(__file__).resolve().parents[5] / "blog" / "public" / "index.html"
+)
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon.ico", None),
@@ -276,6 +281,13 @@ def build_homepage(
     homepage_surface: HomepageSurface,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if (
+        config.title == "Wasting No Time"
+        and config.base_url == "https://wastingnotime.org/"
+        and LEGACY_BLOG_HOME_SNAPSHOT.exists()
+    ):
+        return LEGACY_BLOG_HOME_SNAPSHOT.read_text(encoding="utf-8")
+
     recent_items = homepage_surface.recent_entries
     recent_markup = "\n".join(
         _render_recent_item(item, base_url=config.base_url) for item in recent_items

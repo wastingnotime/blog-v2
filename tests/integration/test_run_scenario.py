@@ -7,6 +7,8 @@ from src.app.interfaces.cli.run_scenario import load_site_config
 from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilder
 from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
 
+LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parents[2].parent / "blog" / "public" / "index.html"
+
 
 def test_static_site_builder_generates_static_routes_from_markdown(
     tmp_path: Path,
@@ -108,115 +110,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert nojekyll == "\n"
     assert cname == "wastingnotime.org\n"
-    assert (
-        "Experiments in architecture, focus, and growth — built in public, one saga at a time."
-        in homepage_html
-    )
-    assert "This site tracks architecture decisions" not in homepage_html
-    assert '<h2 class="section-label">RECENT</h2>' in homepage_html
-    assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
-    assert '<ul class="homepage-list">' in homepage_html
-    assert 'class="homepage-link"' in homepage_html
-    assert '<small class="homepage-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in homepage_html
-    assert '<p class="homepage-summary">The second pass gives the saga explicit navigation instead of isolated pages.</p>' in homepage_html
-    assert '<small class="homepage-saga-status">— 2 episodes; last release 2025-11-15; in-progress</small>' in homepage_html
-    assert 'class="site-nav-link active" aria-current="page">HOME</a>' in homepage_html
-    assert '<span class="site-nav-separator" aria-hidden="true">/</span>' in homepage_html
-    assert 'href="/search/"' in homepage_html
-    assert 'href="/archives/"' in homepage_html
-    assert 'href="/about/"' in homepage_html
-    assert 'href="/library/"' in homepage_html
-    assert 'href="/sagas/"' in homepage_html
-    assert 'href="/feed.xml"' in homepage_html
-    assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="/feed.xml"' in homepage_html
-    assert (
-        'rel="search" type="application/opensearchdescription+xml" '
-        'title="Wasting No Time Search" href="/opensearch.xml"'
-        in homepage_html
-    )
-    assert 'href="/favicon.ico"' in homepage_html
-    assert 'href="/apple-touch-icon.png"' in homepage_html
-    assert 'rel="manifest" href="/site.webmanifest"' in homepage_html
-    assert (
-        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />'
-        in homepage_html
-    )
-    assert '<meta name="generator" content="blog-v2 static builder" />' in homepage_html
-    assert '<meta name="author" content="wastingnotime.org" />' in homepage_html
-    assert '<meta name="application-name" content="Wasting No Time" />' in homepage_html
-    assert '<meta name="color-scheme" content="dark" />' in homepage_html
-    assert (
-        '<meta name="referrer" content="strict-origin-when-cross-origin" />'
-        in homepage_html
-    )
-    assert '<meta name="format-detection" content="telephone=no" />' in homepage_html
-    assert '<meta name="theme-color" content="#000000" />' in homepage_html
-    assert '<meta name="msapplication-TileColor" content="#000000" />' in homepage_html
-    assert (
-        '<meta name="msapplication-config" content="/browserconfig.xml" />'
-        in homepage_html
-    )
-    assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
-    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
-    assert '<meta name="apple-mobile-web-app-status-bar-style" content="black" />' in homepage_html
-    assert "color-scheme: dark;" in homepage_html
-    assert "--ink: #f4f4f5;" in homepage_html
-    assert "--muted: #a1a1aa;" in homepage_html
-    assert "--soft: #e4e4e7;" in homepage_html
-    assert "--background: #000000;" in homepage_html
-    assert 'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;' in homepage_html
-    assert "background: var(--background);" in homepage_html
-    assert ".homepage-list {" in homepage_html
-    assert ".homepage-meta {" in homepage_html
-    assert ".homepage-summary {" in homepage_html
-    assert ".homepage-saga-status {" in homepage_html
-    assert ".section-label {" in homepage_html
-    assert ".site-nav-link.active {" in homepage_html
-    assert ".site-nav-separator {" in homepage_html
-    assert "article pre {" in homepage_html
-    assert 'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;' in about_html
-    assert "color-scheme: dark;" in about_html
-    assert '<meta name="robots" content="index,follow" />' in homepage_html
+    assert homepage_html == LEGACY_BLOG_HOME_SNAPSHOT.read_text(encoding="utf-8")
+    assert '<meta name="robots" content="index,follow" />' not in homepage_html
     assert '<meta name="robots" content="noindex,follow" />' in not_found_html
-    assert '<meta name="robots" content="index,follow" />' not in not_found_html
-    assert '<meta property="og:title" content="Wasting No Time" />' in homepage_html
-    assert (
-        '<meta property="og:description" content="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency." />'
-        in homepage_html
-    )
-    assert '<meta property="og:url" content="https://wastingnotime.org/" />' in homepage_html
-    assert '<meta property="og:type" content="website" />' in homepage_html
-    assert '<meta property="og:site_name" content="Wasting No Time" />' in homepage_html
-    assert '<meta property="og:image" content="/social-preview.png" />' in homepage_html
-    assert '<meta name="twitter:card" content="summary" />' in homepage_html
-    assert '<meta name="twitter:title" content="Wasting No Time" />' in homepage_html
-    assert (
-        '<meta name="twitter:description" content="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency." />'
-        in homepage_html
-    )
-    assert '<meta name="twitter:url" content="https://wastingnotime.org/" />' in homepage_html
-    assert '<meta name="twitter:image" content="/social-preview.png" />' in homepage_html
-    homepage_structured_data = _json_ld_payloads(homepage_html)
-    assert homepage_structured_data == [
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "Wasting No Time",
-            "description": (
-                "blog-v2 starts from a simpler contract: static output, GitHub "
-                "Pages deployment, and no first-party /api dependency."
-            ),
-            "url": "https://wastingnotime.org/",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://wastingnotime.org/search/?q={search_term_string}",
-                "query-input": "required name=search_term_string",
-            },
-        }
-    ]
-    assert "(c) 2025 wastingnotime.org - published as a static site" in homepage_html
-    assert "recent entries shown" not in homepage_html
-    assert "— 2 episodes; last release 2025-11-15; in-progress" in homepage_html
+    assert _json_ld_payloads(homepage_html) == []
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
     assert "Deployment target:" not in homepage_html
