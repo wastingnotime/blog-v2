@@ -2,16 +2,13 @@
 
 ## Summary
 
-The next slice should expose the existing `/archives/` route through the shared
-site chrome so readers can discover and reach the chronological archive without
-direct URL knowledge.
+The shared site chrome now exposes the `/archives/` route.
 
-Current observed gap:
+Current observed contract:
 
-- `/archives/` already exists as a generated route
-- the shared navigation model still omits Archives entirely
-- the archive page therefore cannot be reached or marked active through the
-  common frame
+- `/archives/` is present in the generated navigation model
+- the shared navigation renders Archives alongside the other top-level routes
+- the archive page can be reached and marked active through the common frame
 
 ## Impacted Areas
 
@@ -21,16 +18,15 @@ Current observed gap:
 
 ## Boundary Change
 
-The build does not gain a new content family or machine-readable artifact.
-Instead, the shared chrome gains one additional top-level navigation affordance:
-`Archives`.
+The build already projects the route. The boundary stays limited to the shared
+chrome affordance: `Archives`.
 
 ## Risks
 
 - active-state logic could regress for existing routes if Archives is inserted
   carelessly
-- scope could drift into broader navigation redesign instead of a bounded link
-  addition
+- scope could drift into broader navigation redesign instead of the bounded
+  link addition
 - `/archives/` could remain discoverable only in some page types if chrome
   rendering is not truly shared
 
