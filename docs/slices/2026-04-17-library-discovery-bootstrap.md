@@ -18,7 +18,8 @@ Deterministic library-hub discovery update for the expanded publication surface:
   paths
 - add bounded affordances for Search and Archives alongside the existing topic
   navigation role
-- keep the slice limited to library-hub discovery copy and links
+- keep the slice limited to library-hub discovery copy, links, and a stable
+  shell hook
 
 ## Discovery Scope
 
@@ -42,6 +43,7 @@ current publication:
 
 - update the library hub so it links readers to `/archives/` and `/search/`
 - preserve the existing authored intro copy and topic-list role
+- expose the discovery block through a stable page-shell class
 - keep the change bounded to library discovery copy and links
 
 This slice does not attempt broader library redesign, taxonomy changes, new
@@ -68,6 +70,7 @@ discovery content such that:
   paths
 - the section remains publication-oriented rather than turning into generic
   navigation chrome
+- the discovery block uses a stable shell hook
 
 ## Main Business Rules
 
