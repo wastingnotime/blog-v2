@@ -2,9 +2,9 @@
 
 ## Summary
 
-The next slice should restore a small shared footer in the generated HTML frame
-so the site regains the older publication surface without introducing any new
-runtime concerns.
+This slice restores the small shared footer in the generated HTML frame so the
+site regains the older publication surface without introducing any new runtime
+concerns.
 
 ## Impacted Areas
 
@@ -15,7 +15,7 @@ runtime concerns.
 ## Boundary Change
 
 The build does not gain new artifacts or routes. Instead, the shared HTML frame
-expands to include a stable footer rendered across generated pages.
+includes a stable footer rendered across generated pages.
 
 ## Risks
 
