@@ -2,17 +2,15 @@
 
 ## Summary
 
-The next coherent slice is to make the existing static search route rank
-matching results intentionally instead of returning them in incidental catalog
-order.
+The static search route now ranks matching results intentionally instead of
+returning them in incidental catalog order.
 
-Current observed gap:
+Current observed contract:
 
-- `/search/` now exists and shares a stable `?q=` contract
-- the page filters against `search.json`, but matching records keep source
-  order after one flat substring check
-- the current search experience therefore depends on repository ordering rather
-  than an explicit search-result contract
+- `/search/` exists and shares a stable `?q=` contract
+- matching records are ordered by explicit match strength rather than source
+  order
+- the search experience has a deterministic search-result contract
 
 ## Impacted Areas
 
@@ -22,9 +20,8 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains no new route, artifact, or backend dependency. The boundary
-change is limited to result-ordering semantics inside the existing static
-search page:
+The build already carries the route and artifact. The boundary stays limited
+to result-ordering semantics inside the existing static search page:
 
 - `/search/` stays the canonical route
 - `search.json` stays the only search artifact

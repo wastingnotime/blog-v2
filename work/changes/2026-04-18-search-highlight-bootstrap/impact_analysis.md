@@ -2,16 +2,14 @@
 
 ## Summary
 
-The next coherent slice is to make the ranked static search results explain
-themselves visually by highlighting current-query matches inside rendered
-result fields.
+The static search results now explain themselves visually by highlighting
+current-query matches inside rendered result fields.
 
-Current observed gap:
+Current observed contract:
 
-- `/search/` now ranks stronger matches first
-- titles, summaries, and metadata still render as plain text
-- readers therefore get better ordering without an equally clear explanation of
-  what actually matched
+- `/search/` ranks stronger matches first
+- titles, summaries, and metadata context render with bounded query highlighting
+- readers can see what matched without changing the static search model
 
 ## Impacted Areas
 
@@ -21,9 +19,9 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains no new route, artifact, or backend dependency. The boundary
-change is limited to result presentation semantics inside the existing static
-search page:
+The build already carries the search route and artifact. The boundary stays
+limited to result presentation semantics inside the existing static search
+page:
 
 - `/search/` stays the canonical route
 - `search.json` stays the only search artifact
