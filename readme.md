@@ -24,6 +24,7 @@ pytest
 python -m src.app.interfaces.cli.run_scenario
 ./scripts/mrl-refine
 ./scripts/mrl-build
+./scripts/mrl-serve
 ```
 
 The scenario runner generates a minimal static site into `dist/`.
@@ -33,6 +34,12 @@ Phase launcher defaults:
 - `./scripts/mrl-refine` starts a non-interactive `codex exec` run in the repo root with `gpt-5.4` and `medium` reasoning effort.
 - `./scripts/mrl-build` starts a non-interactive `codex exec` run in the repo root with `gpt-5.3-codex` and `medium` reasoning effort.
 - Override them with `CODEX_REFINE_MODEL`, `CODEX_REFINE_REASONING_EFFORT`, `CODEX_BUILD_MODEL`, and `CODEX_BUILD_REASONING_EFFORT` when needed.
+
+Local dev server:
+
+- `./scripts/mrl-serve` builds `dist/`, serves it on `http://localhost:8080/`, and auto-reloads the browser when watched files change.
+- Override `MRL_SERVE_PORT`, `MRL_SERVE_HOST`, `MRL_SERVE_OUTPUT_DIR`, `MRL_SERVE_CONTENT_ROOT`, and `MRL_SERVE_ASSETS_DIR` when needed.
+- If you want local canonical URLs too, set `SITE_BASE_URL=http://localhost:8080/`.
 
 ## Current Slice
 
