@@ -2,10 +2,9 @@
 
 ## Summary
 
-The next slice should correct route-specific crawl semantics so the generated
-static publication keeps real reader-facing routes indexable while preventing
-the shared `404.html` recovery page from advertising itself as indexable
-content.
+This slice corrects route-specific crawl semantics so the generated static
+publication keeps real reader-facing routes indexable while preventing the
+shared `404.html` recovery page from advertising itself as indexable content.
 
 Current observed gap:
 
@@ -26,9 +25,8 @@ Current observed gap:
 ## Boundary Change
 
 The build does not gain new routes or new root artifacts. Instead, one existing
-shared metadata contract becomes route-aware: `404.html` should render
-`noindex,follow` while the current public publication routes keep
-`index,follow`.
+shared metadata contract is route-aware: `404.html` renders `noindex,follow`
+while the current public publication routes keep `index,follow`.
 
 ## Risks
 
