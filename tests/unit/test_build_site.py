@@ -270,7 +270,9 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert cname == "example.com\n"
     assert "Page Not Found" in not_found_html
     assert "Try one of these instead" in not_found_html
-    assert 'href="https://example.com/"' in not_found_html
+    assert '<ul class="not-found-list">' in not_found_html
+    assert '<a class="not-found-link" href="https://example.com/">Return home</a>' in not_found_html
+    assert '<small class="not-found-path">/</small>' in not_found_html
     assert 'href="https://example.com/search/"' in not_found_html
     assert 'href="https://example.com/archives/"' in not_found_html
     assert 'href="https://example.com/sagas/"' in not_found_html

@@ -336,6 +336,21 @@ def build_not_found_page(
     config: SiteConfig,
     footer_attribution: FooterAttribution,
 ) -> str:
+    recovery_rows = "\n".join(
+        (
+            "            <li>\n"
+            f'              <a class="not-found-link" href="{_absolute_url(config.base_url, path)}">{html.escape(label)}</a>\n'
+            f'              <small class="not-found-path">{html.escape(path)}</small>\n'
+            "            </li>"
+        )
+        for label, path in (
+            ("Return home", "/"),
+            ("Search the publication", "/search/"),
+            ("Browse the archives", "/archives/"),
+            ("Browse sagas", "/sagas/"),
+            ("Browse the library", "/library/"),
+        )
+    )
     return _render_document(
         config=config,
         title="Not Found",
@@ -351,12 +366,8 @@ def build_not_found_page(
             "        <section>\n"
             "          <h2>Try one of these instead</h2>\n"
             "          <p>The page you requested does not exist here, or it may have moved during the rebuild.</p>\n"
-            "          <ul>\n"
-            f'            <li><a href="{_absolute_url(config.base_url, "/")}">Return home</a></li>\n'
-            f'            <li><a href="{_absolute_url(config.base_url, "/search/")}">Search the publication</a></li>\n'
-            f'            <li><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a></li>\n'
-            f'            <li><a href="{_absolute_url(config.base_url, "/sagas/")}">Browse sagas</a></li>\n'
-            f'            <li><a href="{_absolute_url(config.base_url, "/library/")}">Browse the library</a></li>\n'
+            "          <ul class=\"not-found-list\">\n"
+            f"{recovery_rows}\n"
             "          </ul>\n"
             "        </section>"
         ),
@@ -1296,6 +1307,23 @@ def _render_document(
         color: var(--text-400);
         font-size: 0.92rem;
         line-height: 1.6;
+      }}
+      .not-found-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .not-found-list > li + li {{
+        margin-top: 0.85rem;
+      }}
+      .not-found-link {{
+        color: var(--text-100);
+      }}
+      .not-found-path {{
+        display: block;
+        margin-top: 0.15rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
       }}
       .discovery-list {{
         list-style: none;
