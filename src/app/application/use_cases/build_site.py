@@ -1487,12 +1487,29 @@ def _render_document(
         margin-bottom: 1.5rem;
         color: var(--text-400);
         font-size: 0.95rem;
+        line-height: 1.8;
       }}
       .entry-meta a {{
         color: var(--text-400);
       }}
-      .entry-meta .tags {{
-        display: inline;
+      .entry-tags {{
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        vertical-align: middle;
+      }}
+      .entry-tag-chip {{
+        display: inline-block;
+        padding: 0.1rem 0.55rem;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+        text-transform: lowercase;
+      }}
+      .entry-tag-chip:hover {{
+        border-color: var(--text-300);
+        text-decoration: none;
       }}
       .nav-grid {{
         display: flex;
@@ -1846,11 +1863,11 @@ def _render_entry_metadata(metadata: EntryMetadata, *, base_url: str) -> str:
     ]
     tags_markup = ""
     if metadata.tags:
-        tag_links = ", ".join(
-            f'<a href="{_absolute_url(base_url, tag.permalink)}">#{html.escape(tag.name)}</a>'
+        tag_links = "".join(
+            f'<a class="entry-tag-chip" href="{_absolute_url(base_url, tag.permalink)}">#{html.escape(tag.name)}</a>'
             for tag in metadata.tags
         )
-        tags_markup = f' · <span class="tags">{tag_links}</span>'
+        tags_markup = f' · <span class="entry-tags">{tag_links}</span>'
     return (
         f'        <div class="entry-meta">{" · ".join(parts)}{tags_markup}</div>'
     )

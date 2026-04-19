@@ -92,6 +92,9 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     assert "/search/" in arc_html
     assert "1 min read" in first_episode_html
     assert 'href="https://example.com/library/architecture/"' in first_episode_html
+    assert '<span class="entry-tags">' in first_episode_html
+    assert '<a class="entry-tag-chip" href="https://example.com/library/architecture/">#architecture</a>' in first_episode_html
+    assert '<a class="entry-tag-chip" href="https://example.com/library/writing/">#writing</a>' in first_episode_html
     assert 'href="https://example.com/archives/"' in first_episode_html
     assert 'href="https://example.com/search/"' in first_episode_html
     assert '<a class="breadcrumb-link" href="https://example.com/sagas/hireflow/">' in first_episode_html
@@ -401,6 +404,10 @@ def test_build_static_site_renders_entry_metadata_for_pages() -> None:
 
     assert "1 min read" in html
     assert 'href="https://example.com/library/architecture/"' in html
+    assert '<span class="entry-tags">' in html
+    assert '<a class="entry-tag-chip" href="https://example.com/library/architecture/">#architecture</a>' in html
+    assert ".entry-tags {" in html
+    assert ".entry-tag-chip {" in html
     assert 'href="https://example.com/archives/"' in html
     assert 'href="https://example.com/search/"' in html
     assert "#architecture" in html

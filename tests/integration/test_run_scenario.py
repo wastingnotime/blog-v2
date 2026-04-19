@@ -542,6 +542,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/archives/"' in about_html
     assert 'href="https://wastingnotime.org/search/"' in about_html
     assert 'href="https://wastingnotime.org/library/architecture/"' in about_html
+    assert '<span class="entry-tags">' in about_html
+    assert '<a class="entry-tag-chip" href="https://wastingnotime.org/library/architecture/">#architecture</a>' in about_html
+    assert '<a class="entry-tag-chip" href="https://wastingnotime.org/library/writing/">#writing</a>' in about_html
+    assert ".entry-tags {" in about_html
+    assert ".entry-tag-chip {" in about_html
     assert 'href="https://wastingnotime.org/favicon-32x32.png"' in about_html
     assert "/sagas/" in studio_html
     assert "/library/" in studio_html
@@ -568,6 +573,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "1 min read" in episode_html
     assert 'href="https://wastingnotime.org/library/distributed-systems/"' in episode_html
+    assert '<span class="entry-tags">' in episode_html
+    assert '<a class="entry-tag-chip" href="https://wastingnotime.org/library/architecture/">#architecture</a>' in episode_html
+    assert '<a class="entry-tag-chip" href="https://wastingnotime.org/library/distributed-systems/">#distributed-systems</a>' in episode_html
     assert 'href="https://wastingnotime.org/archives/"' in episode_html
     assert 'href="https://wastingnotime.org/search/"' in episode_html
     assert "Other ways in" in episode_html
