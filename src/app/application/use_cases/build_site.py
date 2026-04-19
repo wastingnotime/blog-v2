@@ -1297,6 +1297,23 @@ def _render_document(
         font-size: 0.92rem;
         line-height: 1.6;
       }}
+      .discovery-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .discovery-list > li + li {{
+        margin-top: 0.85rem;
+      }}
+      .discovery-label {{
+        color: var(--text-100);
+      }}
+      .discovery-path {{
+        display: block;
+        margin-top: 0.15rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
+      }}
       .studio-discovery-list {{
         list-style: none;
         margin: 0;
@@ -1584,16 +1601,19 @@ def _render_discovery_surface(
 ) -> str:
     items = "\n".join(
         (
-            "          <p>"
-            f"{html.escape(label)} -> "
-            f'<a href="{_absolute_url(base_url, path)}">{html.escape(path)}</a></p>'
+            "            <li>\n"
+            f'              <a class="discovery-label" href="{_absolute_url(base_url, path)}">{html.escape(label)}</a>\n'
+            f'              <small class="discovery-path">{html.escape(path)}</small>\n'
+            "            </li>"
         )
         for label, path in destinations
     )
     return (
         "        <section>\n"
         "          <h2>Other ways in</h2>\n"
+        "          <ul class=\"discovery-list\">\n"
         f"{items}\n"
+        "          </ul>\n"
         "        </section>"
     )
 

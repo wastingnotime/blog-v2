@@ -389,15 +389,21 @@ def test_build_static_site_uses_shared_discovery_surface_with_route_specific_lin
         pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"]
     )
 
+    assert '<ul class="discovery-list">' in archive_discovery
+    assert 'class="discovery-label"' in archive_discovery
+    assert 'class="discovery-path">/search/</small>' in archive_discovery
     assert 'href="https://example.com/search/"' in archive_discovery
     assert 'href="https://example.com/library/"' in archive_discovery
     assert 'href="https://example.com/archives/"' not in archive_discovery
+    assert '<ul class="discovery-list">' in search_discovery
     assert 'href="https://example.com/archives/"' in search_discovery
     assert 'href="https://example.com/library/"' in search_discovery
     assert 'href="https://example.com/search/"' not in search_discovery
+    assert '<ul class="discovery-list">' in library_discovery
     assert 'href="https://example.com/archives/"' in library_discovery
     assert 'href="https://example.com/search/"' in library_discovery
     assert 'href="https://example.com/library/"' not in library_discovery
+    assert '<ul class="discovery-list">' in episode_discovery
     assert 'href="https://example.com/archives/"' in episode_discovery
     assert 'href="https://example.com/search/"' in episode_discovery
 
