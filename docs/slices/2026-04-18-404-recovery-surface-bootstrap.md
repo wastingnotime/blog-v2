@@ -34,7 +34,7 @@ list:
 This slice restores the minimum 404 continuity needed for the current
 publication:
 
-- render recovery destinations through explicit 404-specific row markup
+- render recovery destinations through an explicit 404-specific row shell
 - keep the same recovery labels and destination routes
 - preserve the page's current copy, route, and robots contract
 
@@ -48,7 +48,7 @@ recovery, or broader error-page redesign.
 Given the existing recovery destinations for the static 404 page, render
 deterministic markup such that:
 
-- each destination appears as one clear recovery row
+- each destination appears as one clear recovery row with label and path
 - current labels and routes remain unchanged
 - the recovery surface reads like a purposeful navigation aid rather than a
   plain fallback list
@@ -70,6 +70,8 @@ site output such that:
   redirect or search-product behavior.
 - Existing recovery labels, routes, and robots rules remain the source of
   truth.
+- The row shell should remain 404-only and not affect the other navigation
+  surfaces.
 - Static-hosting compatibility remains a hard constraint.
 
 ## Required Ports

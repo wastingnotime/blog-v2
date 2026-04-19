@@ -24,7 +24,7 @@ Current observed gap:
 The build gains no new route, runtime, or recovery data. The boundary change is
 limited to `404.html` presentation:
 
-- the 404 page gets one explicit recovery-row markup contract
+- the 404 page gets one explicit recovery-row shell contract
 - current labels, routes, and robots behavior remain unchanged
 - other navigation surfaces remain unchanged
 
