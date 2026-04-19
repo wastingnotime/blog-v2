@@ -35,7 +35,7 @@ entries as plain generic list rows:
 This slice restores the minimum archive continuity needed for the current
 publication:
 
-- render archive entries with explicit row markup
+- render archive entries with an explicit row shell and compact header row
 - keep date and optional saga context as quieter supporting metadata
 - keep the same entry titles, summaries, chronology, and routes
 
@@ -50,7 +50,7 @@ Given the existing chronological archive entries, render deterministic archive
 markup such that:
 
 - each entry has one clear primary title line linking to its current route
-- date and optional saga context render as quieter supporting metadata
+- date and optional saga context render in a compact row alongside the title
 - summary remains present but visually secondary
 
 ### `BuildStaticSite`
@@ -69,6 +69,8 @@ site output such that:
 - The slice stays bounded to archive-row presentation and must not widen into
   archive-product changes.
 - Existing archive ordering and entry data remain the source of truth.
+- The row shell should be archive-only and not affect the homepage, topic
+  pages, or saga surfaces.
 - Static-hosting compatibility remains a hard constraint.
 
 ## Required Ports

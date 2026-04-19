@@ -24,7 +24,7 @@ Current observed gap:
 The build gains no new route, runtime, or archive data. The boundary change is
 limited to `/archives/` row presentation:
 
-- the archive gets one explicit archive-row markup contract
+- the archive gets one explicit archive-row shell and compact header contract
 - chronology, routes, and supporting context remain unchanged
 - other list surfaces remain unchanged
 
