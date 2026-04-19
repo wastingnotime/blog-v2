@@ -83,9 +83,17 @@ class DevRequestHandler(SimpleHTTPRequestHandler):
     reload_state: ClassVar[ReloadState]
     repository_revision: ClassVar[str] = "unknown"
 
-    def __init__(self, *args, directory: str, reload_state: ReloadState, **kwargs):
+    def __init__(
+        self,
+        *args,
+        directory: str,
+        reload_state: ReloadState,
+        repository_revision: str = "unknown",
+        **kwargs,
+    ):
         self.directory = directory
         self.reload_state = reload_state
+        self.repository_revision = repository_revision
         super().__init__(*args, directory=directory, **kwargs)
 
     def do_GET(self) -> None:  # noqa: N802

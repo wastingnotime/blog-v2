@@ -38,8 +38,6 @@ def test_dev_status_endpoint_reports_commit_and_reload_version(tmp_path: Path) -
 
     reload_state = ReloadState()
     reload_state.bump()
-    previous_revision = DevRequestHandler.repository_revision
-    DevRequestHandler.repository_revision = "abc1234"
 
     server = ThreadingHTTPServer(
         ("127.0.0.1", 0),
@@ -47,6 +45,7 @@ def test_dev_status_endpoint_reports_commit_and_reload_version(tmp_path: Path) -
             *args,
             directory=str(output_dir),
             reload_state=reload_state,
+            repository_revision="abc1234",
             **kwargs,
         ),
     )
@@ -68,4 +67,3 @@ def test_dev_status_endpoint_reports_commit_and_reload_version(tmp_path: Path) -
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
-        DevRequestHandler.repository_revision = previous_revision
