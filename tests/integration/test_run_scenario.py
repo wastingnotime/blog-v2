@@ -635,11 +635,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         "https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/"
     )
     assert "Ep 02 Second Iteration" in episode_html
+    assert '<nav class="breadcrumbs episode-breadcrumbs">' in episode_html
+    assert '<nav class="nav-grid episode-adjacent-nav">' in episode_html
     assert 'class="adjacent-nav-link next" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/"' in episode_html
     assert ".breadcrumb-link {" in episode_html
     assert ".breadcrumb-separator {" in episode_html
+    assert ".episode-breadcrumbs {" in episode_html
     assert ".adjacent-nav-link {" in episode_html
     assert ".adjacent-nav-link.next {" in episode_html
+    assert ".episode-adjacent-nav {" in episode_html
     assert "/api/event" not in episode_html
     assert (output_dir / "favicon.ico").read_bytes() == (
         identity_assets_dir / "favicon.ico"

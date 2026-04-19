@@ -712,7 +712,7 @@ def build_episode_page(
         f"Episode {episode.number}"
     )
     parent_navigation = (
-        f'        <nav class="breadcrumbs"><a class="breadcrumb-link" href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/")}">'
+        f'        <nav class="breadcrumbs episode-breadcrumbs"><a class="breadcrumb-link" href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/")}">'
         f"{html.escape(episode.saga_title)}</a> <span class=\"breadcrumb-separator\">/</span> "
         f'<a class="breadcrumb-link" href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">'
         f"{html.escape(episode.arc_title)}</a></nav>"
@@ -1515,6 +1515,9 @@ def _render_document(
         margin-bottom: 1rem;
         color: var(--text-400);
       }}
+      .episode-breadcrumbs {{
+        margin-bottom: 1rem;
+      }}
       .breadcrumb-link {{
         color: var(--text-400);
       }}
@@ -1558,6 +1561,12 @@ def _render_document(
         border-top: 1px solid var(--line);
       }}
       .nav-grid a {{
+        color: var(--text-100);
+      }}
+      .episode-adjacent-nav {{
+        margin-top: 2rem;
+      }}
+      .episode-adjacent-nav a {{
         color: var(--text-100);
       }}
       .adjacent-nav-link {{
@@ -2015,7 +2024,7 @@ def _render_adjacent_navigation(
             f"Ep {next_episode.number:02d} {html.escape(next_episode.title)} &rarr;</a>"
         )
 
-    return f'        <nav class="nav-grid">{previous_markup}{next_markup}</nav>'
+    return f'        <nav class="nav-grid episode-adjacent-nav">{previous_markup}{next_markup}</nav>'
 
 
 def _render_library_tag(tag: str, *, base_url: str) -> str:

@@ -97,17 +97,21 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     assert '<a class="entry-tag-chip" href="https://example.com/library/writing/">#writing</a>' in first_episode_html
     assert 'href="https://example.com/archives/"' in first_episode_html
     assert 'href="https://example.com/search/"' in first_episode_html
+    assert '<nav class="breadcrumbs episode-breadcrumbs">' in first_episode_html
     assert '<a class="breadcrumb-link" href="https://example.com/sagas/hireflow/">' in first_episode_html
     assert '<span class="breadcrumb-separator">/</span>' in first_episode_html
     assert '<a class="breadcrumb-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/">' in first_episode_html
     assert 'class="adjacent-nav-link next" href="https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/"' in first_episode_html
+    assert '<nav class="nav-grid episode-adjacent-nav">' in first_episode_html
     assert "Ep 02 Second Iteration" in first_episode_html
     assert 'class="adjacent-nav-link previous" href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/"' in second_episode_html
     assert "Ep 01 The First Brick" in second_episode_html
     assert ".breadcrumb-link {" in first_episode_html
     assert ".breadcrumb-separator {" in first_episode_html
+    assert ".episode-breadcrumbs {" in first_episode_html
     assert ".adjacent-nav-link {" in first_episode_html
     assert ".adjacent-nav-link.next {" in first_episode_html
+    assert ".episode-adjacent-nav {" in first_episode_html
     assert ".saga-arc-list {" in saga_html
     assert ".saga-arc-link {" in saga_html
     assert ".saga-arc-meta {" in saga_html
