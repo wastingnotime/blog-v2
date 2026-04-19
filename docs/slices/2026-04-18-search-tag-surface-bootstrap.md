@@ -46,6 +46,8 @@ static publication:
 
 - render tags for results that have them
 - allow the current query highlight behavior to apply to surfaced tags
+- render surfaced tags through explicit chip-like hooks so search results reuse
+  the publication's topic language without becoming new navigation
 - keep the change bounded to existing result presentation rather than adding tag
   navigation or new search filters
 
@@ -62,6 +64,8 @@ reader-facing tag context such that:
 - result tags can be rendered when the record includes them
 - surfaced tags remain deterministic for the same record content
 - tags remain secondary context rather than replacing title or summary content
+- surfaced tags read as chip-like context rather than plain comma-separated
+  helper text
 
 ### `RenderSearchPage`
 
@@ -79,6 +83,8 @@ deterministic client-side search behavior such that:
   them in `search.json`.
 - Surfaced tags should remain secondary context for a result rather than a new
   navigation system or filter control.
+- Surfaced tags should remain presentation-only in this slice; they must not
+  silently become clickable topic navigation.
 - Current query highlighting may apply to surfaced tags when they contain the
   active query.
 - The slice stays bounded to result-context rendering and must not widen into
@@ -98,6 +104,8 @@ deterministic client-side search behavior such that:
   rendering path for results
 - unit test asserting surfaced tags use the existing highlight behavior when a
   tag contains the active query
+- unit test asserting surfaced tags render through explicit chip hooks rather
+  than plain label text
 - integration test asserting generated `dist/search/index.html` includes the
   bounded tag-surface logic while preserving the current static route contract
 - integration test asserting the search page remains fully static and free of
@@ -109,7 +117,7 @@ Run the scenario CLI against the in-repo content set and inspect the generated
 search page behavior to verify:
 
 - `/search/` still loads the published `search.json` artifact
-- results with tags render them as secondary context
+- results with tags render them as chip-like secondary context
 - query highlighting can emphasize matching tags when relevant
 - ranking, URL-state, and static-hosting assumptions remain unchanged
 
