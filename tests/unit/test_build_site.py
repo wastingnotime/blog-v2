@@ -278,9 +278,11 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "Active sagas" in sagas_html
     assert "Other ways in" in sagas_html
     assert '<ul class="saga-index-list">' in sagas_html
+    assert '<div class="saga-index-row">' in sagas_html
     assert '<a class="saga-index-link" href="https://example.com/sagas/hireflow/">HireFlow</a>' in sagas_html
     assert 'class="saga-index-summary">Architecture in public.</p>' in sagas_html
     assert '<small class="saga-index-start"><a href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_html
+    assert ".saga-index-row {" in sagas_html
     assert "/archives/" in sagas_html
     assert "/search/" in sagas_html
     assert "/library/" in studio_html

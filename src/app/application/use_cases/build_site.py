@@ -1275,6 +1275,12 @@ def _render_document(
       .saga-index-list > li + li {{
         margin-top: 1rem;
       }}
+      .saga-index-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.6rem;
+      }}
       .saga-index-link {{
         color: var(--text-100);
       }}
@@ -1285,10 +1291,13 @@ def _render_document(
         line-height: 1.6;
       }}
       .saga-index-start {{
-        display: inline-block;
-        margin-top: 0.45rem;
         color: var(--text-400);
         font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: lowercase;
+      }}
+      .saga-index-start a {{
+        color: var(--text-400);
       }}
       .saga-arc-list {{
         list-style: none;
@@ -2008,12 +2017,14 @@ def _render_saga_summary(summary: object, *, base_url: str) -> str:
     start_link = ""
     if summary.start_permalink:
         start_link = (
-            f'\n              <small class="saga-index-start"><a href="{_absolute_url(base_url, summary.start_permalink)}">start reading</a></small>'
+            f'<small class="saga-index-start"><a href="{_absolute_url(base_url, summary.start_permalink)}">start reading</a></small>'
         )
     return (
         "            <li>\n"
-        f'              <a class="saga-index-link" href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
-        f'              <p class="saga-index-summary">{html.escape(summary.summary)}</p>{start_link}\n'
+        '              <div class="saga-index-row">\n'
+        f'                <a class="saga-index-link" href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>{start_link}\n'
+        "              </div>\n"
+        f'              <p class="saga-index-summary">{html.escape(summary.summary)}</p>\n'
         "            </li>"
     )
 

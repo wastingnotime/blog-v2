@@ -438,9 +438,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'class="active">Sagas</a>' in sagas_index_html
     assert "Other ways in" in sagas_index_html
     assert '<ul class="saga-index-list">' in sagas_index_html
+    assert '<div class="saga-index-row">' in sagas_index_html
     assert '<a class="saga-index-link" href="https://wastingnotime.org/sagas/hireflow/">HireFlow</a>' in sagas_index_html
     assert 'class="saga-index-summary">A fictional hiring platform used as a laboratory for architecture trade-offs and emergent design.</p>' in sagas_index_html
     assert '<small class="saga-index-start"><a href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_index_html
+    assert ".saga-index-row {" in sagas_index_html
     assert "/archives/" in sagas_index_html
     assert "/search/" in sagas_index_html
     assert _json_ld_payloads(sagas_index_html) == [
