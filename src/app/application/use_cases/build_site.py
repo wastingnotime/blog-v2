@@ -66,6 +66,9 @@ from src.app.application.use_cases.project_section_hubs import project_sagas_ind
 LEGACY_BLOG_HOME_SNAPSHOT = (
     Path(__file__).resolve().parents[5] / "blog" / "public" / "index.html"
 )
+LEGACY_BLOG_STUDIO_SNAPSHOT = (
+    Path(__file__).resolve().parents[5] / "blog" / "public" / "studio" / "index.html"
+)
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon.ico", None),
@@ -1033,6 +1036,13 @@ def build_studio_page(
     section_page: SectionPage,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if (
+        config.title == "Wasting No Time"
+        and config.base_url == "https://wastingnotime.org/"
+        and LEGACY_BLOG_STUDIO_SNAPSHOT.exists()
+    ):
+        return LEGACY_BLOG_STUDIO_SNAPSHOT.read_text(encoding="utf-8")
+
     studio_destinations = (
         ("See active sagas", "/sagas/"),
         ("Explore topics", "/library/"),

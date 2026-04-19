@@ -8,6 +8,9 @@ from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilde
 from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
 
 LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parents[2].parent / "blog" / "public" / "index.html"
+LEGACY_BLOG_STUDIO_SNAPSHOT = (
+    Path(__file__).resolve().parents[2].parent / "blog" / "public" / "studio" / "index.html"
+)
 
 
 def test_static_site_builder_generates_static_routes_from_markdown(
@@ -481,28 +484,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".entry-tags {" in about_html
     assert ".entry-tag-chip {" in about_html
     assert 'href="/favicon-32x32.png"' in about_html
-    assert "/sagas/" in studio_html
-    assert "/library/" in studio_html
-    assert "/archives/" in studio_html
-    assert "/search/" in studio_html
-    assert "<h2>In the studio</h2>" in studio_html
-    assert '<ul class="studio-discovery-list">' in studio_html
-    assert '<div class="studio-discovery-row">' in studio_html
-    assert '<a class="studio-discovery-label" href="/sagas/">See active sagas</a>' in studio_html
-    assert '<small class="studio-discovery-path">/sagas/</small>' in studio_html
-    assert ".studio-discovery-row {" in studio_html
-    assert "Other ways in" not in studio_html
-    assert "parallel spaces evolving at their own pace." in studio_html
-    assert 'class="site-nav-link active" aria-current="page">STUDIO</a>' in studio_html
-    assert _json_ld_payloads(studio_html) == [
-        {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "studio",
-            "description": "parallel spaces evolving at their own pace.",
-            "url": "https://wastingnotime.org/studio/",
-        }
-    ]
+    assert studio_html == LEGACY_BLOG_STUDIO_SNAPSHOT.read_text(encoding="utf-8")
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "3 min read" in episode_html
     assert 'href="/library/distributed-systems/"' in episode_html
