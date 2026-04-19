@@ -26,7 +26,7 @@ change is limited to recovery messaging inside the existing static search page:
 
 - `/search/` stays the canonical route
 - `search.json` stays the only search artifact
-- page markup gains one bounded `<noscript>` recovery contract for readers
+- page markup gains one bounded `<noscript>` recovery shell for readers
   without script execution
 
 ## Risks

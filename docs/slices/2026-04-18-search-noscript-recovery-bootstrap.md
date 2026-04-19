@@ -44,7 +44,7 @@ That leaves one bounded recovery gap:
 This slice restores the minimum no-script recovery behavior needed for the
 current static publication:
 
-- render a deterministic `<noscript>` message on `/search/`
+- render a deterministic `<noscript>` recovery shell on `/search/`
 - explain that live search requires JavaScript
 - point readers toward stable alternatives such as archives and library
 
@@ -59,7 +59,8 @@ Given the existing static `/search/` route and its client-side filtering model,
 render recovery guidance such that:
 
 - a no-script reader is told clearly that live search requires JavaScript
-- recovery guidance points only to stable reader-facing routes
+- recovery guidance points only to stable reader-facing routes through explicit
+  rows
 - the message remains deterministic for the same repository state
 
 ### `RenderSearchPage`
@@ -82,6 +83,8 @@ deterministic page markup such that:
 - The slice stays bounded to fallback guidance and must not widen into
   prerendered search results, server-side search, or broader search-page
   redesign.
+- The noscript shell should remain search-page specific and not affect script-
+  enabled rendering.
 - GitHub Pages compatibility remains a hard constraint.
 
 ## Required Ports
