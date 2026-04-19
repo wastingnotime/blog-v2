@@ -78,37 +78,37 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
 
     assert '<ul class="saga-arc-list">' in saga_html
     assert '<div class="saga-arc-row">' in saga_html
-    assert '<a class="saga-arc-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in saga_html
+    assert '<a class="saga-arc-link" href="/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in saga_html
     assert 'class="saga-arc-meta">2 episodes · last 2026-04-13</small>' in saga_html
     assert '<ul class="saga-timeline-list">' in saga_html
     assert '<div class="saga-timeline-row">' in saga_html
-    assert '<a class="saga-timeline-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in saga_html
+    assert '<a class="saga-timeline-link" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in saga_html
     assert 'class="saga-timeline-meta">The Origin Blueprint · 2026-04-12</small>' in saga_html
     assert "[Ep 01] The First Brick" in arc_html
     assert "[Ep 02] Second Iteration" in arc_html
     assert '<ul class="arc-episode-list">' in arc_html
     assert '<div class="arc-episode-row">' in arc_html
-    assert '<a class="breadcrumb-link" href="https://example.com/sagas/hireflow/">' in arc_html
-    assert '<a class="arc-episode-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in arc_html
+    assert '<a class="breadcrumb-link" href="/sagas/hireflow/">' in arc_html
+    assert '<a class="arc-episode-link" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in arc_html
     assert 'class="arc-episode-meta">2026-04-12</small>' in arc_html
     assert "Arc body." in arc_html
     assert "/archives/" in arc_html
     assert "/search/" in arc_html
     assert "1 min read" in first_episode_html
-    assert 'href="https://example.com/library/architecture/"' in first_episode_html
+    assert 'href="/library/architecture/"' in first_episode_html
     assert '<span class="entry-tags">' in first_episode_html
-    assert '<a class="entry-tag-chip" href="https://example.com/library/architecture/">#architecture</a>' in first_episode_html
-    assert '<a class="entry-tag-chip" href="https://example.com/library/writing/">#writing</a>' in first_episode_html
-    assert 'href="https://example.com/archives/"' in first_episode_html
-    assert 'href="https://example.com/search/"' in first_episode_html
+    assert '<a class="entry-tag-chip" href="/library/architecture/">#architecture</a>' in first_episode_html
+    assert '<a class="entry-tag-chip" href="/library/writing/">#writing</a>' in first_episode_html
+    assert 'href="/archives/"' in first_episode_html
+    assert 'href="/search/"' in first_episode_html
     assert '<nav class="breadcrumbs episode-breadcrumbs">' in first_episode_html
-    assert '<a class="breadcrumb-link" href="https://example.com/sagas/hireflow/">' in first_episode_html
+    assert '<a class="breadcrumb-link" href="/sagas/hireflow/">' in first_episode_html
     assert '<span class="breadcrumb-separator">/</span>' in first_episode_html
-    assert '<a class="breadcrumb-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/">' in first_episode_html
-    assert 'class="adjacent-nav-link next" href="https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/"' in first_episode_html
+    assert '<a class="breadcrumb-link" href="/sagas/hireflow/the-origin-blueprint/">' in first_episode_html
+    assert 'class="adjacent-nav-link next" href="/sagas/hireflow/the-origin-blueprint/second-iteration/"' in first_episode_html
     assert '<nav class="nav-grid episode-adjacent-nav">' in first_episode_html
     assert "Ep 02 Second Iteration" in first_episode_html
-    assert 'class="adjacent-nav-link previous" href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/"' in second_episode_html
+    assert 'class="adjacent-nav-link previous" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/"' in second_episode_html
     assert "Ep 01 The First Brick" in second_episode_html
     assert ".breadcrumb-link {" in first_episode_html
     assert ".breadcrumb-separator {" in first_episode_html
@@ -141,7 +141,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "Chronological Archive" in archive_html
     assert '<ul class="archive-entry-list">' in archive_html
     assert '<div class="archive-entry-row">' in archive_html
-    assert '<a class="archive-entry-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
+    assert '<a class="archive-entry-link" href="/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
     assert 'class="archive-entry-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in archive_html
     assert 'class="archive-entry-summary">Follow-up work.</p>' in archive_html
     assert "[episode] Second Iteration" in archive_html
@@ -154,7 +154,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "Search the publication" in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
-    assert 'action="https://example.com/search/"' in search_html
+    assert 'action="/search/"' in search_html
     assert '<label class="search-query-label" for="search-query">Search query</label>' in search_html
     assert '<input class="search-query-input" id="search-query"' in search_html
     assert '<p id="search-helper">Type to filter the static index published with the site.</p>' in search_html
@@ -167,13 +167,13 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert '<div class="search-noscript-recovery">' in search_html
     assert "Live search on this page requires JavaScript." in search_html
     assert "browse the chronology or move by topic instead." in search_html
-    assert '<a class="search-noscript-recovery-link" href="https://example.com/archives/">Browse the archives</a>' in search_html
+    assert '<a class="search-noscript-recovery-link" href="/archives/">Browse the archives</a>' in search_html
     assert '<small class="search-noscript-recovery-path">/archives/</small>' in search_html
     assert 'id="search-status" role="status" aria-live="polite" aria-atomic="true"' in search_html
     assert '<h3 id="search-results-heading" class="visually-hidden">Search results</h3>' in search_html
     assert 'id="search-results" class="search-result-list" aria-labelledby="search-results-heading"' in search_html
     assert "Enter a query to search the publication." in search_html
-    assert "https://example.com/search.json" in search_html
+    assert "/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
     assert "const normalizeSearchText = (value) => (value || '').trim().toLowerCase();" in search_html
     assert "const projectSearchUrlState = (query) => {" in search_html
@@ -256,20 +256,20 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert '<link rel="canonical" href="https://example.com/search/" />' in search_html
     assert "/archives/" in search_html
     assert "/library/" in search_html
-    assert 'href="https://example.com/archives/"' in search_html
-    assert 'href="https://example.com/library/"' in search_html
+    assert 'href="/archives/"' in search_html
+    assert 'href="/library/"' in search_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
     assert "Other ways in" in library_html
-    assert 'href="https://example.com/archives/"' in library_html
-    assert 'href="https://example.com/search/"' in library_html
+    assert 'href="/archives/"' in library_html
+    assert 'href="/search/"' in library_html
     assert '<ul class="library-topic-list">' in library_html
-    assert '<a class="topic-link" href="https://example.com/library/architecture/">#architecture</a>' in library_html
-    assert '<a class="breadcrumb-link" href="https://example.com/library/">' in topic_html
+    assert '<a class="topic-link" href="/library/architecture/">#architecture</a>' in library_html
+    assert '<a class="breadcrumb-link" href="/library/">' in topic_html
     assert '<ul class="topic-entry-list">' in topic_html
-    assert '<a class="topic-entry-link" href="https://example.com/about/">[page] About</a>' in topic_html
+    assert '<a class="topic-entry-link" href="/about/">[page] About</a>' in topic_html
     assert 'class="topic-entry-meta">2026-04-10</small>' in topic_html
-    assert '<a class="topic-entry-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in topic_html
+    assert '<a class="topic-entry-link" href="/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in topic_html
     assert 'class="topic-entry-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in topic_html
     assert 'class="topic-entry-summary">Follow-up work.</p>' in topic_html
     assert "[page] About" in topic_html
@@ -286,9 +286,9 @@ def test_build_static_site_refines_homepage_editorial_surface() -> None:
     assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
     assert (
-        '<p class="homepage-paths"><a href="https://example.com/search/">Search</a> / '
-        '<a href="https://example.com/archives/">Archives</a> / '
-        '<a href="https://example.com/library/">Library</a></p>'
+        '<p class="homepage-paths"><a href="/search/">Search</a> / '
+        '<a href="/archives/">Archives</a> / '
+        '<a href="/library/">Library</a></p>'
     ) in html
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
@@ -305,9 +305,9 @@ def test_build_static_site_uses_base_url_for_search_form_action() -> None:
 
     search_html = pages["search/index.html"]
 
-    assert 'action="https://example.com/blog/search/"' in search_html
+    assert 'action="/blog/search/"' in search_html
     assert 'action="/search/"' not in search_html
-    assert "https://example.com/blog/search.json" in search_html
+    assert "/blog/search.json" in search_html
     assert '<link rel="canonical" href="https://example.com/blog/search/" />' in search_html
 
 
@@ -321,9 +321,9 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "Other ways in" in sagas_html
     assert '<ul class="saga-index-list">' in sagas_html
     assert '<div class="saga-index-row">' in sagas_html
-    assert '<a class="saga-index-link" href="https://example.com/sagas/hireflow/">HireFlow</a>' in sagas_html
+    assert '<a class="saga-index-link" href="/sagas/hireflow/">HireFlow</a>' in sagas_html
     assert 'class="saga-index-summary">Architecture in public.</p>' in sagas_html
-    assert '<small class="saga-index-start"><a href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_html
+    assert '<small class="saga-index-start"><a href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_html
     assert ".saga-index-row {" in sagas_html
     assert "/archives/" in sagas_html
     assert "/search/" in sagas_html
@@ -334,7 +334,7 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "<h2>In the studio</h2>" in studio_html
     assert '<ul class="studio-discovery-list">' in studio_html
     assert '<div class="studio-discovery-row">' in studio_html
-    assert '<a class="studio-discovery-label" href="https://example.com/sagas/">See active sagas</a>' in studio_html
+    assert '<a class="studio-discovery-label" href="/sagas/">See active sagas</a>' in studio_html
     assert '<small class="studio-discovery-path">/sagas/</small>' in studio_html
     assert ".studio-discovery-row {" in studio_html
     assert "Other ways in" not in studio_html
@@ -360,12 +360,12 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert "Try one of these instead" in not_found_html
     assert '<ul class="not-found-list">' in not_found_html
     assert '<div class="not-found-row">' in not_found_html
-    assert '<a class="not-found-link" href="https://example.com/">Return home</a>' in not_found_html
+    assert '<a class="not-found-link" href="/">Return home</a>' in not_found_html
     assert '<small class="not-found-path">/</small>' in not_found_html
-    assert 'href="https://example.com/search/"' in not_found_html
-    assert 'href="https://example.com/archives/"' in not_found_html
-    assert 'href="https://example.com/sagas/"' in not_found_html
-    assert 'href="https://example.com/library/"' in not_found_html
+    assert 'href="/search/"' in not_found_html
+    assert 'href="/archives/"' in not_found_html
+    assert 'href="/sagas/"' in not_found_html
+    assert 'href="/library/"' in not_found_html
     assert ".not-found-row {" in not_found_html
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<title>Second Iteration</title>" in feed_xml
@@ -380,15 +380,15 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert 'template="https://example.com/search/?q={searchTerms}"' in opensearch_xml
     assert webmanifest["name"] == "Example"
     assert webmanifest["short_name"] == "Example"
-    assert webmanifest["start_url"] == "https://example.com/"
+    assert webmanifest["start_url"] == "/"
     assert webmanifest["display"] == "standalone"
     assert webmanifest["theme_color"] == "#fffdf8"
     assert webmanifest["background_color"] == "#f3efe5"
-    assert webmanifest["icons"][0]["src"] == "https://example.com/favicon-16x16.png"
-    assert webmanifest["icons"][1]["src"] == "https://example.com/favicon-32x32.png"
-    assert webmanifest["icons"][2]["src"] == "https://example.com/apple-touch-icon.png"
+    assert webmanifest["icons"][0]["src"] == "/favicon-16x16.png"
+    assert webmanifest["icons"][1]["src"] == "/favicon-32x32.png"
+    assert webmanifest["icons"][2]["src"] == "/apple-touch-icon.png"
     assert "<browserconfig>" in browserconfig_xml
-    assert '<square150x150logo src="https://example.com/apple-touch-icon.png"/>' in browserconfig_xml
+    assert '<square150x150logo src="/apple-touch-icon.png"/>' in browserconfig_xml
     assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://example.com/archives/</loc>" in sitemap_xml
@@ -409,22 +409,22 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
 
     assert ">Home</a>" in home_html
     assert 'class="site-nav-link active" aria-current="page">Home</a>' in home_html
-    assert 'href="https://example.com/search/"' in home_html
-    assert 'href="https://example.com/archives/"' in home_html
+    assert 'href="/search/"' in home_html
+    assert 'href="/archives/"' in home_html
     assert 'class="site-nav-link active" aria-current="page">Search</a>' in search_html
     assert 'class="site-nav-link active" aria-current="page">Archives</a>' in archive_html
     assert 'class="site-nav-link active" aria-current="page">About</a>' in about_html
     assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in saga_html
-    assert 'href="https://example.com/library/"' in saga_html
-    assert 'href="https://example.com/feed.xml"' in home_html
-    assert 'href="https://example.com/feed.xml"' in about_html
-    assert 'href="https://example.com/feed.xml"' in saga_html
-    assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in home_html
-    assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in about_html
-    assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in saga_html
-    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in home_html
-    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in about_html
-    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in saga_html
+    assert 'href="/library/"' in saga_html
+    assert 'href="/feed.xml"' in home_html
+    assert 'href="/feed.xml"' in about_html
+    assert 'href="/feed.xml"' in saga_html
+    assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="/feed.xml"' in home_html
+    assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="/feed.xml"' in about_html
+    assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="/feed.xml"' in saga_html
+    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="/opensearch.xml"' in home_html
+    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="/opensearch.xml"' in about_html
+    assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="/opensearch.xml"' in saga_html
     assert "(c) 2026 example.com - published as a static site" in home_html
     assert "(c) 2026 example.com - published as a static site" in about_html
     assert "(c) 2026 example.com - published as a static site" in saga_html
@@ -437,12 +437,12 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
     assert '<p class="homepage-intro">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>' in html
-    assert 'href="https://example.com/search/"' in html
-    assert 'href="https://example.com/archives/"' in html
+    assert 'href="/search/"' in html
+    assert 'href="/archives/"' in html
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
     assert '<h2 class="section-label">LIBRARY</h2>' in html
-    assert '<a class="homepage-link" href="https://example.com/sagas/hireflow/">HireFlow</a>' in html
+    assert '<a class="homepage-link" href="/sagas/hireflow/">HireFlow</a>' in html
     assert "2 episodes - last release 2026-04-13 - in-progress" in html
     assert "Deployment target:" not in html
 
@@ -451,13 +451,13 @@ def test_build_static_site_renders_entry_metadata_for_pages() -> None:
     html = build_static_site(_site_config(), _catalog())["about/index.html"]
 
     assert "1 min read" in html
-    assert 'href="https://example.com/library/architecture/"' in html
+    assert 'href="/library/architecture/"' in html
     assert '<span class="entry-tags">' in html
-    assert '<a class="entry-tag-chip" href="https://example.com/library/architecture/">#architecture</a>' in html
+    assert '<a class="entry-tag-chip" href="/library/architecture/">#architecture</a>' in html
     assert ".entry-tags {" in html
     assert ".entry-tag-chip {" in html
-    assert 'href="https://example.com/archives/"' in html
-    assert 'href="https://example.com/search/"' in html
+    assert 'href="/archives/"' in html
+    assert 'href="/search/"' in html
     assert "#architecture" in html
     assert "homepage, saga index, library, archive, and search surfaces" in html
 
@@ -488,20 +488,20 @@ def test_build_static_site_uses_shared_discovery_surface_with_route_specific_lin
     assert '<ul class="discovery-list">' in archive_discovery
     assert 'class="discovery-label"' in archive_discovery
     assert 'class="discovery-path">/search/</small>' in archive_discovery
-    assert 'href="https://example.com/search/"' in archive_discovery
-    assert 'href="https://example.com/library/"' in archive_discovery
-    assert 'href="https://example.com/archives/"' not in archive_discovery
+    assert 'href="/search/"' in archive_discovery
+    assert 'href="/library/"' in archive_discovery
+    assert 'href="/archives/"' not in archive_discovery
     assert '<ul class="discovery-list">' in search_discovery
-    assert 'href="https://example.com/archives/"' in search_discovery
-    assert 'href="https://example.com/library/"' in search_discovery
-    assert 'href="https://example.com/search/"' not in search_discovery
+    assert 'href="/archives/"' in search_discovery
+    assert 'href="/library/"' in search_discovery
+    assert 'href="/search/"' not in search_discovery
     assert '<ul class="discovery-list">' in library_discovery
-    assert 'href="https://example.com/archives/"' in library_discovery
-    assert 'href="https://example.com/search/"' in library_discovery
-    assert 'href="https://example.com/library/"' not in library_discovery
+    assert 'href="/archives/"' in library_discovery
+    assert 'href="/search/"' in library_discovery
+    assert 'href="/library/"' not in library_discovery
     assert '<ul class="discovery-list">' in episode_discovery
-    assert 'href="https://example.com/archives/"' in episode_discovery
-    assert 'href="https://example.com/search/"' in episode_discovery
+    assert 'href="/archives/"' in episode_discovery
+    assert 'href="/search/"' in episode_discovery
 
 
 def test_build_static_site_renders_identity_asset_links_in_document_head() -> None:
@@ -512,21 +512,21 @@ def test_build_static_site_renders_identity_asset_links_in_document_head() -> No
         "sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"
     ]
 
-    assert 'rel="icon" href="https://example.com/favicon.ico"' in homepage_html
+    assert 'rel="icon" href="/favicon.ico"' in homepage_html
     assert (
         'rel="icon" type="image/png" sizes="16x16" '
-        'href="https://example.com/favicon-16x16.png"'
+        'href="/favicon-16x16.png"'
     ) in homepage_html
     assert (
         'rel="icon" type="image/png" sizes="32x32" '
-        'href="https://example.com/favicon-32x32.png"'
+        'href="/favicon-32x32.png"'
     ) in homepage_html
     assert (
         'rel="apple-touch-icon" type="image/png" '
-        'href="https://example.com/apple-touch-icon.png"'
+        'href="/apple-touch-icon.png"'
     ) in homepage_html
-    assert 'rel="manifest" href="https://example.com/site.webmanifest"' in homepage_html
-    assert 'href="https://example.com/apple-touch-icon.png"' in episode_html
+    assert 'rel="manifest" href="/site.webmanifest"' in homepage_html
+    assert 'href="/apple-touch-icon.png"' in episode_html
 
 
 def test_build_static_site_renders_open_graph_metadata_in_document_head() -> None:
@@ -543,7 +543,7 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
     assert '<meta property="og:description" content="Static site" />' in homepage_html
     assert '<meta property="og:url" content="https://example.com/" />' in homepage_html
     assert '<meta property="og:site_name" content="Example" />' in homepage_html
-    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in homepage_html
+    assert '<meta property="og:image" content="/social-preview.png" />' in homepage_html
 
     assert '<meta property="og:title" content="About" />' in about_html
     assert (
@@ -551,12 +551,12 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
         in about_html
     )
     assert '<meta property="og:url" content="https://example.com/about/" />' in about_html
-    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in about_html
+    assert '<meta property="og:image" content="/social-preview.png" />' in about_html
 
     assert '<meta property="og:title" content="HireFlow" />' in saga_html
     assert '<meta property="og:description" content="Architecture in public." />' in saga_html
     assert '<meta property="og:url" content="https://example.com/sagas/hireflow/" />' in saga_html
-    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in saga_html
+    assert '<meta property="og:image" content="/social-preview.png" />' in saga_html
 
     assert '<meta property="og:title" content="The First Brick" />' in episode_html
     assert (
@@ -567,7 +567,7 @@ def test_build_static_site_renders_open_graph_metadata_in_document_head() -> Non
         '<meta property="og:url" content="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
         in episode_html
     )
-    assert '<meta property="og:image" content="https://example.com/social-preview.png" />' in episode_html
+    assert '<meta property="og:image" content="/social-preview.png" />' in episode_html
 
 
 def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> None:
@@ -584,7 +584,7 @@ def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> N
     assert '<meta name="twitter:title" content="Example" />' in homepage_html
     assert '<meta name="twitter:description" content="Static site" />' in homepage_html
     assert '<meta name="twitter:url" content="https://example.com/" />' in homepage_html
-    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in homepage_html
+    assert '<meta name="twitter:image" content="/social-preview.png" />' in homepage_html
 
     assert '<meta name="twitter:title" content="About" />' in about_html
     assert (
@@ -592,12 +592,12 @@ def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> N
         in about_html
     )
     assert '<meta name="twitter:url" content="https://example.com/about/" />' in about_html
-    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in about_html
+    assert '<meta name="twitter:image" content="/social-preview.png" />' in about_html
 
     assert '<meta name="twitter:title" content="HireFlow" />' in saga_html
     assert '<meta name="twitter:description" content="Architecture in public." />' in saga_html
     assert '<meta name="twitter:url" content="https://example.com/sagas/hireflow/" />' in saga_html
-    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in saga_html
+    assert '<meta name="twitter:image" content="/social-preview.png" />' in saga_html
 
     assert '<meta name="twitter:title" content="The First Brick" />' in episode_html
     assert (
@@ -608,7 +608,7 @@ def test_build_static_site_renders_twitter_card_metadata_in_document_head() -> N
         '<meta name="twitter:url" content="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/" />'
         in episode_html
     )
-    assert '<meta name="twitter:image" content="https://example.com/social-preview.png" />' in episode_html
+    assert '<meta name="twitter:image" content="/social-preview.png" />' in episode_html
 
 
 def test_build_static_site_renders_theme_color_metadata_in_document_head() -> None:
@@ -753,10 +753,7 @@ def test_build_static_site_renders_msapplication_config_metadata_in_document_hea
     )
 
     for html in route_html:
-        assert (
-            '<meta name="msapplication-config" content="https://example.com/browserconfig.xml" />'
-            in html
-        )
+        assert '<meta name="msapplication-config" content="/browserconfig.xml" />' in html
 
 
 def test_build_static_site_renders_author_metadata_in_document_head() -> None:
@@ -987,7 +984,7 @@ def test_build_static_site_generates_search_index() -> None:
 
     assert search_index[0]["title"] == "Second Iteration"
     assert search_index[0]["url"] == (
-        "https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/"
+        "/sagas/hireflow/the-origin-blueprint/second-iteration/"
     )
     assert any(entry["type"] == "saga" and entry["title"] == "HireFlow" for entry in search_index)
     assert any(
@@ -997,7 +994,7 @@ def test_build_static_site_generates_search_index() -> None:
     )
     assert any(
         entry["type"] == "page"
-        and entry["url"] == "https://example.com/about/"
+        and entry["url"] == "/about/"
         for entry in search_index
     )
 

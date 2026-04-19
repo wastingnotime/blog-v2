@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from urllib.parse import urlparse
+
 from src.app.domain.models.content import ContentCatalog, SearchEntry, SearchIndex
 from src.app.domain.models.site_config import SiteConfig
 
@@ -29,7 +31,7 @@ def project_search_index(config: SiteConfig, catalog: ContentCatalog) -> SearchI
 def _build_page_entry(config: SiteConfig, page: object) -> SearchEntry:
     return SearchEntry(
         title=page.title,
-        url=_absolute_url(config.base_url, page.permalink),
+        url=_site_path(config.base_url, page.permalink),
         type="page",
         summary=page.summary,
         tags=page.tags,
@@ -40,7 +42,7 @@ def _build_page_entry(config: SiteConfig, page: object) -> SearchEntry:
 def _build_saga_entry(config: SiteConfig, saga: object) -> SearchEntry:
     return SearchEntry(
         title=saga.title,
-        url=_absolute_url(config.base_url, saga.permalink),
+        url=_site_path(config.base_url, saga.permalink),
         type="saga",
         summary=saga.summary,
         date=saga.date,
@@ -50,7 +52,7 @@ def _build_saga_entry(config: SiteConfig, saga: object) -> SearchEntry:
 def _build_arc_entry(config: SiteConfig, arc: object) -> SearchEntry:
     return SearchEntry(
         title=arc.title,
-        url=_absolute_url(config.base_url, arc.permalink),
+        url=_site_path(config.base_url, arc.permalink),
         type="arc",
         summary=arc.summary,
         context=arc.saga_title,
@@ -61,7 +63,7 @@ def _build_arc_entry(config: SiteConfig, arc: object) -> SearchEntry:
 def _build_episode_entry(config: SiteConfig, episode: object) -> SearchEntry:
     return SearchEntry(
         title=episode.title,
-        url=_absolute_url(config.base_url, episode.permalink),
+        url=_site_path(config.base_url, episode.permalink),
         type="episode",
         summary=episode.summary,
         tags=episode.tags,
@@ -70,9 +72,11 @@ def _build_episode_entry(config: SiteConfig, episode: object) -> SearchEntry:
     )
 
 
-def _absolute_url(base_url: str, path: str) -> str:
-    normalized_base = base_url.rstrip("/")
+def _site_path(base_url: str, path: str) -> str:
+    base_path = urlparse(base_url).path.rstrip("/")
     normalized_path = "/" + path.strip("/")
+    if not base_path:
+        return normalized_path + "/" if normalized_path != "/" else "/"
     if normalized_path == "/":
-        return normalized_base + "/"
-    return normalized_base + normalized_path + "/"
+        return base_path + "/"
+    return base_path + normalized_path + "/"

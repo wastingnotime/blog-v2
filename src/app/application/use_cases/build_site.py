@@ -231,23 +231,23 @@ def build_site_webmanifest(config: SiteConfig) -> str:
     manifest = {
         "name": config.title,
         "short_name": config.title,
-        "start_url": _absolute_url(config.base_url, "/"),
+        "start_url": _site_path(config.base_url, "/"),
         "display": "standalone",
         "theme_color": THEME_COLOR,
         "background_color": BACKGROUND_COLOR,
         "icons": [
             {
-                "src": _absolute_url(config.base_url, "/favicon-16x16.png"),
+                "src": _site_path(config.base_url, "/favicon-16x16.png"),
                 "sizes": "16x16",
                 "type": "image/png",
             },
             {
-                "src": _absolute_url(config.base_url, "/favicon-32x32.png"),
+                "src": _site_path(config.base_url, "/favicon-32x32.png"),
                 "sizes": "32x32",
                 "type": "image/png",
             },
             {
-                "src": _absolute_url(config.base_url, "/apple-touch-icon.png"),
+                "src": _site_path(config.base_url, "/apple-touch-icon.png"),
                 "sizes": "180x180",
                 "type": "image/png",
             },
@@ -257,7 +257,7 @@ def build_site_webmanifest(config: SiteConfig) -> str:
 
 
 def build_browserconfig(config: SiteConfig) -> str:
-    square_logo_url = _absolute_url(config.base_url, "/apple-touch-icon.png")
+    square_logo_url = _site_path(config.base_url, "/apple-touch-icon.png")
     return (
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
         "<browserconfig>\n"
@@ -308,7 +308,7 @@ def build_homepage(
         body_html=(
             "        <section>\n"
             "          <p class=\"homepage-intro\">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>\n"
-            f'          <p class="homepage-paths"><a href="{_absolute_url(config.base_url, "/search/")}">Search</a> / <a href="{_absolute_url(config.base_url, "/archives/")}">Archives</a> / <a href="{_absolute_url(config.base_url, "/library/")}">Library</a></p>\n'
+            f'          <p class="homepage-paths"><a href="{_site_path(config.base_url, "/search/")}">Search</a> / <a href="{_site_path(config.base_url, "/archives/")}">Archives</a> / <a href="{_site_path(config.base_url, "/library/")}">Library</a></p>\n'
             "        </section>\n"
             "        <section>\n"
             "          <h2 class=\"section-label\">RECENT</h2>\n"
@@ -321,12 +321,12 @@ def build_homepage(
             "          <ul class=\"homepage-list\">\n"
             f"{saga_markup}\n"
             "          </ul>\n"
-            f'          <a href="{_absolute_url(config.base_url, "/sagas/")}">Browse all sagas</a>\n'
+            f'          <a href="{_site_path(config.base_url, "/sagas/")}">Browse all sagas</a>\n'
             "        </section>\n"
             "        <section>\n"
             "          <h2 class=\"section-label\">LIBRARY</h2>\n"
             "          <p>Browse ideas and implementation threads by topic.</p>\n"
-            f'          <a href="{_absolute_url(config.base_url, "/library/")}">Explore the library</a>\n'
+            f'          <a href="{_site_path(config.base_url, "/library/")}">Explore the library</a>\n'
             "        </section>"
         ),
     )
@@ -340,7 +340,7 @@ def build_not_found_page(
         (
             "            <li>\n"
             '              <div class="not-found-row">\n'
-            f'                <a class="not-found-link" href="{_absolute_url(config.base_url, path)}">{html.escape(label)}</a>\n'
+                f'                <a class="not-found-link" href="{_site_path(config.base_url, path)}">{html.escape(label)}</a>\n'
             f'                <small class="not-found-path">{html.escape(path)}</small>\n'
             "              </div>\n"
             "            </li>"
@@ -426,8 +426,8 @@ def build_search_page(
     config: SiteConfig,
     footer_attribution: FooterAttribution,
 ) -> str:
-    search_index_url = _absolute_url(config.base_url, "/search.json")
-    search_action_url = _absolute_url(config.base_url, "/search/")
+    search_index_url = _site_path(config.base_url, "/search.json")
+    search_action_url = _site_path(config.base_url, "/search/")
     return _render_document(
         config=config,
         title="Search",
@@ -456,11 +456,11 @@ def build_search_page(
             "            <div class=\"search-noscript-recovery\">\n"
             "              <p class=\"search-noscript-recovery-message\">Live search on this page requires JavaScript. If it is unavailable, browse the chronology or move by topic instead.</p>\n"
             "              <div class=\"search-noscript-recovery-row\">\n"
-            f'                <a class="search-noscript-recovery-link" href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a>\n'
+            f'                <a class="search-noscript-recovery-link" href="{_site_path(config.base_url, "/archives/")}">Browse the archives</a>\n'
             f'                <small class="search-noscript-recovery-path">/archives/</small>\n'
             "              </div>\n"
             "              <div class=\"search-noscript-recovery-row\">\n"
-            f'                <a class="search-noscript-recovery-link" href="{_absolute_url(config.base_url, "/library/")}">Explore the library</a>\n'
+            f'                <a class="search-noscript-recovery-link" href="{_site_path(config.base_url, "/library/")}">Explore the library</a>\n'
             f'                <small class="search-noscript-recovery-path">/library/</small>\n'
             "              </div>\n"
             "            </div>\n"
@@ -600,8 +600,8 @@ def build_search_page(
             "              message.className = 'search-empty-recovery-message';\n"
             "              message.textContent = `No results for \"${query}\". Try these routes instead.`;\n"
             "              searchRecovery.appendChild(message);\n"
-            f"              searchRecovery.appendChild(createSearchRecoveryRow('the archives', {json.dumps(_absolute_url(config.base_url, '/archives/'))}));\n"
-            f"              searchRecovery.appendChild(createSearchRecoveryRow('the library', {json.dumps(_absolute_url(config.base_url, '/library/'))}));\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the archives', {json.dumps(_site_path(config.base_url, '/archives/'))}));\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the library', {json.dumps(_site_path(config.base_url, '/library/'))}));\n"
             "              searchResults.appendChild(searchRecovery);\n"
             "              return;\n"
             "            }\n"
@@ -612,7 +612,7 @@ def build_search_page(
             "              header.className = 'search-result-header';\n"
             "              const link = document.createElement('a');\n"
             "              link.className = 'search-result-link';\n"
-            "              link.href = record.url;\n"
+            "              link.href = new URL(record.url).pathname;\n"
             "              link.appendChild(document.createTextNode(`[${record.type}] `));\n"
             "              link.appendChild(createHighlightedFragment(record.title, normalizedQuery));\n"
             "              header.appendChild(link);\n"
@@ -666,8 +666,8 @@ def build_search_page(
             "              message.className = 'search-load-recovery-message';\n"
             "              message.textContent = 'Search index is unavailable right now. Try these routes instead.';\n"
             "              searchRecovery.appendChild(message);\n"
-            f"              searchRecovery.appendChild(createSearchRecoveryRow('the archives', {json.dumps(_absolute_url(config.base_url, '/archives/'))}));\n"
-            f"              searchRecovery.appendChild(createSearchRecoveryRow('the library', {json.dumps(_absolute_url(config.base_url, '/library/'))}));\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the archives', {json.dumps(_site_path(config.base_url, '/archives/'))}));\n"
+            f"              searchRecovery.appendChild(createSearchRecoveryRow('the library', {json.dumps(_site_path(config.base_url, '/library/'))}));\n"
             "              searchResults.appendChild(searchRecovery);\n"
             "            });\n"
             "          searchInput.value = initialQuery;\n"
@@ -739,9 +739,9 @@ def build_episode_page(
         f"Episode {episode.number}"
     )
     parent_navigation = (
-        f'        <nav class="breadcrumbs episode-breadcrumbs"><a class="breadcrumb-link" href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/")}">'
+        f'        <nav class="breadcrumbs episode-breadcrumbs"><a class="breadcrumb-link" href="{_site_path(config.base_url, "/sagas/" + episode.saga_slug + "/")}">'
         f"{html.escape(episode.saga_title)}</a> <span class=\"breadcrumb-separator\">/</span> "
-        f'<a class="breadcrumb-link" href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">'
+        f'<a class="breadcrumb-link" href="{_site_path(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">'
         f"{html.escape(episode.arc_title)}</a></nav>"
     )
     previous_episode = arc_view.previous_episode[episode.slug]
@@ -855,7 +855,7 @@ def build_arc_page(
         for episode in arc_view.episodes
     )
     breadcrumb = (
-        f'        <nav class="breadcrumbs"><a class="breadcrumb-link" href="{_absolute_url(config.base_url, arc_view.arc.permalink[:-len(arc_view.arc.slug)-1])}">'
+        f'        <nav class="breadcrumbs"><a class="breadcrumb-link" href="{_site_path(config.base_url, arc_view.arc.permalink[:-len(arc_view.arc.slug)-1])}">'
         f"{html.escape(arc_view.arc.saga_title)}</a></nav>"
     )
     return _render_document(
@@ -965,7 +965,7 @@ def build_topic_page(
         body_html="\n".join(
             [
                 "        <nav class=\"breadcrumbs\">"
-                f"<a class=\"breadcrumb-link\" href=\"{_absolute_url(config.base_url, '/library/')}\">Library</a></nav>",
+                f"<a class=\"breadcrumb-link\" href=\"{_site_path(config.base_url, '/library/')}\">Library</a></nav>",
                 (
                     "        <section>\n"
                     "          <h2>Entries</h2>\n"
@@ -1092,11 +1092,11 @@ def _render_document(
     analytics_snippet = _render_analytics(config.analytics)
     canonical_url = _absolute_url(config.base_url, canonical_path)
     robots_directive = robots_content or project_route_robots_policy(canonical_path)
-    feed_url = _absolute_url(config.base_url, "/feed.xml")
-    manifest_url = _absolute_url(config.base_url, "/site.webmanifest")
-    browserconfig_url = _absolute_url(config.base_url, "/browserconfig.xml")
-    opensearch_url = _absolute_url(config.base_url, "/opensearch.xml")
-    social_preview_url = _absolute_url(config.base_url, "/social-preview.png")
+    feed_url = _site_path(config.base_url, "/feed.xml")
+    manifest_url = _site_path(config.base_url, "/site.webmanifest")
+    browserconfig_url = _site_path(config.base_url, "/browserconfig.xml")
+    opensearch_url = _site_path(config.base_url, "/opensearch.xml")
+    social_preview_url = _site_path(config.base_url, "/social-preview.png")
     open_graph_metadata = _render_open_graph_metadata(
         site_title=config.title,
         title=title,
@@ -1934,7 +1934,7 @@ def _render_discovery_surface(
     items = "\n".join(
         (
             "            <li>\n"
-            f'              <a class="discovery-label" href="{_absolute_url(base_url, path)}">{html.escape(label)}</a>\n'
+            f'              <a class="discovery-label" href="{_site_path(base_url, path)}">{html.escape(label)}</a>\n'
             f'              <small class="discovery-path">{html.escape(path)}</small>\n'
             "            </li>"
         )
@@ -1961,7 +1961,7 @@ def _render_studio_discovery_surface(
         (
             "            <li>\n"
             '              <div class="studio-discovery-row">\n'
-            f'                <a class="studio-discovery-label" href="{_absolute_url(base_url, path)}">{html.escape(label)}</a>\n'
+            f'                <a class="studio-discovery-label" href="{_site_path(base_url, path)}">{html.escape(label)}</a>\n'
             f'                <small class="studio-discovery-path">{html.escape(path)}</small>\n'
             "              </div>\n"
             "            </li>"
@@ -1986,7 +1986,7 @@ def _render_identity_asset_links(*, base_url: str) -> str:
             attributes.append('type="image/png"')
         if sizes is not None:
             attributes.append(f'sizes="{sizes}"')
-        attributes.append(f'href="{html.escape(_absolute_url(base_url, path))}"')
+        attributes.append(f'href="{html.escape(_site_path(base_url, path))}"')
         markup_lines.append(f"    <link {' '.join(attributes)} />")
 
     return "\n".join(markup_lines)
@@ -2019,7 +2019,7 @@ def _render_recent_item(item: RecentContent, *, base_url: str) -> str:
     return (
         "          <li>\n"
         '            <div class="homepage-recent-row">\n'
-        f'              <a class="homepage-link" href="{_absolute_url(base_url, item.permalink)}">[{html.escape(item.kind)}] '
+                f'              <a class="homepage-link" href="{_site_path(base_url, item.permalink)}">[{html.escape(item.kind)}] '
         f"{html.escape(item.title)}</a>\n"
         f'              <small class="homepage-meta">{html.escape(item.date)}{html.escape(context)}</small>\n'
         "            </div>\n"
@@ -2038,7 +2038,7 @@ def _render_archive_entry(entry: ArchiveEntry, *, base_url: str) -> str:
     return (
         "          <li>\n"
         '            <div class="archive-entry-row">\n'
-        f'              <a class="archive-entry-link" href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] '
+                f'              <a class="archive-entry-link" href="{_site_path(base_url, entry.permalink)}">[{html.escape(entry.kind)}] '
         f"{html.escape(entry.title)}</a>\n"
         f'              <small class="archive-entry-meta">{html.escape(entry.date)}{html.escape(context)}</small>\n'
         "            </div>\n"
@@ -2055,7 +2055,7 @@ def _render_entry_metadata(metadata: EntryMetadata, *, base_url: str) -> str:
     tags_markup = ""
     if metadata.tags:
         tag_links = "".join(
-            f'<a class="entry-tag-chip" href="{_absolute_url(base_url, tag.permalink)}">#{html.escape(tag.name)}</a>'
+            f'<a class="entry-tag-chip" href="{_site_path(base_url, tag.permalink)}">#{html.escape(tag.name)}</a>'
             for tag in metadata.tags
         )
         tags_markup = f' · <span class="entry-tags">{tag_links}</span>'
@@ -2104,7 +2104,7 @@ def _render_homepage_saga_summary(
     return (
         "          <li>\n"
         '            <div class="homepage-saga-row">\n'
-        f'              <a class="homepage-link" href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+            f'              <a class="homepage-link" href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
         f'              <small class="homepage-saga-status">{html.escape(" - ".join(status_parts))}</small>\n'
         "            </div>\n"
         f'            <p class="homepage-summary">{html.escape(summary.summary)}</p>\n'
@@ -2124,7 +2124,7 @@ def _render_arc_summary(arc: object, *, base_url: str) -> str:
     return (
         "            <li>\n"
         '              <div class="saga-arc-row">\n'
-        f'              <a class="saga-arc-link" href="{_absolute_url(base_url, arc.permalink)}">{html.escape(arc.title)}</a>\n'
+        f'              <a class="saga-arc-link" href="{_site_path(base_url, arc.permalink)}">{html.escape(arc.title)}</a>\n'
         f'              <small class="saga-arc-meta">{arc.episode_count} episodes · last {html.escape(last_release)}</small>\n'
         "              </div>\n"
         "            </li>"
@@ -2135,7 +2135,7 @@ def _render_timeline_entry(entry: object, *, base_url: str) -> str:
     return (
         "            <li>\n"
         '              <div class="saga-timeline-row">\n'
-        f'                <a class="saga-timeline-link" href="{_absolute_url(base_url, entry.permalink)}">[Ep {entry.number:02d}] {html.escape(entry.title)}</a>\n'
+        f'                <a class="saga-timeline-link" href="{_site_path(base_url, entry.permalink)}">[Ep {entry.number:02d}] {html.escape(entry.title)}</a>\n'
         f'                <small class="saga-timeline-meta">{html.escape(entry.arc_title)} · {html.escape(entry.date)}</small>\n'
         "              </div>\n"
         "            </li>"
@@ -2146,7 +2146,7 @@ def _render_arc_episode(episode: Episode, *, base_url: str) -> str:
     return (
         "            <li>\n"
         '              <div class="arc-episode-row">\n'
-        f'                <a class="arc-episode-link" href="{_absolute_url(base_url, episode.permalink)}">[Ep {episode.number:02d}] {html.escape(episode.title)}</a>\n'
+        f'                <a class="arc-episode-link" href="{_site_path(base_url, episode.permalink)}">[Ep {episode.number:02d}] {html.escape(episode.title)}</a>\n'
         f'                <small class="arc-episode-meta">{html.escape(episode.date)}</small>\n'
         "              </div>\n"
         "            </li>"
@@ -2164,13 +2164,13 @@ def _render_adjacent_navigation(
 
     if previous_episode is not None:
         previous_markup = (
-            f'<a class="adjacent-nav-link previous" href="{_absolute_url(base_url, previous_episode.permalink)}">'
+            f'<a class="adjacent-nav-link previous" href="{_site_path(base_url, previous_episode.permalink)}">'
             f"&larr; Ep {previous_episode.number:02d} {html.escape(previous_episode.title)}</a>"
         )
 
     if next_episode is not None:
         next_markup = (
-            f'<a class="adjacent-nav-link next" href="{_absolute_url(base_url, next_episode.permalink)}">'
+            f'<a class="adjacent-nav-link next" href="{_site_path(base_url, next_episode.permalink)}">'
             f"Ep {next_episode.number:02d} {html.escape(next_episode.title)} &rarr;</a>"
         )
 
@@ -2180,7 +2180,7 @@ def _render_adjacent_navigation(
 def _render_library_tag(tag: str, *, base_url: str) -> str:
     return (
         "            <li>\n"
-        f'              <a class="topic-link" href="{_absolute_url(base_url, f"/library/{tag}/")}">#{html.escape(tag)}</a>\n'
+        f'              <a class="topic-link" href="{_site_path(base_url, f"/library/{tag}/")}">#{html.escape(tag)}</a>\n'
         "            </li>"
     )
 
@@ -2194,7 +2194,7 @@ def _render_topic_entry(entry: TopicEntry, *, base_url: str) -> str:
     context_markup = f" · {html.escape(context)}" if context else ""
     return (
         "            <li>\n"
-        f'              <a class="topic-entry-link" href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
+        f'              <a class="topic-entry-link" href="{_site_path(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
         f'              <small class="topic-entry-meta">{html.escape(entry.date)}{context_markup}</small>\n'
         f'              <p class="topic-entry-summary">{html.escape(entry.summary)}</p>\n'
         "            </li>"
@@ -2205,12 +2205,12 @@ def _render_saga_summary(summary: object, *, base_url: str) -> str:
     start_link = ""
     if summary.start_permalink:
         start_link = (
-            f'<small class="saga-index-start"><a href="{_absolute_url(base_url, summary.start_permalink)}">start reading</a></small>'
+            f'<small class="saga-index-start"><a href="{_site_path(base_url, summary.start_permalink)}">start reading</a></small>'
         )
     return (
         "            <li>\n"
         '              <div class="saga-index-row">\n'
-        f'                <a class="saga-index-link" href="{_absolute_url(base_url, summary.permalink)}">{html.escape(summary.title)}</a>{start_link}\n'
+        f'                <a class="saga-index-link" href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>{start_link}\n'
         "              </div>\n"
         f'              <p class="saga-index-summary">{html.escape(summary.summary)}</p>\n'
         "            </li>"
@@ -2228,12 +2228,12 @@ def _render_navigation(
         active_class = " active" if link.is_active else ""
         navigation_links.append(
             "        "
-            f'<a href="{_absolute_url(base_url, link.path)}"'
+            f'<a href="{_site_path(base_url, link.path)}"'
             f' class="site-nav-link{active_class}"{aria_current}>'
             f"{html.escape(link.label)}</a>"
         )
     navigation_links.append(
-        "        " f'<a href="{_absolute_url(base_url, "/feed.xml")}">RSS</a>'
+        "        " f'<a href="{_site_path(base_url, "/feed.xml")}">RSS</a>'
     )
     return "\n".join(navigation_links)
 
@@ -2247,6 +2247,15 @@ def _render_footer_text(footer_attribution: FooterAttribution) -> str:
 
 def _absolute_url(base_url: str, path: str) -> str:
     return base_url.rstrip("/") + path
+
+
+def _site_path(base_url: str, path: str) -> str:
+    base_path = urlparse(base_url).path.rstrip("/")
+    if not base_path:
+        return path
+    if path == "/":
+        return base_path + "/"
+    return base_path + path
 
 
 def _site_host(base_url: str) -> str:
