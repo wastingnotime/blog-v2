@@ -25,3 +25,11 @@ major change in deployment shape:
 
 Bootstrap `blog-v2` around static generation and GitHub Pages deployment, with
 no same-origin API requirement in generated site output.
+
+## Resolution
+
+This request is satisfied by the current repository state:
+
+- static generation is implemented in the Python builder
+- generated output has no same-origin `/api` dependency
+- GitHub Pages-oriented deployment artifacts are present
