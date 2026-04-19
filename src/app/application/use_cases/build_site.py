@@ -444,7 +444,7 @@ def build_search_page(
             canonical_url=_absolute_url(config.base_url, "/search/"),
         ),
         body_html=(
-            "        <section>\n"
+            "        <section class=\"search-page-shell\">\n"
             "          <h2>Search the publication</h2>\n"
             '          <p id="search-helper">Type to filter the static index published with the site.</p>\n'
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
@@ -1503,6 +1503,10 @@ def _render_document(
         margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
+      }}
+      .search-page-shell {{
+        display: grid;
+        gap: 1rem;
       }}
       .search-result-list {{
         list-style: none;

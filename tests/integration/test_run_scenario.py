@@ -270,6 +270,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "Search the publication" in search_html
+    assert '<section class="search-page-shell">' in search_html
     assert 'class="site-nav-link active" aria-current="page">Search</a>' in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
@@ -331,6 +332,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "search-empty-recovery-path" in search_html
     assert "search-load-recovery-message" in search_html
     assert ".search-result-list {" in search_html
+    assert ".search-page-shell {" in search_html
     assert ".visually-hidden {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html
