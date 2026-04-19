@@ -2,15 +2,16 @@
 
 ## Summary
 
-The next slice should add bounded Open Graph metadata to the shared document
-head so generated HTML pages expose deterministic social unfurl metadata
-without introducing images or broader social-media features.
+This slice formalizes the bounded Open Graph metadata already carried by the
+shared document head so generated HTML pages expose deterministic social unfurl
+metadata without introducing images or broader social-media features.
 
-Current observed gap:
+Current observed contract:
 
-- generated HTML already includes canonical, RSS, and identity-asset metadata
-- neither the builder nor the emitted pages currently publish any `og:*`
+- generated HTML includes canonical, RSS, identity-asset, and bounded `og:*`
   metadata
+- the builder derives Open Graph values from existing page metadata and
+  canonical URLs
 
 ## Impacted Areas
 
@@ -21,10 +22,9 @@ Current observed gap:
 ## Boundary Change
 
 The build does not gain new routes or artifacts. Instead, generated HTML pages
-gain a small set of additional head meta tags derived from existing titles,
+carry a small set of additional head meta tags derived from existing titles,
 descriptions, and canonical URLs. To keep the slice deterministic, `og:type`
-should remain the single literal value `website` for all routes in this
-bootstrap.
+remains the single literal value `website` for all routes in this bootstrap.
 
 ## Risks
 
