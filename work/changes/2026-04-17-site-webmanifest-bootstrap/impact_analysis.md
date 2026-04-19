@@ -2,14 +2,14 @@
 
 ## Summary
 
-The next slice should add a bounded `site.webmanifest` artifact so the static
-publication exposes a coherent browser-install metadata surface alongside the
-existing identity assets and machine-readable publication files.
+This slice adds a bounded `site.webmanifest` artifact so the static publication
+exposes a coherent browser-install metadata surface alongside the existing
+identity assets and machine-readable publication files.
 
-Current observed gap:
+Current observed contract:
 
-- favicon and touch-icon files are published, but no manifest file exists
-- the generated `dist/` output still lacks a browser-facing manifest contract
+- favicon and touch-icon files are published
+- the generated `dist/` output includes a browser-facing manifest contract
 
 ## Impacted Areas
 
@@ -19,9 +19,9 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains one new root artifact: `site.webmanifest`. That file should
-stay bounded to name, start URL, display mode, and icon metadata derived from
-the current static publication.
+The build gains one root artifact: `site.webmanifest`. That file stays bounded
+to name, start URL, display mode, and icon metadata derived from the current
+static publication.
 
 ## Risks
 
