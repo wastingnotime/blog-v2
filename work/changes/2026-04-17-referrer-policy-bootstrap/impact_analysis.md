@@ -2,17 +2,17 @@
 
 ## Summary
 
-The next slice should add bounded referrer metadata so the generated static
-publication makes one more browser-facing head policy explicit without
-expanding into runtime-controlled security infrastructure.
+This slice adds bounded referrer metadata so the generated static publication
+makes one more browser-facing head policy explicit without expanding into
+runtime-controlled security infrastructure.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include format-detection, theme-color, Apple
-  mobile-web-app, Open Graph, and Twitter Card metadata
-- the shared head still omits `meta name="referrer"`
-- the publication already has a strong deterministic head contract, so the next
-  gap is explicit browser metadata rather than a missing route or asset
+- generated pages include format-detection, theme-color, Apple mobile-web-app,
+  Open Graph, and Twitter Card metadata
+- the shared head includes `meta name="referrer"`
+- the publication has a strong deterministic head contract, so the head policy
+  and browser behavior agree on a single referrer rule
 
 ## Impacted Areas
 
@@ -24,7 +24,7 @@ Current observed gap:
 ## Boundary Change
 
 The build gains no new routes or assets. The boundary change is limited to
-additional browser-facing metadata in generated HTML heads.
+browser-facing metadata already present in generated HTML heads.
 
 ## Risks
 
