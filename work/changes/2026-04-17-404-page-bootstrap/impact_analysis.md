@@ -2,15 +2,15 @@
 
 ## Summary
 
-The next slice should add a bounded `404.html` artifact so the static
-publication exposes an explicit not-found recovery surface for GitHub Pages and
-other static hosts.
+This slice adds a bounded `404.html` artifact so the static publication
+exposes an explicit not-found recovery surface for GitHub Pages and other
+static hosts.
 
-Current observed gap:
+Current observed contract:
 
-- the generated `dist/` output still has no `404.html`
-- the repository now has enough shared chrome and reader-facing routes to make
-  a useful static recovery page
+- the generated build includes `404.html`
+- the repository has shared chrome and reader-facing routes suitable for a
+  useful static recovery page
 
 ## Impacted Areas
 
@@ -21,8 +21,8 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains one new root HTML artifact: `404.html`. That page should reuse
-the existing site frame and point readers back to stable publication surfaces
+The build gains one new root HTML artifact: `404.html`. That page reuses the
+existing site frame and points readers back to stable publication surfaces
 without introducing runtime route handling.
 
 ## Risks
