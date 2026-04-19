@@ -3,7 +3,8 @@
 ## Summary
 
 The next slice should update saga detail pages so their discovery guidance
-matches the now-expanded static publication surface.
+matches the now-expanded static publication surface and exposes the discovery
+block through a stable shell hook.
 
 Current observed gap:
 
@@ -12,6 +13,7 @@ Current observed gap:
 - `/archives/` and `/search/` now exist as stable reader-facing routes
 - saga pages therefore understate the actual ways readers can move through the
   publication
+- the discovery block does not yet have its own shell class
 
 ## Impacted Areas
 

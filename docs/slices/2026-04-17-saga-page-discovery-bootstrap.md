@@ -18,7 +18,8 @@ Deterministic saga-page discovery update for the expanded publication surface:
   routes
 - add bounded affordances for Search and Archives alongside the existing arc
   and timeline sections
-- keep the slice limited to saga-page discovery copy and links
+- keep the slice limited to saga-page discovery copy, links, and a stable
+  shell hook
 
 ## Discovery Scope
 
@@ -42,6 +43,7 @@ current publication:
 
 - update saga detail pages so they link readers to `/archives/` and `/search/`
 - preserve the existing body, arc, and timeline rendering
+- expose the discovery block through a stable page-shell class
 - keep the change bounded to saga-page discovery copy and links
 
 This slice does not attempt broader saga-page redesign, new narrative
@@ -67,6 +69,7 @@ content such that:
 - archives and search are visibly represented as complementary discovery paths
 - the section remains publication-oriented rather than turning into generic
   navigation chrome
+- the discovery block uses a stable shell hook
 
 ## Main Business Rules
 
