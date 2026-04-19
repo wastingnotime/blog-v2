@@ -2,14 +2,13 @@
 
 ## Summary
 
-The next slice should add a bounded `/search/` route so the static publication
-exposes a reader-facing search surface that actually uses the already-generated
-`search.json` artifact.
+The next slice should keep the generated `/search/` route explicit by giving
+the search interface a dedicated shell around the form and results.
 
 Current observed gap:
 
-- `search.json` exists, but there is still no generated search page
-- the search-index slice explicitly deferred the page and live filtering UI
+- `search.json` exists and the route is already generated
+- the search form and result list still lack an explicit page-shell contract
 
 ## Impacted Areas
 

@@ -14,8 +14,8 @@
 
 Static search entry surface backed by the existing search index:
 
-- publish one generated `/search/` page under the shared site frame
-- point readers to the already-generated `search.json` artifact
+- keep one generated `/search/` page under the shared site frame
+- give the search form and results a dedicated page shell
 - keep the slice bounded to a lightweight client-side discovery surface
 
 ## Discovery Scope
@@ -34,10 +34,9 @@ That gap is explicit in current artifacts:
 This slice restores the minimum search surface needed for the current static
 publication:
 
-- generate one `/search/` page at build time
+- keep one `/search/` page at build time
 - include a bounded client-side search interface that loads `search.json`
-- render deterministic empty-state content when JavaScript has not filtered
-  results yet
+- render the interface inside an explicit search-page shell
 
 This slice does not attempt server-side search, fuzzy ranking, multi-index
 faceting, or an advanced application-like search experience.
@@ -62,6 +61,7 @@ that:
 - the page provides an input for searching published content
 - the page displays deterministic initial guidance before a query is entered
 - result links resolve to existing static routes under the configured base URL
+- the form and results live inside an explicit search-page shell
 
 ## Main Business Rules
 
