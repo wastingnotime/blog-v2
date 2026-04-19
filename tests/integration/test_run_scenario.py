@@ -277,6 +277,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<label for="search-query">Search query</label>' in search_html
     assert '<p id="search-helper">Type to filter the static index published with the site.</p>' in search_html
     assert 'aria-describedby="search-helper search-status"' in search_html
+    assert 'aria-description="Search titles, summaries, and topics."' in search_html
     assert '<button type="submit">Search</button>' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html

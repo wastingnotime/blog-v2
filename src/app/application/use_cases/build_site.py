@@ -449,7 +449,7 @@ def build_search_page(
             '          <p id="search-helper">Type to filter the static index published with the site.</p>\n'
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
             '            <label for="search-query">Search query</label>\n'
-            '            <input id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" aria-describedby="search-helper search-status" />\n'
+            '            <input id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" aria-describedby="search-helper search-status" aria-description="Search titles, summaries, and topics." />\n'
             '            <button type="submit">Search</button>\n'
             "          </form>\n"
             "          <noscript>\n"

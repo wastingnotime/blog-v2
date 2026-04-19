@@ -158,6 +158,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert '<label for="search-query">Search query</label>' in search_html
     assert '<p id="search-helper">Type to filter the static index published with the site.</p>' in search_html
     assert 'aria-describedby="search-helper search-status"' in search_html
+    assert 'aria-description="Search titles, summaries, and topics."' in search_html
     assert '<button type="submit">Search</button>' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
