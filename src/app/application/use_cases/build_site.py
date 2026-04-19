@@ -297,7 +297,7 @@ def build_homepage(
         canonical_path="/",
         eyebrow="Home",
         heading=config.title,
-        summary="Architecture, focus, and growth in public.",
+        summary="Experiments in architecture, focus, and growth — built in public, one saga at a time.",
         metadata=recent_metadata,
         footer_attribution=footer_attribution,
         structured_data_payload=_project_website_structured_data(
@@ -306,10 +306,6 @@ def build_homepage(
             base_url=config.base_url,
         ),
         body_html=(
-            "        <section>\n"
-            "          <p class=\"homepage-intro\">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>\n"
-            f'          <p class="homepage-paths"><a href="{_site_path(config.base_url, "/search/")}">Search</a> / <a href="{_site_path(config.base_url, "/archives/")}">Archives</a> / <a href="{_site_path(config.base_url, "/library/")}">Library</a></p>\n'
-            "        </section>\n"
             "        <section>\n"
             "          <h2 class=\"section-label\">RECENT</h2>\n"
             "          <ul class=\"homepage-list\">\n"
@@ -321,7 +317,6 @@ def build_homepage(
             "          <ul class=\"homepage-list\">\n"
             f"{saga_markup}\n"
             "          </ul>\n"
-            f'          <a href="{_site_path(config.base_url, "/sagas/")}">Browse all sagas</a>\n'
             "        </section>\n"
         ),
     )
@@ -1195,18 +1190,6 @@ def _render_document(
       }}
       .meta, .summary {{
         color: var(--soft);
-      }}
-      .homepage-intro {{
-        margin: 0;
-        color: var(--soft);
-        line-height: 1.75;
-      }}
-      .homepage-paths {{
-        margin-top: 0.85rem;
-        color: var(--muted);
-        font-size: 0.8rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
       }}
       .section-label {{
         margin: 0 0 0.75rem;

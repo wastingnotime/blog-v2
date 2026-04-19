@@ -50,8 +50,7 @@ def test_build_static_site_orders_recent_content_by_date_desc() -> None:
 def test_build_static_site_limits_homepage_recent_entries() -> None:
     html = build_static_site(_site_config(), _catalog_with_extra_page())["index.html"]
 
-    assert "Architecture, focus, and growth in public." in html
-    assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
+    assert "Experiments in architecture, focus, and growth — built in public, one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
     assert '<ul class="homepage-list">' in html
     assert '<div class="homepage-recent-row">' in html
@@ -282,14 +281,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
 def test_build_static_site_refines_homepage_editorial_surface() -> None:
     html = build_static_site(_site_config(), _catalog())["index.html"]
 
-    assert "Architecture, focus, and growth in public." in html
-    assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
+    assert "Experiments in architecture, focus, and growth — built in public, one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
-    assert (
-        '<p class="homepage-paths"><a href="/search/">Search</a> / '
-        '<a href="/archives/">Archives</a> / '
-        '<a href="/library/">Library</a></p>'
-    ) in html
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
     assert 'class="homepage-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in html
@@ -433,12 +426,8 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
 def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -> None:
     html = build_static_site(_site_config(), _catalog())["index.html"]
 
-    assert "Architecture, focus, and growth in public." in html
-    assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
+    assert "Experiments in architecture, focus, and growth — built in public, one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
-    assert '<p class="homepage-intro">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>' in html
-    assert 'href="/search/"' in html
-    assert 'href="/archives/"' in html
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
     assert '<a class="homepage-link" href="/sagas/hireflow/">HireFlow</a>' in html

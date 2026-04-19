@@ -108,18 +108,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert nojekyll == "\n"
     assert cname == "wastingnotime.org\n"
-    assert "Architecture, focus, and growth in public." in homepage_html
     assert (
-        "Experiments in architecture, focus, and growth, built in public one saga at a time."
+        "Experiments in architecture, focus, and growth — built in public, one saga at a time."
         in homepage_html
     )
     assert "This site tracks architecture decisions" not in homepage_html
-    assert (
-        '<p class="homepage-paths"><a href="/search/">Search</a> / '
-        '<a href="/archives/">Archives</a> / '
-        '<a href="/library/">Library</a></p>'
-        in homepage_html
-    )
     assert '<h2 class="section-label">RECENT</h2>' in homepage_html
     assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
     assert '<ul class="homepage-list">' in homepage_html
@@ -178,7 +171,6 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".homepage-summary {" in homepage_html
     assert ".homepage-saga-row {" in homepage_html
     assert ".homepage-saga-status {" in homepage_html
-    assert ".homepage-paths {" in homepage_html
     assert ".section-label {" in homepage_html
     assert ".site-nav-link.active {" in homepage_html
     assert ".site-nav-separator {" in homepage_html
