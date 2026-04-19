@@ -12,6 +12,8 @@ Current observed gap:
   recovery
 - the browser-side result rows still sit in plain list items without a
   dedicated row shell
+- the title and metadata still read as stacked elements instead of one compact
+  header line inside the shell
 - the result surface therefore works functionally but still looks flatter than
   the refined navigation surfaces elsewhere on the site
 
@@ -27,6 +29,7 @@ The build gains no new route, runtime, or search data. The boundary change is
 limited to result presentation on `/search/`:
 
 - rendered results gain one explicit row-shell contract
+- the result header becomes one compact inline row inside that shell
 - ranking, highlighting, tag surfacing, and recovery remain unchanged
 - shared discovery and studio-specific surfaces remain unchanged
 

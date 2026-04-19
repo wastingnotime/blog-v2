@@ -37,6 +37,8 @@ This slice restores the minimum row-emphasis continuity needed for the current
 publication:
 
 - render search results with explicit item-shell treatment
+- render the title and metadata as one compact result-header row inside the
+  item shell
 - keep the same ranking, highlighting, and recovery messages intact
 - preserve the existing fully static search model
 
@@ -53,6 +55,8 @@ markup such that:
 - each result keeps the current title, metadata, summary, and tag hooks
 - the row itself gains a dedicated shell treatment distinct from the list
   container
+- title and metadata appear together as one compact header row inside the
+  result shell
 - surfaced tags remain secondary context and keep the current highlight
   behavior
 
@@ -70,6 +74,8 @@ site output such that:
 
 - Search should keep its current static behavior while gaining a clearer
   result-row contract.
+- The result header should stay compact and editorial rather than becoming a
+  card redesign.
 - The slice stays bounded to presentation and must not widen into search
   product behavior changes.
 - Existing query handling, ranking, and result data remain the source of truth.
@@ -85,6 +91,7 @@ site output such that:
 
 - unit test asserting generated `/search/` markup includes explicit
   result-row shell hooks
+- unit test asserting the title and metadata render inside a compact header row
 - unit test asserting the browser-side renderer applies those hooks without
   changing ranking or highlight logic
 - integration test asserting generated `dist/search/index.html` reflects the
@@ -98,6 +105,7 @@ Run the scenario CLI against the in-repo content set and inspect `dist/search/in
 to verify:
 
 - search results render with explicit row-shell treatment
+- search results render with a compact header row inside the shell
 - ranking, highlighting, and recovery behavior remain unchanged
 - the route stays fully static and deterministic
 
