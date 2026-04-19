@@ -165,7 +165,8 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "Live search on this page requires JavaScript." in search_html
     assert "browse the chronology or move by topic instead." in search_html
     assert 'id="search-status" aria-live="polite" aria-atomic="true"' in search_html
-    assert 'id="search-results" class="search-result-list" aria-label="Search results"' in search_html
+    assert '<h3 id="search-results-heading" class="visually-hidden">Search results</h3>' in search_html
+    assert 'id="search-results" class="search-result-list" aria-labelledby="search-results-heading"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://example.com/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
@@ -215,6 +216,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "summary.appendChild(createHighlightedFragment(record.summary, normalizedQuery));" in search_html
     assert "if ((record.tags || []).length) {" in search_html
     assert ".search-result-list {" in search_html
+    assert ".visually-hidden {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html
     assert ".search-result-link {" in search_html

@@ -457,7 +457,8 @@ def build_search_page(
             f'            <p><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a> or <a href="{_absolute_url(config.base_url, "/library/")}">explore the library</a>.</p>\n'
             "          </noscript>\n"
             '          <p id="search-status" aria-live="polite" aria-atomic="true">Enter a query to search the publication.</p>\n'
-            '          <ul id="search-results" class="search-result-list" aria-label="Search results"></ul>\n'
+            '          <h3 id="search-results-heading" class="visually-hidden">Search results</h3>\n'
+            '          <ul id="search-results" class="search-result-list" aria-labelledby="search-results-heading"></ul>\n'
             "        </section>\n"
             f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')))}\n"
             "        <script>\n"
@@ -1208,6 +1209,17 @@ def _render_document(
         font-weight: 500;
         letter-spacing: 0.12em;
         text-transform: uppercase;
+      }}
+      .visually-hidden {{
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }}
       .homepage-list {{
         list-style: none;
