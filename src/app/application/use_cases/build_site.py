@@ -455,7 +455,7 @@ def build_search_page(
             f'            <p><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a> or <a href="{_absolute_url(config.base_url, "/library/")}">explore the library</a>.</p>\n'
             "          </noscript>\n"
             '          <p id="search-status" aria-live="polite" aria-atomic="true">Enter a query to search the publication.</p>\n'
-            '          <ul id="search-results" aria-label="Search results"></ul>\n'
+            '          <ul id="search-results" class="search-result-list" aria-label="Search results"></ul>\n'
             "        </section>\n"
             f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Move by topic instead', '/library/')))}\n"
             "        <script>\n"
@@ -581,12 +581,15 @@ def build_search_page(
             "            }\n"
             "            matches.forEach((record) => {\n"
             "              const item = document.createElement('li');\n"
+            "              item.className = 'search-result-item';\n"
             "              const link = document.createElement('a');\n"
+            "              link.className = 'search-result-link';\n"
             "              link.href = record.url;\n"
             "              link.appendChild(document.createTextNode(`[${record.type}] `));\n"
             "              link.appendChild(createHighlightedFragment(record.title, normalizedQuery));\n"
             "              item.appendChild(link);\n"
             "              const meta = document.createElement('small');\n"
+            "              meta.className = 'search-result-meta';\n"
             "              if (record.date) {\n"
             "                meta.appendChild(document.createTextNode(record.date));\n"
             "              }\n"
@@ -602,11 +605,13 @@ def build_search_page(
             "              }\n"
             "              if (record.summary) {\n"
             "                const summary = document.createElement('p');\n"
+            "                summary.className = 'search-result-summary';\n"
             "                summary.appendChild(createHighlightedFragment(record.summary, normalizedQuery));\n"
             "                item.appendChild(summary);\n"
             "              }\n"
             "              if ((record.tags || []).length) {\n"
             "                const tags = document.createElement('p');\n"
+            "                tags.className = 'search-result-tags';\n"
             "                tags.appendChild(document.createTextNode('Tags: '));\n"
             "                record.tags.forEach((tag, index) => {\n"
             "                  if (index > 0) {\n"
@@ -1307,6 +1312,34 @@ def _render_document(
         color: var(--text-400);
         font-size: 0.92rem;
         line-height: 1.6;
+      }}
+      .search-result-list {{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }}
+      .search-result-list > li + li {{
+        margin-top: 1rem;
+      }}
+      .search-result-link {{
+        color: var(--text-100);
+      }}
+      .search-result-meta {{
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--text-400);
+        font-size: 0.8rem;
+      }}
+      .search-result-summary {{
+        margin: 0.35rem 0 0;
+        color: var(--text-400);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }}
+      .search-result-tags {{
+        margin: 0.35rem 0 0;
+        color: var(--text-400);
+        font-size: 0.82rem;
       }}
       .not-found-list {{
         list-style: none;

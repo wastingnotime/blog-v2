@@ -276,7 +276,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Live search on this page requires JavaScript." in search_html
     assert "browse the chronology or move by topic instead." in search_html
     assert 'id="search-status" aria-live="polite" aria-atomic="true"' in search_html
-    assert 'id="search-results" aria-label="Search results"' in search_html
+    assert 'id="search-results" class="search-result-list" aria-label="Search results"' in search_html
     assert "Enter a query to search the publication." in search_html
     assert "https://wastingnotime.org/search.json" in search_html
     assert "new URLSearchParams(window.location.search).get('q') ?? ''" in search_html
@@ -308,7 +308,17 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "searchResults.appendChild(searchRecovery);" in search_html
     assert "Search index could not be loaded." in search_html
     assert "while search is unavailable." in search_html
+    assert ".search-result-list {" in search_html
+    assert ".search-result-link {" in search_html
+    assert ".search-result-meta {" in search_html
+    assert ".search-result-summary {" in search_html
+    assert ".search-result-tags {" in search_html
     assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
+    assert "item.className = 'search-result-item';" in search_html
+    assert "link.className = 'search-result-link';" in search_html
+    assert "meta.className = 'search-result-meta';" in search_html
+    assert "summary.className = 'search-result-summary';" in search_html
+    assert "tags.className = 'search-result-tags';" in search_html
     assert "link.appendChild(createHighlightedFragment(record.title, normalizedQuery));" in search_html
     assert "meta.appendChild(createHighlightedFragment(record.context, normalizedQuery));" in search_html
     assert "summary.appendChild(createHighlightedFragment(record.summary, normalizedQuery));" in search_html
