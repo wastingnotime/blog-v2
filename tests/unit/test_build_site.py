@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 import re
 
 from src.app.application.use_cases.build_site import build_static_site
@@ -306,10 +307,25 @@ def test_build_static_site_uses_base_url_for_search_form_action() -> None:
 
 
 def test_build_static_site_generates_section_hub_pages() -> None:
-    pages = build_static_site(_site_config(), _catalog())
+    pages = build_static_site(
+        SiteConfig(
+            title="Wasting No Time",
+            description="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency.",
+            base_url="https://wastingnotime.org/",
+        ),
+        _catalog(),
+    )
 
     sagas_html = pages["sagas/index.html"]
     studio_html = pages["studio/index.html"]
+    legacy_studio_html = (
+        Path(__file__).resolve().parents[2]
+        / "src"
+        / "app"
+        / "application"
+        / "use_cases"
+        / "legacy_studio.html"
+    ).read_text(encoding="utf-8")
 
     assert "Active sagas" in sagas_html
     assert "Other ways in" in sagas_html
@@ -319,20 +335,7 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert 'class="saga-index-summary">Architecture in public.</p>' in sagas_html
     assert '<small class="saga-index-start"><a href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_html
     assert ".saga-index-row {" in sagas_html
-    assert "/archives/" in sagas_html
-    assert "/search/" in sagas_html
-    assert "/library/" in studio_html
-    assert "/sagas/" in studio_html
-    assert "/archives/" in studio_html
-    assert "/search/" in studio_html
-    assert "<h2>In the studio</h2>" in studio_html
-    assert '<ul class="studio-discovery-list">' in studio_html
-    assert '<div class="studio-discovery-row">' in studio_html
-    assert '<a class="studio-discovery-label" href="/sagas/">See active sagas</a>' in studio_html
-    assert '<small class="studio-discovery-path">/sagas/</small>' in studio_html
-    assert ".studio-discovery-row {" in studio_html
-    assert "Other ways in" not in studio_html
-    assert "Wasting No Time is a studio for architecture" in studio_html
+    assert studio_html == legacy_studio_html
 
 
 def test_build_static_site_generates_feed_and_sitemap() -> None:

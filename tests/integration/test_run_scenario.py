@@ -9,7 +9,12 @@ from src.app.infrastructure.content.markdown_content_loader import MarkdownConte
 
 LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parents[2].parent / "blog" / "public" / "index.html"
 LEGACY_BLOG_STUDIO_SNAPSHOT = (
-    Path(__file__).resolve().parents[2].parent / "blog" / "public" / "studio" / "index.html"
+    Path(__file__).resolve().parents[2]
+    / "src"
+    / "app"
+    / "application"
+    / "use_cases"
+    / "legacy_studio.html"
 )
 
 

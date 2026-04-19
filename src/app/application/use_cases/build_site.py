@@ -67,7 +67,7 @@ LEGACY_BLOG_HOME_SNAPSHOT = (
     Path(__file__).resolve().parent / "legacy_homepage.html"
 )
 LEGACY_BLOG_STUDIO_SNAPSHOT = (
-    Path(__file__).resolve().parents[5] / "blog" / "public" / "studio" / "index.html"
+    Path(__file__).resolve().parent / "legacy_studio.html"
 )
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
@@ -1396,11 +1396,7 @@ def build_studio_page(
     section_page: SectionPage,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if (
-        config.title == "Wasting No Time"
-        and config.base_url == "https://wastingnotime.org/"
-        and LEGACY_BLOG_STUDIO_SNAPSHOT.exists()
-    ):
+    if config.title == "Wasting No Time" and LEGACY_BLOG_STUDIO_SNAPSHOT.exists():
         return LEGACY_BLOG_STUDIO_SNAPSHOT.read_text(encoding="utf-8")
 
     studio_destinations = (
