@@ -722,6 +722,7 @@ def build_content_page(
                         ("Browse the chronology", "/archives/"),
                         ("Search across the publication", "/search/"),
                     ),
+                    section_class="saga-discovery-shell",
                 ),
             ]
         ),
@@ -1615,6 +1616,10 @@ def _render_document(
         gap: 0.75rem;
       }}
       .search-discovery-shell {{
+        display: grid;
+        gap: 0.75rem;
+      }}
+      .saga-discovery-shell {{
         display: grid;
         gap: 0.75rem;
       }}

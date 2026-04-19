@@ -423,6 +423,7 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'class="site-nav-link active" aria-current="page">Archives</a>' in archive_html
     assert 'class="site-nav-link active" aria-current="page">About</a>' in about_html
     assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in saga_html
+    assert '<section class="saga-discovery-shell">' in saga_html
     assert 'href="https://example.com/library/"' in saga_html
     assert 'href="https://example.com/feed.xml"' in home_html
     assert 'href="https://example.com/feed.xml"' in about_html
@@ -430,6 +431,7 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in home_html
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in about_html
     assert 'rel="alternate" type="application/rss+xml" title="Example RSS" href="https://example.com/feed.xml"' in saga_html
+    assert ".saga-discovery-shell {" in saga_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in home_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in about_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="https://example.com/opensearch.xml"' in saga_html

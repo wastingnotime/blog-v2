@@ -540,6 +540,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".saga-timeline-row {" in saga_html
     assert ".saga-timeline-link {" in saga_html
     assert ".saga-timeline-meta {" in saga_html
+    assert '<section class="saga-discovery-shell">' in saga_html
+    assert ".saga-discovery-shell {" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
