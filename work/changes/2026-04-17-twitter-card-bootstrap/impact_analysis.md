@@ -2,16 +2,17 @@
 
 ## Summary
 
-The next slice should add bounded Twitter Card metadata so the generated static
-publication has a complete shared social-metadata surface beyond Open Graph.
+The generated static publication now exposes the bounded Twitter Card metadata
+surface.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include canonical, RSS, manifest, identity, and Open
-  Graph metadata
-- the shared head still omits `twitter:*` metadata
-- the publication therefore remains incomplete for one major link-preview
-  consumer even though the existing deterministic inputs already exist
+- generated pages include canonical, RSS, manifest, identity, Open Graph, and
+  Twitter Card metadata
+- the shared head renders the `twitter:*` fields from the existing canonical
+  inputs
+- the publication has one coherent social-preview contract across link
+  consumers
 
 ## Impacted Areas
 
@@ -21,8 +22,8 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains no new route or root artifact. The boundary change is limited
-to additional social metadata rendered in generated HTML heads.
+The build already renders the needed metadata. The boundary stays limited to
+the social metadata fields in generated HTML heads.
 
 ## Risks
 
