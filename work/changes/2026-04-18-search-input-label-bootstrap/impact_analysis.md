@@ -3,7 +3,8 @@
 ## Summary
 
 The next coherent slice is to give the existing search input an explicit label
-so the static search form is clearer and less dependent on placeholder text.
+and stable hook so the static search form is clearer and less dependent on
+placeholder text.
 
 Current observed gap:
 
@@ -11,7 +12,7 @@ Current observed gap:
   multiple recovery paths
 - the search input still uses placeholder text as its only visible descriptor
 - the page therefore keeps a weaker form contract than the rest of the search
-  surface
+  surface and lacks a stable label/input hook pair
 
 ## Impacted Areas
 

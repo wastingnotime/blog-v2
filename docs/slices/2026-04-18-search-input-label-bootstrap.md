@@ -17,8 +17,8 @@ Bounded accessibility improvement for the existing static search surface:
 - keep `/search/` backed by the published `search.json` artifact
 - preserve the current deterministic query, ranking, highlighting, tag-surface,
   and recovery contracts
-- add an explicit search input label without changing the current route or
-  client-side search behavior
+- add an explicit search input label and stable hook without changing the
+  current route or client-side search behavior
 
 ## Discovery Scope
 
@@ -37,6 +37,7 @@ publication:
 - add one explicit label associated with the existing search input
 - preserve the current placeholder, query-state behavior, and search-result
   rendering
+- expose the label and input through stable class hooks for the page shell
 - keep the change bounded to input semantics rather than redesigning the form
 
 This slice does not attempt broader accessibility audits, keyboard shortcuts,
@@ -51,6 +52,7 @@ form markup such that:
 
 - the search input has an explicit associated label
 - the existing placeholder remains available as secondary guidance
+- the label and input expose stable class hooks for the page shell
 - the label remains stable for the same repository state
 
 ### `RenderSearchPage`
