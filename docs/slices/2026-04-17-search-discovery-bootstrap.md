@@ -18,7 +18,8 @@ Deterministic search-page discovery update for the expanded publication surface:
   discovery routes
 - add bounded affordances for Archives and Library alongside the existing
   client-side search interface
-- keep the slice limited to search-page discovery copy and links
+- keep the slice limited to search-page discovery copy, links, and a stable
+  shell hook
 
 ## Discovery Scope
 
@@ -41,6 +42,7 @@ publication:
 
 - update the search page so it links readers to `/archives/` and `/library/`
 - preserve the existing client-side search behavior and static-index contract
+- expose the complementary discovery block through a stable page-shell class
 - keep the change bounded to search-page discovery copy and links
 
 This slice does not attempt ranking changes, query prefills, richer search UI,
@@ -66,6 +68,7 @@ discovery content such that:
 - archives and library are visibly represented as complementary discovery paths
 - the section remains publication-oriented rather than turning into generic
   navigation chrome
+- the discovery block uses a stable shell hook
 
 ## Main Business Rules
 
