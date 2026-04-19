@@ -12,11 +12,11 @@
 
 ## Architecture Mode
 
-Shared-site chrome update for the new search surface:
+Shared-site chrome update for the search surface:
 
-- add one Search link to the common navigation frame
-- project active-state behavior for `/search/`
-- keep the slice bounded to navigation and route affordance only
+- keep Search in the common navigation frame
+- make the active section explicit with `aria-current="page"`
+- keep the slice bounded to navigation affordance and shared-link semantics
 
 ## Discovery Scope
 
@@ -34,9 +34,9 @@ That gap is explicit in current repository artifacts:
 This slice restores the minimum search-navigation surface needed for the
 current publication:
 
-- add one `Search` link to the shared navigation
+- keep one `Search` link in the shared navigation
 - mark `/search/` as the active section on the search route
-- keep the change bounded to navigation projection and rendering
+- render the active link with stable class and current-page semantics
 
 This slice does not attempt broader information-architecture changes, shortcut
 keys, persistent search state, or redesign of the site frame.
@@ -58,6 +58,7 @@ such that:
 
 - every generated page exposes a visible Search link
 - `/search/` highlights Search as the active section
+- active links use a stable class hook and `aria-current="page"`
 - existing static links remain valid under the configured base URL
 
 ## Main Business Rules

@@ -2,14 +2,15 @@
 
 ## Summary
 
-The next slice should expose the new `/search/` route through the shared site
-chrome so readers can discover and reach the search surface without direct URL
-knowledge.
+The next slice should keep the shared site chrome aligned with the search
+surface and make the current page explicit for accessibility and link-state
+consistency.
 
 Current observed gap:
 
 - `/search/` now exists as a generated route
-- the shared navigation model still omits Search entirely
+- the shared navigation links do not yet expose a stable class hook or
+  `aria-current="page"` for the active route
 
 ## Impacted Areas
 
