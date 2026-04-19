@@ -2,14 +2,14 @@
 
 ## Summary
 
-The next slice should add a bounded `robots.txt` artifact so the static
-publication exposes an explicit crawler-policy contract alongside the existing
-feed, sitemap, search index, RSS autodiscovery, and Open Graph metadata.
+This slice adds a bounded `robots.txt` artifact so the static publication
+exposes an explicit crawler-policy contract alongside the existing feed,
+sitemap, search index, RSS autodiscovery, and Open Graph metadata.
 
-Current observed gap:
+Current observed contract:
 
-- publication metadata previously deferred `robots.txt` on purpose
-- the generated `dist/` artifact set still has no crawler-policy file
+- publication metadata includes `robots.txt`
+- the generated artifact set carries a root crawler-policy file
 
 ## Impacted Areas
 
@@ -19,10 +19,10 @@ Current observed gap:
 
 ## Boundary Change
 
-The build does not gain new HTML routes. Instead, it gains one additional
-machine-readable root artifact: `robots.txt`. That file should stay bounded to a
-single public-site policy plus a sitemap declaration derived from the configured
-base URL.
+The build does not gain new HTML routes. Instead, it includes one
+machine-readable root artifact: `robots.txt`. That file stays bounded to a
+single public-site policy plus a sitemap declaration derived from the
+configured base URL.
 
 ## Risks
 
