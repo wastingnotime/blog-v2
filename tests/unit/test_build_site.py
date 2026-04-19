@@ -84,6 +84,7 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     assert "[Ep 01] The First Brick" in arc_html
     assert "[Ep 02] Second Iteration" in arc_html
     assert '<ul class="arc-episode-list">' in arc_html
+    assert '<a class="breadcrumb-link" href="https://example.com/sagas/hireflow/">' in arc_html
     assert '<a class="arc-episode-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in arc_html
     assert 'class="arc-episode-meta">2026-04-12</small>' in arc_html
     assert "Arc body." in arc_html
@@ -219,6 +220,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'href="https://example.com/search/"' in library_html
     assert '<ul class="library-topic-list">' in library_html
     assert '<a class="topic-link" href="https://example.com/library/architecture/">#architecture</a>' in library_html
+    assert '<a class="breadcrumb-link" href="https://example.com/library/">' in topic_html
     assert '<ul class="topic-entry-list">' in topic_html
     assert '<a class="topic-entry-link" href="https://example.com/about/">[page] About</a>' in topic_html
     assert 'class="topic-entry-meta">2026-04-10</small>' in topic_html

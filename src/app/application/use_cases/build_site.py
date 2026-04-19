@@ -826,7 +826,7 @@ def build_arc_page(
         for episode in arc_view.episodes
     )
     breadcrumb = (
-        f'        <nav class="breadcrumbs"><a href="{_absolute_url(config.base_url, arc_view.arc.permalink[:-len(arc_view.arc.slug)-1])}">'
+        f'        <nav class="breadcrumbs"><a class="breadcrumb-link" href="{_absolute_url(config.base_url, arc_view.arc.permalink[:-len(arc_view.arc.slug)-1])}">'
         f"{html.escape(arc_view.arc.saga_title)}</a></nav>"
     )
     return _render_document(
@@ -936,7 +936,7 @@ def build_topic_page(
         body_html="\n".join(
             [
                 "        <nav class=\"breadcrumbs\">"
-                f"<a href=\"{_absolute_url(config.base_url, '/library/')}\">Library</a></nav>",
+                f"<a class=\"breadcrumb-link\" href=\"{_absolute_url(config.base_url, '/library/')}\">Library</a></nav>",
                 (
                     "        <section>\n"
                     "          <h2>Entries</h2>\n"

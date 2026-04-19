@@ -423,6 +423,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert '<ul class="topic-entry-list">' in topic_html
+    assert '<a class="breadcrumb-link" href="https://wastingnotime.org/library/">' in topic_html
     assert '<a class="topic-entry-link" href="https://wastingnotime.org/about/">[page] About</a>' in topic_html
     assert 'class="topic-entry-meta">2025-10-25</small>' in topic_html
     assert '<a class="topic-entry-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in topic_html
@@ -494,6 +495,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/archives/" in arc_html
     assert "/search/" in arc_html
     assert "[Ep 01] The First Brick" in arc_html
+    assert '<a class="breadcrumb-link" href="https://wastingnotime.org/sagas/hireflow/">' in arc_html
     assert '<ul class="arc-episode-list">' in arc_html
     assert '<a class="arc-episode-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in arc_html
     assert 'class="arc-episode-meta">2025-11-14</small>' in arc_html
