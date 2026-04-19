@@ -1363,12 +1363,18 @@ def _render_document(
       .archive-entry-list > li + li {{
         margin-top: 1rem;
       }}
+      .archive-entry-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
       .archive-entry-link {{
         color: var(--text-100);
       }}
       .archive-entry-meta {{
         display: block;
-        margin-top: 0.2rem;
+        margin-top: 0;
         color: var(--text-400);
         font-size: 0.8rem;
       }}
@@ -1895,9 +1901,11 @@ def _render_archive_entry(entry: ArchiveEntry, *, base_url: str) -> str:
 
     return (
         "          <li>\n"
-        f'            <a class="archive-entry-link" href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] '
+        '            <div class="archive-entry-row">\n'
+        f'              <a class="archive-entry-link" href="{_absolute_url(base_url, entry.permalink)}">[{html.escape(entry.kind)}] '
         f"{html.escape(entry.title)}</a>\n"
-        f'            <small class="archive-entry-meta">{html.escape(entry.date)}{html.escape(context)}</small>\n'
+        f'              <small class="archive-entry-meta">{html.escape(entry.date)}{html.escape(context)}</small>\n'
+        "            </div>\n"
         f'            <p class="archive-entry-summary">{html.escape(entry.summary)}</p>\n'
         "          </li>"
     )

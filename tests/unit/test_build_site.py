@@ -133,6 +133,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
 
     assert "Chronological Archive" in archive_html
     assert '<ul class="archive-entry-list">' in archive_html
+    assert '<div class="archive-entry-row">' in archive_html
     assert '<a class="archive-entry-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
     assert 'class="archive-entry-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in archive_html
     assert 'class="archive-entry-summary">Follow-up work.</p>' in archive_html
@@ -142,6 +143,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert "HireFlow / The Origin Blueprint" in archive_html
     assert "/search/" in archive_html
     assert "/library/" in archive_html
+    assert ".archive-entry-row {" in archive_html
     assert "Search the publication" in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html

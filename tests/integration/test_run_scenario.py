@@ -242,6 +242,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Chronological Archive" in archive_html
     assert 'class="active">Archives</a>' in archive_html
     assert '<ul class="archive-entry-list">' in archive_html
+    assert '<div class="archive-entry-row">' in archive_html
     assert '<a class="archive-entry-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
     assert 'class="archive-entry-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in archive_html
     assert 'class="archive-entry-summary">The second pass gives the saga explicit navigation instead of isolated pages.</p>' in archive_html
@@ -254,6 +255,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<small class="discovery-path">/search/</small>' in archive_html
     assert "/search/" in archive_html
     assert "/library/" in archive_html
+    assert ".archive-entry-row {" in archive_html
     assert "/api/event" not in archive_html
     assert _json_ld_payloads(archive_html) == [
         {
