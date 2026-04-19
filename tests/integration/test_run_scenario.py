@@ -312,11 +312,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Search index could not be loaded." in search_html
     assert "while search is unavailable." in search_html
     assert ".search-result-list {" in search_html
+    assert ".search-result-item {" in search_html
     assert ".search-result-link {" in search_html
     assert ".search-result-meta {" in search_html
     assert ".search-result-summary {" in search_html
     assert ".search-result-tags {" in search_html
     assert ".search-result-tag-chip {" in search_html
+    assert "padding: 1rem 1.05rem;" in search_html
+    assert "border: 1px solid var(--line);" in search_html
+    assert "background: rgba(255, 255, 255, 0.015);" in search_html
     assert "link.appendChild(document.createTextNode(`[${record.type}] `));" in search_html
     assert "item.className = 'search-result-item';" in search_html
     assert "link.className = 'search-result-link';" in search_html

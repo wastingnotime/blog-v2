@@ -1384,7 +1384,14 @@ def _render_document(
       .search-result-list > li + li {{
         margin-top: 1rem;
       }}
+      .search-result-item {{
+        padding: 1rem 1.05rem;
+        border: 1px solid var(--line);
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.015);
+      }}
       .search-result-link {{
+        display: block;
         color: var(--text-100);
       }}
       .search-result-meta {{
