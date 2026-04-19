@@ -1632,14 +1632,14 @@ def _render_document(
         padding-bottom: 1rem;
         border-bottom: 1px solid var(--line);
       }}
-      .site-nav a {{
+      .site-nav-link {{
         color: var(--text-400);
       }}
-      .site-nav a.active {{
+      .site-nav-link.active {{
         color: #ffffff;
         font-weight: 500;
       }}
-      .site-nav a.active::after {{
+      .site-nav-link.active::after {{
         content: "•";
         margin-left: 0.4em;
         opacity: 0.6;
@@ -2222,14 +2222,16 @@ def _render_navigation(
     *,
     base_url: str,
 ) -> str:
-    navigation_links = [
-        (
+    navigation_links: list[str] = []
+    for link in links:
+        aria_current = ' aria-current="page"' if link.is_active else ""
+        active_class = " active" if link.is_active else ""
+        navigation_links.append(
             "        "
             f'<a href="{_absolute_url(base_url, link.path)}"'
-            f' class="{"active" if link.is_active else ""}">{html.escape(link.label)}</a>'
+            f' class="site-nav-link{active_class}"{aria_current}>'
+            f"{html.escape(link.label)}</a>"
         )
-        for link in links
-    ]
     navigation_links.append(
         "        " f'<a href="{_absolute_url(base_url, "/feed.xml")}">RSS</a>'
     )

@@ -128,7 +128,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'class="homepage-link"' in homepage_html
     assert 'class="homepage-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in homepage_html
     assert 'class="homepage-saga-status">2 episodes - last release 2025-11-15 - in-progress</small>' in homepage_html
-    assert 'class="active">Home</a>' in homepage_html
+    assert 'class="site-nav-link active" aria-current="page">Home</a>' in homepage_html
     assert 'href="https://wastingnotime.org/search/"' in homepage_html
     assert 'href="https://wastingnotime.org/archives/"' in homepage_html
     assert 'href="https://wastingnotime.org/about/"' in homepage_html
@@ -181,7 +181,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".homepage-saga-status {" in homepage_html
     assert ".homepage-paths {" in homepage_html
     assert ".section-label {" in homepage_html
-    assert ".site-nav a.active::after {" in homepage_html
+    assert ".site-nav-link.active::after {" in homepage_html
     assert "article pre {" in homepage_html
     assert 'font-family: Georgia, "Times New Roman", serif;' not in homepage_html
     assert "color-scheme: dark;" in about_html
@@ -243,7 +243,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/api/event" not in not_found_html
     assert _json_ld_payloads(not_found_html) == []
     assert "Chronological Archive" in archive_html
-    assert 'class="active">Archives</a>' in archive_html
+    assert 'class="site-nav-link active" aria-current="page">Archives</a>' in archive_html
     assert '<ul class="archive-entry-list">' in archive_html
     assert '<div class="archive-entry-row">' in archive_html
     assert '<a class="archive-entry-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
@@ -270,7 +270,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "Search the publication" in search_html
-    assert 'class="active">Search</a>' in search_html
+    assert 'class="site-nav-link active" aria-current="page">Search</a>' in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
     assert 'action="https://wastingnotime.org/search/"' in search_html
@@ -438,7 +438,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "https://wastingnotime.org/search/" not in sitemap_xml
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
-    assert 'class="active">Library</a>' in library_html
+    assert 'class="site-nav-link active" aria-current="page">Library</a>' in library_html
     assert "Other ways in" in library_html
     assert 'href="https://wastingnotime.org/archives/"' in library_html
     assert 'href="https://wastingnotime.org/search/"' in library_html
@@ -468,7 +468,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/search/" in topic_html
     assert _json_ld_payloads(topic_html) == []
     assert "Active sagas" in sagas_index_html
-    assert 'class="active">Sagas</a>' in sagas_index_html
+    assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in sagas_index_html
     assert "Other ways in" in sagas_index_html
     assert '<ul class="saga-index-list">' in sagas_index_html
     assert '<div class="saga-index-row">' in sagas_index_html
@@ -488,7 +488,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "Timeline" in saga_html
-    assert 'class="active">Sagas</a>' in saga_html
+    assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in saga_html
     assert 'href="https://wastingnotime.org/feed.xml"' in saga_html
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in saga_html
     assert '<meta property="og:title" content="HireFlow" />' in saga_html
@@ -546,7 +546,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "The opening arc defines why HireFlow exists" in arc_html
     assert _json_ld_payloads(arc_html) == []
     assert "Why this site exists" in about_html
-    assert 'class="active">About</a>' in about_html
+    assert 'class="site-nav-link active" aria-current="page">About</a>' in about_html
     assert 'href="https://wastingnotime.org/feed.xml"' in about_html
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="https://wastingnotime.org/feed.xml"' in about_html
     assert '<meta property="og:title" content="About" />' in about_html
@@ -601,7 +601,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".studio-discovery-row {" in studio_html
     assert "Other ways in" not in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
-    assert 'class="active">Studio</a>' in studio_html
+    assert 'class="site-nav-link active" aria-current="page">Studio</a>' in studio_html
     assert _json_ld_payloads(studio_html) == [
         {
             "@context": "https://schema.org",

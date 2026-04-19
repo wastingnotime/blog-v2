@@ -404,13 +404,13 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     saga_html = pages["sagas/hireflow/index.html"]
 
     assert ">Home</a>" in home_html
-    assert 'class="active">Home</a>' in home_html
+    assert 'class="site-nav-link active" aria-current="page">Home</a>' in home_html
     assert 'href="https://example.com/search/"' in home_html
     assert 'href="https://example.com/archives/"' in home_html
-    assert 'class="active">Search</a>' in search_html
-    assert 'class="active">Archives</a>' in archive_html
-    assert 'class="active">About</a>' in about_html
-    assert 'class="active">Sagas</a>' in saga_html
+    assert 'class="site-nav-link active" aria-current="page">Search</a>' in search_html
+    assert 'class="site-nav-link active" aria-current="page">Archives</a>' in archive_html
+    assert 'class="site-nav-link active" aria-current="page">About</a>' in about_html
+    assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in saga_html
     assert 'href="https://example.com/library/"' in saga_html
     assert 'href="https://example.com/feed.xml"' in home_html
     assert 'href="https://example.com/feed.xml"' in about_html
@@ -685,7 +685,7 @@ def test_build_static_site_renders_shared_editorial_shell_tokens() -> None:
         assert "background:" in html
         assert "radial-gradient(circle at top, rgba(255, 255, 255, 0.045), transparent 42%)" in html
         assert "linear-gradient(180deg, #050505 0%, var(--bg) 72%)" in html
-        assert ".site-nav a.active::after {" in html
+        assert ".site-nav-link.active::after {" in html
         assert 'content: "•";' in html
         assert "article pre {" in html
         assert "article code {" in html
