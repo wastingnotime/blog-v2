@@ -453,8 +453,17 @@ def build_search_page(
             '            <button type="submit">Search</button>\n'
             "          </form>\n"
             "          <noscript>\n"
-            "            <p>Live search on this page requires JavaScript. If it is unavailable, browse the chronology or move by topic instead.</p>\n"
-            f'            <p><a href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a> or <a href="{_absolute_url(config.base_url, "/library/")}">explore the library</a>.</p>\n'
+            "            <div class=\"search-noscript-recovery\">\n"
+            "              <p class=\"search-noscript-recovery-message\">Live search on this page requires JavaScript. If it is unavailable, browse the chronology or move by topic instead.</p>\n"
+            "              <div class=\"search-noscript-recovery-row\">\n"
+            f'                <a class="search-noscript-recovery-link" href="{_absolute_url(config.base_url, "/archives/")}">Browse the archives</a>\n'
+            f'                <small class="search-noscript-recovery-path">/archives/</small>\n'
+            "              </div>\n"
+            "              <div class=\"search-noscript-recovery-row\">\n"
+            f'                <a class="search-noscript-recovery-link" href="{_absolute_url(config.base_url, "/library/")}">Explore the library</a>\n'
+            f'                <small class="search-noscript-recovery-path">/library/</small>\n'
+            "              </div>\n"
+            "            </div>\n"
             "          </noscript>\n"
             '          <p id="search-status" role="status" aria-live="polite" aria-atomic="true">Enter a query to search the publication.</p>\n'
             '          <h3 id="search-results-heading" class="visually-hidden">Search results</h3>\n'
@@ -1456,6 +1465,31 @@ def _render_document(
         color: var(--text-100);
       }}
       .search-empty-recovery-path {{
+        display: block;
+        margin-top: 0;
+        color: var(--text-400);
+        font-size: 0.8rem;
+      }}
+      .search-noscript-recovery {{
+        margin: 0.75rem 0 0;
+      }}
+      .search-noscript-recovery-message {{
+        margin: 0 0 0.75rem;
+        color: var(--text-400);
+      }}
+      .search-noscript-recovery-row {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+      }}
+      .search-noscript-recovery-row + .search-noscript-recovery-row {{
+        margin-top: 0.5rem;
+      }}
+      .search-noscript-recovery-link {{
+        color: var(--text-100);
+      }}
+      .search-noscript-recovery-path {{
         display: block;
         margin-top: 0;
         color: var(--text-400);

@@ -163,8 +163,11 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
     assert "<noscript>" in search_html
+    assert '<div class="search-noscript-recovery">' in search_html
     assert "Live search on this page requires JavaScript." in search_html
     assert "browse the chronology or move by topic instead." in search_html
+    assert '<a class="search-noscript-recovery-link" href="https://example.com/archives/">Browse the archives</a>' in search_html
+    assert '<small class="search-noscript-recovery-path">/archives/</small>' in search_html
     assert 'id="search-status" role="status" aria-live="polite" aria-atomic="true"' in search_html
     assert '<h3 id="search-results-heading" class="visually-hidden">Search results</h3>' in search_html
     assert 'id="search-results" class="search-result-list" aria-labelledby="search-results-heading"' in search_html
