@@ -34,7 +34,8 @@ browser behavior:
 This slice restores the minimum live-announcement behavior needed for the
 current static publication:
 
-- declare the existing search status surface as a polite live region
+- declare the existing search status surface as a polite live region with an
+  explicit status role
 - preserve the current status text and in-place update behavior
 - keep the change bounded to status semantics rather than redesigning the
   search page
@@ -49,7 +50,8 @@ result focus management, or changes to search ranking or recovery behavior.
 Given the existing static `/search/` route and search feedback surface, render
 deterministic markup such that:
 
-- the existing status region is explicitly identified as dynamic feedback
+- the existing status region is explicitly identified as dynamic feedback via
+  a status role
 - current status text remains the source of result-count and recovery messaging
 - the region remains stable for the same repository state
 
@@ -72,6 +74,8 @@ deterministic page markup such that:
   second competing feedback surface.
 - The slice stays bounded to status semantics and must not widen into broader
   accessibility redesign or search behavior changes.
+- The status role should remain search-page specific and not affect other
+  feedback surfaces.
 - GitHub Pages compatibility remains a hard constraint.
 
 ## Required Ports

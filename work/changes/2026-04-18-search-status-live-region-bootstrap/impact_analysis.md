@@ -10,7 +10,7 @@ Current observed gap:
 - `/search/` now has stable form semantics, result rendering, and recovery
   behavior
 - `#search-status` already updates as queries change, but it has no explicit
-  live-region contract
+  live-region contract with an explicit status role
 - the page therefore keeps a weaker dynamic feedback contract than the rest of
   the search surface
 
@@ -28,7 +28,7 @@ change is limited to status semantics inside the existing static search page:
 - `/search/` stays the canonical route
 - `search.json` stays the only search artifact
 - page markup gains one bounded live-region contract for the existing status
-  element
+  element via `role="status"`
 
 ## Risks
 
