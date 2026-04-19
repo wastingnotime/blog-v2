@@ -40,7 +40,7 @@ This slice restores the minimum homepage-list continuity needed after the
 homepage surface refinement:
 
 - give recent-entry rows explicit homepage markup and secondary-text treatment
-- give saga-summary rows explicit homepage markup with compact inline status
+- preserve the current compact inline status treatment for saga summaries
 - keep the same homepage data and navigation links intact
 
 This slice does not attempt homepage layout restructuring, card design,
@@ -53,8 +53,9 @@ homepage data changes, new sections, or parity with all old template details.
 Given the existing homepage recent-entry projection, render deterministic
 homepage markup such that:
 
-- each recent entry has one clear primary title line
-- date and optional saga context render as quieter supporting metadata
+- each recent entry has one clear primary title line inside a dedicated row
+- date and optional saga context render as quieter supporting metadata in the
+  same row
 - summary remains present but visually secondary
 
 ### `RenderHomepageSagaSummaries`
@@ -81,7 +82,7 @@ site output such that:
   homepage facts.
 - Presentation changes should remain homepage-specific rather than leaking into
   archive, topic, or section list rendering.
-- Recent-entry and saga-summary projections remain the source of truth; only
+- Recent-entry projections remain the source of truth for recent items; only
   homepage markup and styling change here.
 - Static-hosting compatibility remains a hard constraint.
 

@@ -9,7 +9,7 @@ compact editorial rhythm.
 Current observed gap:
 
 - the homepage shell and framing are now aligned with the predecessor
-- recent-entry and saga-summary rows still render as plain generic list content
+- recent-entry rows still render as plain generic list content
 - the predecessor's homepage signal is stronger in row rhythm and secondary
   text treatment than in a larger layout system
 
@@ -24,9 +24,9 @@ Current observed gap:
 The build gains no new route, runtime, or data source. The boundary change is
 limited to homepage row presentation:
 
-- recent entries gain explicit homepage list hooks for title, metadata, and
+- recent entries gain an explicit homepage row shell for title, metadata, and
   summary
-- saga summaries gain explicit homepage list hooks and compact inline status
+- saga summaries keep their current compact inline status treatment
 - archive, topic, and section list rendering stays unchanged
 
 ## Risks
