@@ -66,6 +66,7 @@ def test_build_static_site_limits_homepage_recent_entries() -> None:
 def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     pages = build_static_site(_site_config(), _catalog())
 
+    saga_html = pages["sagas/hireflow/index.html"]
     arc_html = pages["sagas/hireflow/the-origin-blueprint/index.html"]
     first_episode_html = pages[
         "sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"
@@ -74,8 +75,17 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
         "sagas/hireflow/the-origin-blueprint/second-iteration/index.html"
     ]
 
+    assert '<ul class="saga-arc-list">' in saga_html
+    assert '<a class="saga-arc-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in saga_html
+    assert 'class="saga-arc-meta">2 episodes · last 2026-04-13</small>' in saga_html
+    assert '<ul class="saga-timeline-list">' in saga_html
+    assert '<a class="saga-timeline-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in saga_html
+    assert 'class="saga-timeline-meta">The Origin Blueprint · 2026-04-12</small>' in saga_html
     assert "[Ep 01] The First Brick" in arc_html
     assert "[Ep 02] Second Iteration" in arc_html
+    assert '<ul class="arc-episode-list">' in arc_html
+    assert '<a class="arc-episode-link" href="https://example.com/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in arc_html
+    assert 'class="arc-episode-meta">2026-04-12</small>' in arc_html
     assert "Arc body." in arc_html
     assert "/archives/" in arc_html
     assert "/search/" in arc_html
@@ -86,6 +96,15 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     assert 'href="https://example.com/search/"' in first_episode_html
     assert "Ep 02 Second Iteration" in first_episode_html
     assert "Ep 01 The First Brick" in second_episode_html
+    assert ".saga-arc-list {" in saga_html
+    assert ".saga-arc-link {" in saga_html
+    assert ".saga-arc-meta {" in saga_html
+    assert ".saga-timeline-list {" in saga_html
+    assert ".saga-timeline-link {" in saga_html
+    assert ".saga-timeline-meta {" in saga_html
+    assert ".arc-episode-list {" in arc_html
+    assert ".arc-episode-link {" in arc_html
+    assert ".arc-episode-meta {" in arc_html
 
 
 def test_build_static_site_generates_library_and_topic_pages() -> None:

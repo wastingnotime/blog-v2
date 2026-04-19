@@ -474,6 +474,18 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="twitter:image" content="https://wastingnotime.org/social-preview.png" />' in saga_html
     assert "(c) 2025 wastingnotime.org - published as a static site" in saga_html
     assert "The Origin Blueprint" in saga_html
+    assert '<ul class="saga-arc-list">' in saga_html
+    assert '<a class="saga-arc-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in saga_html
+    assert 'class="saga-arc-meta">2 episodes · last 2025-11-15</small>' in saga_html
+    assert '<ul class="saga-timeline-list">' in saga_html
+    assert '<a class="saga-timeline-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in saga_html
+    assert 'class="saga-timeline-meta">The Origin Blueprint · 2025-11-14</small>' in saga_html
+    assert ".saga-arc-list {" in saga_html
+    assert ".saga-arc-link {" in saga_html
+    assert ".saga-arc-meta {" in saga_html
+    assert ".saga-timeline-list {" in saga_html
+    assert ".saga-timeline-link {" in saga_html
+    assert ".saga-timeline-meta {" in saga_html
     assert "HireFlow is the working saga for exploring what architecture decisions look like" in saga_html
     assert "/archives/" in saga_html
     assert "/search/" in saga_html
@@ -482,6 +494,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/archives/" in arc_html
     assert "/search/" in arc_html
     assert "[Ep 01] The First Brick" in arc_html
+    assert '<ul class="arc-episode-list">' in arc_html
+    assert '<a class="arc-episode-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in arc_html
+    assert 'class="arc-episode-meta">2025-11-14</small>' in arc_html
+    assert ".arc-episode-list {" in arc_html
+    assert ".arc-episode-link {" in arc_html
+    assert ".arc-episode-meta {" in arc_html
     assert "The opening arc defines why HireFlow exists" in arc_html
     assert _json_ld_payloads(arc_html) == []
     assert "Why this site exists" in about_html
