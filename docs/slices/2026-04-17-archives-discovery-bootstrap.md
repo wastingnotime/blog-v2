@@ -18,7 +18,8 @@ Deterministic archive-hub discovery update for the expanded publication surface:
   discovery routes
 - add bounded affordances for Search and Library alongside the existing
   chronological listing
-- keep the slice limited to archive-page discovery copy and links
+- keep the slice limited to archive-page discovery copy, links, and a stable
+  shell hook
 
 ## Discovery Scope
 
@@ -39,6 +40,7 @@ current publication:
 
 - update the archive page so it links readers to `/search/` and `/library/`
 - preserve the existing chronological listing and ordering
+- expose the complementary discovery block through a stable page-shell class
 - keep the change bounded to archive-page discovery copy and links
 
 This slice does not attempt pagination, year-grouping, archive faceting, or
@@ -64,6 +66,7 @@ discovery content such that:
 - search and library are visibly represented as complementary discovery paths
 - the section remains publication-oriented rather than turning into generic
   navigation chrome
+- the discovery block uses a stable shell hook
 
 ## Main Business Rules
 

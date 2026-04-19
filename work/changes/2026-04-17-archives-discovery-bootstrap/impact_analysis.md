@@ -3,7 +3,8 @@
 ## Summary
 
 The next slice should update the archive page so its discovery guidance matches
-the now-expanded static publication surface.
+the now-expanded static publication surface and exposes the discovery block
+through a stable shell hook.
 
 Current observed gap:
 
@@ -11,6 +12,7 @@ Current observed gap:
 - `/search/` and `/library/` now exist as stable reader-facing routes
 - the archive page therefore understates the actual ways readers can move
   through the publication
+- the discovery block does not yet have its own shell class
 
 ## Impacted Areas
 
