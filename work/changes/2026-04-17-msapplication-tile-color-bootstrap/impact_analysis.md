@@ -2,17 +2,17 @@
 
 ## Summary
 
-The next slice should add bounded Windows tile color metadata so the generated
-static publication reuses its existing shared theme color in one more small
+This slice adds bounded Windows tile color metadata so the generated static
+publication reuses its existing shared theme color in one more small
 browser-facing identity surface.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include viewport, application-name, color-scheme,
-  referrer, theme-color, and mobile-web-app metadata
-- the shared head still omits `meta name="msapplication-TileColor"`
-- the publication already has a stable shared theme color, so the next gap is
-  explicit platform-facing metadata rather than a new palette decision
+- generated pages include viewport, application-name, color-scheme, referrer,
+  theme-color, and mobile-web-app metadata
+- the shared head includes `meta name="msapplication-TileColor"`
+- the publication has a stable shared theme color, so the head metadata and
+  browserconfig output agree on one palette decision
 
 ## Impacted Areas
 
@@ -24,7 +24,7 @@ Current observed gap:
 ## Boundary Change
 
 The build gains no new routes or assets. The boundary change is limited to
-additional browser-facing metadata in generated HTML heads.
+browser-facing metadata already present in generated HTML heads.
 
 ## Risks
 
