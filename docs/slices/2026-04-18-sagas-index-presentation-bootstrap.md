@@ -34,7 +34,8 @@ This slice restores the minimum sagas-index continuity needed for the current
 publication:
 
 - render active saga rows with explicit title and secondary-summary treatment
-- keep the existing start-reading affordance intact
+- keep the existing start-reading affordance intact through a compact row-level
+  treatment rather than a detached helper line
 - preserve the same saga order, routes, and discovery links
 
 This slice does not attempt new saga metadata, saga counts on the hub,
@@ -50,7 +51,8 @@ markup such that:
 
 - each saga row has one clear primary title line
 - summary remains present as quieter supporting text
-- the existing start-reading affordance remains intact when available
+- the existing start-reading affordance remains intact when available and reads
+  as part of the same compact saga row
 
 ### `BuildStaticSite`
 
@@ -65,6 +67,8 @@ site output such that:
 
 - The sagas section hub should read like a publication navigation surface, not
   a generic list.
+- Start-reading affordances should stay available without visually detaching
+  from the saga row they belong to.
 - The slice stays bounded to sagas-index row presentation and must not widen
   into saga-product changes.
 - Existing saga-summary data and start-reading routes remain the source of
@@ -81,7 +85,7 @@ site output such that:
 
 - unit test asserting `/sagas/` renders explicit saga-row presentation hooks
 - unit test asserting start-reading links remain intact for sagas that have
-  them
+  them and stay attached to the compact row treatment
 - integration test asserting generated `dist/sagas/index.html` reflects the
   bounded row treatment
 - integration test asserting homepage and saga pages remain unchanged

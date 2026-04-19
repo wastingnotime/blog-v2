@@ -10,6 +10,8 @@ Current observed gap:
 
 - `/sagas/` already links to the right saga and start-reading destinations
 - the hub still renders active sagas through plain list rows
+- the current start-reading affordance sits as a detached small line rather
+  than part of one compact row contract
 - recent homepage, library, and topic-page refinements make the sagas hub the
   next obvious lagging surface
 
