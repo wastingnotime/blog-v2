@@ -128,7 +128,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'class="homepage-link"' in homepage_html
     assert 'class="homepage-meta">2025-11-15 · HireFlow / The Origin Blueprint</small>' in homepage_html
     assert 'class="homepage-saga-status">2 episodes - last release 2025-11-15 - in-progress</small>' in homepage_html
-    assert 'class="site-nav-link active" aria-current="page">Home</a>' in homepage_html
+    assert 'class="site-nav-link active" aria-current="page">HOME</a>' in homepage_html
+    assert '<span class="site-nav-separator" aria-hidden="true">/</span>' in homepage_html
     assert 'href="/search/"' in homepage_html
     assert 'href="/archives/"' in homepage_html
     assert 'href="/about/"' in homepage_html
@@ -151,14 +152,14 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="generator" content="blog-v2 static builder" />' in homepage_html
     assert '<meta name="author" content="wastingnotime.org" />' in homepage_html
     assert '<meta name="application-name" content="Wasting No Time" />' in homepage_html
-    assert '<meta name="color-scheme" content="light" />' in homepage_html
+    assert '<meta name="color-scheme" content="dark" />' in homepage_html
     assert (
         '<meta name="referrer" content="strict-origin-when-cross-origin" />'
         in homepage_html
     )
     assert '<meta name="format-detection" content="telephone=no" />' in homepage_html
-    assert '<meta name="theme-color" content="#fffdf8" />' in homepage_html
-    assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in homepage_html
+    assert '<meta name="theme-color" content="#000000" />' in homepage_html
+    assert '<meta name="msapplication-TileColor" content="#000000" />' in homepage_html
     assert (
         '<meta name="msapplication-config" content="/browserconfig.xml" />'
         in homepage_html
@@ -166,12 +167,13 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta name="apple-mobile-web-app-capable" content="yes" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in homepage_html
     assert '<meta name="apple-mobile-web-app-status-bar-style" content="black" />' in homepage_html
-    assert "color-scheme: light;" in homepage_html
-    assert "--ink: #111827;" in homepage_html
-    assert "--muted: #4b5563;" in homepage_html
-    assert "--paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);" in homepage_html
-    assert 'font-family: Georgia, "Times New Roman", serif;' in homepage_html
-    assert "background: var(--paper);" in homepage_html
+    assert "color-scheme: dark;" in homepage_html
+    assert "--ink: #f4f4f5;" in homepage_html
+    assert "--muted: #a1a1aa;" in homepage_html
+    assert "--soft: #e4e4e7;" in homepage_html
+    assert "--background: #000000;" in homepage_html
+    assert 'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;' in homepage_html
+    assert "background: var(--background);" in homepage_html
     assert ".homepage-list {" in homepage_html
     assert ".homepage-meta {" in homepage_html
     assert ".homepage-summary {" in homepage_html
@@ -180,10 +182,10 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".homepage-paths {" in homepage_html
     assert ".section-label {" in homepage_html
     assert ".site-nav-link.active {" in homepage_html
-    assert "text-decoration: underline;" in homepage_html
+    assert ".site-nav-separator {" in homepage_html
     assert "article pre {" in homepage_html
-    assert 'font-family: Georgia, "Times New Roman", serif;' in about_html
-    assert "color-scheme: light;" in about_html
+    assert 'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;' in about_html
+    assert "color-scheme: dark;" in about_html
     assert '<meta name="robots" content="index,follow" />' in homepage_html
     assert '<meta name="robots" content="noindex,follow" />' in not_found_html
     assert '<meta name="robots" content="index,follow" />' not in not_found_html
@@ -242,7 +244,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/api/event" not in not_found_html
     assert _json_ld_payloads(not_found_html) == []
     assert "Chronological Archive" in archive_html
-    assert 'class="site-nav-link active" aria-current="page">Archives</a>' in archive_html
+    assert 'class="site-nav-link active" aria-current="page">ARCHIVES</a>' in archive_html
     assert '<ul class="archive-entry-list">' in archive_html
     assert '<div class="archive-entry-row">' in archive_html
     assert '<a class="archive-entry-link" href="/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in archive_html
@@ -269,7 +271,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "Search the publication" in search_html
-    assert 'class="site-nav-link active" aria-current="page">Search</a>' in search_html
+    assert 'class="site-nav-link active" aria-current="page">SEARCH</a>' in search_html
     assert 'id="search-form"' in search_html
     assert 'method="get"' in search_html
     assert 'action="/search/"' in search_html
@@ -414,12 +416,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         '<square150x150logo src="/apple-touch-icon.png"/>'
         in browserconfig_xml
     )
-    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
+    assert "<TileColor>#000000</TileColor>" in browserconfig_xml
     assert webmanifest["name"] == "Wasting No Time"
     assert webmanifest["short_name"] == "Wasting No Time"
     assert webmanifest["start_url"] == "/"
-    assert webmanifest["theme_color"] == "#fffdf8"
-    assert webmanifest["background_color"] == "#f3efe5"
+    assert webmanifest["theme_color"] == "#000000"
+    assert webmanifest["background_color"] == "#000000"
     assert webmanifest["icons"][0]["src"] == "/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "/apple-touch-icon.png"
@@ -441,7 +443,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "https://wastingnotime.org/search/" not in sitemap_xml
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
-    assert 'class="site-nav-link active" aria-current="page">Library</a>' in library_html
+    assert 'class="site-nav-link active" aria-current="page">LIBRARY</a>' in library_html
     assert "Other ways in" in library_html
     assert 'href="/archives/"' in library_html
     assert 'href="/search/"' in library_html
@@ -471,7 +473,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/search/" in topic_html
     assert _json_ld_payloads(topic_html) == []
     assert "Active sagas" in sagas_index_html
-    assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in sagas_index_html
+    assert 'class="site-nav-link active" aria-current="page">SAGAS</a>' in sagas_index_html
     assert "Other ways in" in sagas_index_html
     assert '<ul class="saga-index-list">' in sagas_index_html
     assert '<div class="saga-index-row">' in sagas_index_html
@@ -491,7 +493,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         }
     ]
     assert "Timeline" in saga_html
-    assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in saga_html
+    assert 'class="site-nav-link active" aria-current="page">SAGAS</a>' in saga_html
     assert 'href="/feed.xml"' in saga_html
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="/feed.xml"' in saga_html
     assert '<meta property="og:title" content="HireFlow" />' in saga_html
@@ -549,7 +551,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "The opening arc defines why HireFlow exists" in arc_html
     assert _json_ld_payloads(arc_html) == []
     assert "Why this site exists" in about_html
-    assert 'class="site-nav-link active" aria-current="page">About</a>' in about_html
+    assert 'class="site-nav-link active" aria-current="page">ABOUT</a>' in about_html
     assert 'href="/feed.xml"' in about_html
     assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="/feed.xml"' in about_html
     assert '<meta property="og:title" content="About" />' in about_html
@@ -604,7 +606,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".studio-discovery-row {" in studio_html
     assert "Other ways in" not in studio_html
     assert "Wasting No Time is a studio for architecture" in studio_html
-    assert 'class="site-nav-link active" aria-current="page">Studio</a>' in studio_html
+    assert 'class="site-nav-link active" aria-current="page">STUDIO</a>' in studio_html
     assert _json_ld_payloads(studio_html) == [
         {
             "@context": "https://schema.org",

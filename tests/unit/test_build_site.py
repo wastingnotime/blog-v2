@@ -382,14 +382,14 @@ def test_build_static_site_generates_feed_and_sitemap() -> None:
     assert webmanifest["short_name"] == "Example"
     assert webmanifest["start_url"] == "/"
     assert webmanifest["display"] == "standalone"
-    assert webmanifest["theme_color"] == "#fffdf8"
-    assert webmanifest["background_color"] == "#f3efe5"
+    assert webmanifest["theme_color"] == "#000000"
+    assert webmanifest["background_color"] == "#000000"
     assert webmanifest["icons"][0]["src"] == "/favicon-16x16.png"
     assert webmanifest["icons"][1]["src"] == "/favicon-32x32.png"
     assert webmanifest["icons"][2]["src"] == "/apple-touch-icon.png"
     assert "<browserconfig>" in browserconfig_xml
     assert '<square150x150logo src="/apple-touch-icon.png"/>' in browserconfig_xml
-    assert "<TileColor>#fffdf8</TileColor>" in browserconfig_xml
+    assert "<TileColor>#000000</TileColor>" in browserconfig_xml
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
     assert "<loc>https://example.com/archives/</loc>" in sitemap_xml
     assert "<loc>https://example.com/library/</loc>" in sitemap_xml
@@ -407,14 +407,15 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     about_html = pages["about/index.html"]
     saga_html = pages["sagas/hireflow/index.html"]
 
-    assert ">Home</a>" in home_html
-    assert 'class="site-nav-link active" aria-current="page">Home</a>' in home_html
+    assert ">HOME</a>" in home_html
+    assert 'class="site-nav-link active" aria-current="page">HOME</a>' in home_html
+    assert '<span class="site-nav-separator" aria-hidden="true">/</span>' in home_html
     assert 'href="/search/"' in home_html
     assert 'href="/archives/"' in home_html
-    assert 'class="site-nav-link active" aria-current="page">Search</a>' in search_html
-    assert 'class="site-nav-link active" aria-current="page">Archives</a>' in archive_html
-    assert 'class="site-nav-link active" aria-current="page">About</a>' in about_html
-    assert 'class="site-nav-link active" aria-current="page">Sagas</a>' in saga_html
+    assert 'class="site-nav-link active" aria-current="page">SEARCH</a>' in search_html
+    assert 'class="site-nav-link active" aria-current="page">ARCHIVES</a>' in archive_html
+    assert 'class="site-nav-link active" aria-current="page">ABOUT</a>' in about_html
+    assert 'class="site-nav-link active" aria-current="page">SAGAS</a>' in saga_html
     assert 'href="/library/"' in saga_html
     assert 'href="/feed.xml"' in home_html
     assert 'href="/feed.xml"' in about_html
@@ -623,7 +624,7 @@ def test_build_static_site_renders_theme_color_metadata_in_document_head() -> No
     )
 
     for html in route_html:
-        assert '<meta name="theme-color" content="#fffdf8" />' in html
+        assert '<meta name="theme-color" content="#000000" />' in html
 
 
 def test_build_static_site_renders_format_detection_metadata_in_document_head() -> None:
@@ -671,7 +672,7 @@ def test_build_static_site_renders_color_scheme_metadata_in_document_head() -> N
     )
 
     for html in route_html:
-        assert '<meta name="color-scheme" content="light" />' in html
+        assert '<meta name="color-scheme" content="dark" />' in html
 
 
 def test_build_static_site_renders_shared_editorial_shell_tokens() -> None:
@@ -681,14 +682,15 @@ def test_build_static_site_renders_shared_editorial_shell_tokens() -> None:
     about_html = pages["about/index.html"]
 
     for html in (homepage_html, about_html):
-        assert "color-scheme: light;" in html
-        assert "--ink: #111827;" in html
-        assert "--muted: #4b5563;" in html
-        assert "--paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);" in html
-        assert 'font-family: Georgia, "Times New Roman", serif;' in html
-        assert "background: var(--paper);" in html
+        assert "color-scheme: dark;" in html
+        assert "--ink: #f4f4f5;" in html
+        assert "--muted: #a1a1aa;" in html
+        assert "--soft: #e4e4e7;" in html
+        assert "--background: #000000;" in html
+        assert 'font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;' in html
+        assert "background: var(--background);" in html
         assert ".site-nav-link.active {" in html
-        assert "text-decoration: underline;" in html
+        assert ".site-nav-separator {" in html
         assert "article pre {" in html
         assert "article code {" in html
 
@@ -738,7 +740,7 @@ def test_build_static_site_renders_msapplication_tile_color_metadata_in_document
     )
 
     for html in route_html:
-        assert '<meta name="msapplication-TileColor" content="#fffdf8" />' in html
+        assert '<meta name="msapplication-TileColor" content="#000000" />' in html
 
 
 def test_build_static_site_renders_msapplication_config_metadata_in_document_head() -> None:

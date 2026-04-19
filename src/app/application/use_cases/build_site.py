@@ -68,8 +68,8 @@ IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon-32x32.png", "32x32"),
     ("apple-touch-icon", "/apple-touch-icon.png", None),
 )
-THEME_COLOR = "#fffdf8"
-BACKGROUND_COLOR = "#f3efe5"
+THEME_COLOR = "#000000"
+BACKGROUND_COLOR = "#000000"
 
 
 def build_static_site(config: SiteConfig, catalog: ContentCatalog) -> dict[str, str]:
@@ -1125,7 +1125,7 @@ def _render_document(
     <meta name="generator" content="blog-v2 static builder" />
     <meta name="author" content="{html.escape(_site_host(config.base_url))}" />
     <meta name="application-name" content="{html.escape(config.title)}" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="dark" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="{THEME_COLOR}" />
@@ -1147,33 +1147,38 @@ def _render_document(
 {identity_asset_links}
     <style>
       :root {{
-        color-scheme: light;
-        --ink: #111827;
-        --muted: #4b5563;
-        --line: #d1d5db;
-        --paper: linear-gradient(180deg, #fffdf8 0%, #f3efe5 100%);
-        --accent: #0f766e;
-        --line-strong: #a8b0ba;
+        color-scheme: dark;
+        --ink: #f4f4f5;
+        --muted: #a1a1aa;
+        --soft: #e4e4e7;
+        --line: #27272a;
+        --line-strong: #3f3f46;
+        --accent: #3f3f46;
+        --background: #000000;
       }}
       * {{ box-sizing: border-box; }}
+      html {{ font-kerning: normal; }}
       body {{
         margin: 0;
         min-height: 100vh;
-        font-family: Georgia, "Times New Roman", serif;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         color: var(--ink);
-        background: var(--paper);
+        background: var(--background);
+      }}
+      ::selection {{
+        background: rgba(255, 255, 255, 0.2);
       }}
       main {{
-        width: min(46rem, calc(100vw - 3rem));
-        margin: 0 auto;
-        padding: 4rem 0 5rem;
+        width: 100%;
+        padding: 0;
       }}
       a {{
         color: var(--muted);
         text-decoration: none;
+        transition: color .15s ease;
       }}
       a:hover {{
-        color: var(--ink);
+        color: #fff;
         text-decoration: underline;
       }}
       .eyebrow {{
@@ -1187,17 +1192,18 @@ def _render_document(
         text-transform: uppercase;
       }}
       h1 {{
-        margin: 1.25rem 0 0.75rem;
-        font-size: clamp(2.2rem, 6vw, 4rem);
-        line-height: 1;
-        color: var(--ink);
+        margin: 1rem 0 0.75rem;
+        font-size: clamp(1.25rem, 3vw, 1.5rem);
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+        color: #d4d4d8;
       }}
       .meta, .summary {{
-        color: var(--muted);
+        color: var(--soft);
       }}
       .homepage-intro {{
         margin: 0;
-        color: var(--ink);
+        color: var(--soft);
         line-height: 1.75;
       }}
       .homepage-paths {{
@@ -1241,7 +1247,7 @@ def _render_document(
         gap: 0.45rem;
       }}
       .homepage-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .homepage-meta {{
         display: block;
@@ -1278,12 +1284,12 @@ def _render_document(
         padding: 0.45rem 0.75rem;
         border: 1px solid var(--line);
         border-radius: 0.3rem;
-        color: var(--ink);
+        color: var(--soft);
         text-decoration: none;
       }}
       .topic-link:hover {{
-        color: var(--ink);
-        border-color: var(--accent);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.4);
         text-decoration: underline;
       }}
       .topic-entry-list {{
@@ -1295,7 +1301,7 @@ def _render_document(
         margin-top: 1rem;
       }}
       .topic-entry-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .topic-entry-meta {{
         display: block;
@@ -1324,7 +1330,7 @@ def _render_document(
         gap: 0.6rem;
       }}
       .saga-index-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .saga-index-summary {{
         margin: 0.35rem 0 0;
@@ -1356,7 +1362,7 @@ def _render_document(
         gap: 0.55rem;
       }}
       .saga-arc-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .saga-arc-meta {{
         display: block;
@@ -1379,7 +1385,7 @@ def _render_document(
         gap: 0.55rem;
       }}
       .saga-timeline-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .saga-timeline-meta {{
         display: block;
@@ -1402,7 +1408,7 @@ def _render_document(
         gap: 0.55rem;
       }}
       .arc-episode-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .arc-episode-meta {{
         display: block;
@@ -1425,7 +1431,7 @@ def _render_document(
         gap: 0.55rem;
       }}
       .archive-entry-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .archive-entry-meta {{
         display: block;
@@ -1465,7 +1471,7 @@ def _render_document(
         margin-top: 0.5rem;
       }}
       .search-empty-recovery-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .search-empty-recovery-path {{
         display: block;
@@ -1490,7 +1496,7 @@ def _render_document(
         margin-top: 0.5rem;
       }}
       .search-noscript-recovery-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .search-noscript-recovery-path {{
         display: block;
@@ -1524,7 +1530,7 @@ def _render_document(
       }}
       .search-result-link {{
         display: block;
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .search-result-meta {{
         display: block;
@@ -1569,7 +1575,7 @@ def _render_document(
         gap: 0.55rem;
       }}
       .not-found-link {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .not-found-path {{
         display: block;
@@ -1586,7 +1592,7 @@ def _render_document(
         margin-top: 0.85rem;
       }}
       .discovery-label {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .discovery-path {{
         display: block;
@@ -1609,7 +1615,7 @@ def _render_document(
         gap: 0.55rem;
       }}
       .studio-discovery-label {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .studio-discovery-path {{
         display: block;
@@ -1618,28 +1624,34 @@ def _render_document(
         font-size: 0.8rem;
       }}
       .site-frame {{
-        width: min(64rem, calc(100vw - 3rem));
+        width: min(48rem, calc(100vw - 2rem));
         margin: 0 auto;
-        padding: 1.5rem 0 5rem;
+        padding: 1.5rem 0 4rem;
       }}
       .site-nav {{
         display: flex;
         flex-wrap: wrap;
-        gap: 0.9rem;
-        margin-bottom: 2.25rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--line);
+        align-items: center;
+        gap: 0;
+        margin-bottom: 1.5rem;
       }}
       .site-nav-link {{
         color: var(--muted);
       }}
       .site-nav-link.active {{
-        color: var(--ink);
+        color: #fff;
         font-weight: 600;
-        text-decoration: underline;
+        text-decoration: none;
       }}
       .site-nav-link.active::after {{
-        content: "";
+        content: "•";
+        margin-left: 0.4em;
+        opacity: 0.6;
+        font-weight: 400;
+      }}
+      .site-nav-separator {{
+        margin: 0 0.5rem;
+        color: #52525b;
       }}
       .breadcrumbs {{
         display: flex;
@@ -1695,13 +1707,13 @@ def _render_document(
         border-top: 1px solid var(--line);
       }}
       .nav-grid a {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .episode-adjacent-nav {{
         margin-top: 2rem;
       }}
       .episode-adjacent-nav a {{
-        color: var(--ink);
+        color: #d4d4d8;
       }}
       .adjacent-nav-link {{
         display: inline-block;
@@ -1724,12 +1736,12 @@ def _render_document(
       footer {{
         margin-top: 2.5rem;
         color: var(--muted);
-        font-size: 0.85rem;
+        font-size: 0.75rem;
       }}
       article h2 {{
         margin-top: 3rem;
         margin-bottom: 1rem;
-        color: var(--ink);
+        color: #fff;
         font-weight: 700;
         font-size: 1.25rem;
         line-height: 1.6;
@@ -1737,7 +1749,7 @@ def _render_document(
       article h3 {{
         margin-top: 2rem;
         margin-bottom: 0.75rem;
-        color: var(--ink);
+        color: var(--soft);
         font-weight: 600;
         font-size: 1.1rem;
         line-height: 1.6;
@@ -1745,7 +1757,7 @@ def _render_document(
       article p, article li, article blockquote {{
         font-size: 1.08rem;
         line-height: 1.75;
-        color: var(--ink);
+        color: var(--soft);
       }}
       article blockquote {{
         margin-left: 0;
@@ -1757,14 +1769,14 @@ def _render_document(
       article pre {{
         margin: 1.5rem 0;
         padding: 1rem;
-        background: #fbfaf7;
+        background: #0b0b0b;
         border: 1px solid var(--line);
         border-radius: 0.5rem;
         overflow: auto;
       }}
       article code {{
-        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        background: rgba(15, 23, 42, 0.06);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        background: rgba(255, 255, 255, 0.04);
         padding: 0.1rem 0.35rem;
         border-radius: 0.25rem;
         color: var(--ink);
@@ -2223,15 +2235,19 @@ def _render_navigation(
     base_url: str,
 ) -> str:
     navigation_links: list[str] = []
-    for link in links:
+    for index, link in enumerate(links):
         aria_current = ' aria-current="page"' if link.is_active else ""
         active_class = " active" if link.is_active else ""
         navigation_links.append(
             "        "
             f'<a href="{_site_path(base_url, link.path)}"'
             f' class="site-nav-link{active_class}"{aria_current}>'
-            f"{html.escape(link.label)}</a>"
+            f"{html.escape(link.label.upper())}</a>"
         )
+        if index < len(links) - 1:
+            navigation_links.append(
+                '        <span class="site-nav-separator" aria-hidden="true">/</span>'
+            )
     navigation_links.append(
         "        " f'<a href="{_site_path(base_url, "/feed.xml")}">RSS</a>'
     )
