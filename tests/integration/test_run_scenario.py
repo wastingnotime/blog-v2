@@ -16,6 +16,14 @@ LEGACY_BLOG_STUDIO_SNAPSHOT = (
     / "use_cases"
     / "legacy_studio.html"
 )
+LEGACY_BLOG_SAGAS_SNAPSHOT = (
+    Path(__file__).resolve().parents[2]
+    / "src"
+    / "app"
+    / "application"
+    / "use_cases"
+    / "legacy_sagas.html"
+)
 
 
 def test_static_site_builder_generates_static_routes_from_markdown(
@@ -88,6 +96,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     sagas_index_html = (
         output_dir / "sagas" / "index.html"
     ).read_text(encoding="utf-8")
+    legacy_sagas_html = LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
     saga_html = (
         output_dir / "sagas" / "hireflow" / "index.html"
     ).read_text(encoding="utf-8")
@@ -367,26 +376,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "/archives/" in topic_html
     assert "/search/" in topic_html
     assert _json_ld_payloads(topic_html) == []
-    assert "Active sagas" in sagas_index_html
-    assert 'class="site-nav-link active" aria-current="page">SAGAS</a>' in sagas_index_html
-    assert "Other ways in" in sagas_index_html
-    assert '<ul class="saga-index-list">' in sagas_index_html
-    assert '<div class="saga-index-row">' in sagas_index_html
-    assert '<a class="saga-index-link" href="/sagas/hireflow/">HireFlow</a>' in sagas_index_html
-    assert 'class="saga-index-summary">A fictional hiring platform built as a real-world laboratory for exploring microservices architecture, trade-offs, and emergent design.</p>' in sagas_index_html
-    assert '<small class="saga-index-start"><a href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_index_html
-    assert ".saga-index-row {" in sagas_index_html
-    assert "/archives/" in sagas_index_html
-    assert "/search/" in sagas_index_html
-    assert _json_ld_payloads(sagas_index_html) == [
-        {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Sagas",
-            "description": "Browse active sagas and jump into the first episode.",
-            "url": "https://wastingnotime.org/sagas/",
-        }
-    ]
+    assert sagas_index_html == legacy_sagas_html
     assert "Timeline" in saga_html
     assert 'class="site-nav-link active" aria-current="page">SAGAS</a>' in saga_html
     assert 'href="/feed.xml"' in saga_html
@@ -489,6 +479,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".entry-tags {" in about_html
     assert ".entry-tag-chip {" in about_html
     assert 'href="/favicon-32x32.png"' in about_html
+    assert sagas_index_html == LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
     assert studio_html == LEGACY_BLOG_STUDIO_SNAPSHOT.read_text(encoding="utf-8")
     assert "HireFlow / The Origin Blueprint" in episode_html
     assert "3 min read" in episode_html

@@ -69,6 +69,9 @@ LEGACY_BLOG_HOME_SNAPSHOT = (
 LEGACY_BLOG_STUDIO_SNAPSHOT = (
     Path(__file__).resolve().parent / "legacy_studio.html"
 )
+LEGACY_BLOG_SAGAS_SNAPSHOT = (
+    Path(__file__).resolve().parent / "legacy_sagas.html"
+)
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon.ico", None),
@@ -1350,6 +1353,9 @@ def build_sagas_index_page(
     sagas_index: SagasIndex,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time" and LEGACY_BLOG_SAGAS_SNAPSHOT.exists():
+        return LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
+
     saga_markup = "\n".join(
         _render_saga_summary(summary, base_url=config.base_url)
         for summary in sagas_index.sagas

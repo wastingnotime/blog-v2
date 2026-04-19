@@ -318,6 +318,14 @@ def test_build_static_site_generates_section_hub_pages() -> None:
 
     sagas_html = pages["sagas/index.html"]
     studio_html = pages["studio/index.html"]
+    legacy_sagas_html = (
+        Path(__file__).resolve().parents[2]
+        / "src"
+        / "app"
+        / "application"
+        / "use_cases"
+        / "legacy_sagas.html"
+    ).read_text(encoding="utf-8")
     legacy_studio_html = (
         Path(__file__).resolve().parents[2]
         / "src"
@@ -327,14 +335,7 @@ def test_build_static_site_generates_section_hub_pages() -> None:
         / "legacy_studio.html"
     ).read_text(encoding="utf-8")
 
-    assert "Active sagas" in sagas_html
-    assert "Other ways in" in sagas_html
-    assert '<ul class="saga-index-list">' in sagas_html
-    assert '<div class="saga-index-row">' in sagas_html
-    assert '<a class="saga-index-link" href="/sagas/hireflow/">HireFlow</a>' in sagas_html
-    assert 'class="saga-index-summary">Architecture in public.</p>' in sagas_html
-    assert '<small class="saga-index-start"><a href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">start reading</a></small>' in sagas_html
-    assert ".saga-index-row {" in sagas_html
+    assert sagas_html == legacy_sagas_html
     assert studio_html == legacy_studio_html
 
 
