@@ -2,18 +2,16 @@
 
 ## Summary
 
-The next slice should extend the shared viewport metadata so the generated
-static publication makes one more small mobile-display contract explicit in the
-document head.
+The generated static publication now exposes the explicit viewport-fit
+contract in the shared document head.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include application-name, color-scheme, referrer,
-  theme-color, and mobile-web-app metadata
-- the shared head still uses a minimal viewport literal without
-  `viewport-fit=cover`
-- the publication already has a bounded mobile-web-app identity surface, so the
-  next gap is explicit shared viewport metadata rather than a layout problem
+- generated pages include application-name, color-scheme, referrer,
+  theme-color, mobile-web-app, and viewport-fit metadata
+- the shared head uses `viewport-fit=cover`
+- the publication keeps the viewport contract aligned with the rest of the
+  bounded mobile head surface
 
 ## Impacted Areas
 
@@ -24,8 +22,8 @@ Current observed gap:
 
 ## Boundary Change
 
-The build gains no new routes or assets. The boundary change is limited to an
-updated browser-facing viewport literal in generated HTML heads.
+The build already includes the needed viewport literal. The boundary stays
+limited to the browser-facing viewport metadata in generated HTML heads.
 
 ## Risks
 
