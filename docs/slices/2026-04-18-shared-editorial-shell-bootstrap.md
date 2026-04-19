@@ -38,6 +38,8 @@ same publication again:
 - introduce shared dark editorial tokens in the existing document renderer
 - shift the shell typography and link treatment toward the extracted
   predecessor style
+- add a subtle layered background treatment so the shell no longer reads as a
+  flat monochrome canvas
 - improve shared prose, metadata, navigation, and code-surface styling through
   the same renderer
 
@@ -56,6 +58,8 @@ deterministic markup such that:
   shell
 - shared typography, link, metadata, and border treatments remain consistent
   across routes
+- the page background carries a subtle layered treatment while staying fully
+  static and deterministic
 - the styling remains fully static and embedded in generated HTML
 
 ### `BuildStaticSite`
@@ -73,6 +77,8 @@ site output such that:
   minimal, text-first publication identity.
 - The styling change should be centralized in the shared renderer rather than
   duplicated page by page.
+- The background treatment should feel intentionally layered without adding a
+  runtime asset dependency.
 - The slice should stay bounded to visual shell recovery and must not widen
   into content-model, navigation-structure, or page-specific layout redesign.
 - Static-hosting compatibility remains a hard constraint.
@@ -89,6 +95,8 @@ site output such that:
   token shift instead of the current light-paper shell
 - unit test asserting shared navigation and content pages continue rendering
   through the same single document shell
+- unit test asserting the body background includes a bounded layered
+  treatment instead of a flat fill
 - integration test asserting generated `dist/index.html` reflects the shared
   dark editorial shell
 - integration test asserting the publication remains static-only and does not
@@ -102,6 +110,7 @@ artifacts to verify:
 - the homepage and at least one content page share the same dark editorial
   shell
 - link, metadata, and prose styling reflect the extracted predecessor signals
+- the page background feels layered rather than flat while staying static-only
 - existing routes and discovery surfaces remain intact
 - output remains deterministic and static-only
 

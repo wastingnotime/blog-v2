@@ -10,8 +10,8 @@ Current observed gap:
 
 - `blog-v2` now has working static routes, discovery surfaces, and search
   affordances
-- the shared renderer still emits a light serif shell that breaks continuity
-  with `../blog`
+- the shared renderer still reads a little too flat, even though the palette
+  is already dark
 - the predecessor's strongest stable style signals are shared-shell concerns,
   so the next slice should land at that boundary rather than page by page
 
@@ -31,6 +31,7 @@ is limited to site-wide styling emitted from the existing renderer:
 - shared CSS tokens move from a light-paper shell to a dark editorial shell
 - typography, links, metadata, borders, and prose surfaces shift at the shared
   renderer level
+- the background gains a subtle layered treatment instead of staying flat
 - all existing page routes continue to render through the same static builder
 
 ## Risks
