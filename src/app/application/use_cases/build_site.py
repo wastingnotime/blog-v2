@@ -1488,6 +1488,108 @@ def _render_legacy_sagas_page(
     )
 
 
+def _render_legacy_saga_page(
+    *,
+    saga_view: SagaView,
+    base_url: str,
+    footer_attribution: FooterAttribution,
+) -> str:
+    summary = saga_view.saga.summary
+    current_arc = saga_view.arcs[0] if saga_view.arcs else None
+    current_arc_latest = []
+    if current_arc is not None:
+        current_arc_latest = sorted(
+            (
+                entry
+                for entry in saga_view.timeline
+                if entry.arc_title == current_arc.title
+            ),
+            key=lambda entry: entry.number,
+        )[-3:]
+    current_arc_markup = ""
+    if current_arc is not None:
+        latest_links = []
+        for index, episode in enumerate(current_arc_latest):
+            separator = ""
+            if index > 0:
+                separator = "\n        , "
+            latest_links.append(
+                f'{separator}<a class="hover:underline" href="{_site_path(base_url, episode.permalink)}">Ep {episode.number:02d}</a>'
+            )
+        current_arc_markup = (
+            "    <section class=\"mb-5\">\n"
+            "        <h2 class=\"text-sm text-zinc-400 mb-1\">CURRENT ARC</h2>\n"
+            "        <div>\n"
+            f'            <a class="hover:underline" href="{_site_path(base_url, current_arc.permalink)}">[Arc] {html.escape(current_arc.title)}</a>\n'
+        )
+        if latest_links:
+            current_arc_markup += (
+                "\n                \n"
+                "                    <span class=\"text-zinc-500 text-xs\">— latest:\n"
+                "        \n"
+                f"            {latest_links[0]}\n"
+            )
+            for link in latest_links[1:]:
+                current_arc_markup += f"\n            {link}\n"
+            current_arc_markup += (
+                "      </span>\n"
+                "                \n"
+                "        </div>\n"
+                "    </section>\n"
+            )
+        else:
+            current_arc_markup += (
+                "\n            </div>\n"
+                "    </section>\n"
+            )
+
+    arcs_markup = "\n".join(
+        (
+            "            <li>\n"
+            f'                <a class="hover:underline" href="{_site_path(base_url, arc.permalink)}">[Arc] {html.escape(arc.title)}</a>\n'
+            f'                <span class="text-zinc-500 text-xs">— {arc.episode_count} eps; last {html.escape(arc.last_release_date or "n/a")}</span>\n'
+            "            </li>"
+        )
+        for arc in saga_view.arcs
+    )
+    timeline_markup = "\n".join(
+        (
+            "            <li>\n"
+            f'                <a class="hover:underline" href="{_site_path(base_url, entry.permalink)}">[Ep {entry.number:02d}] {html.escape(entry.title)}</a>\n'
+            f'                <span class="text-zinc-500 text-xs">— {html.escape(entry.arc_title)} / {html.escape(entry.date)}</span>\n'
+            "            </li>"
+        )
+        for entry in saga_view.timeline
+    )
+    return _render_legacy_blog_page(
+        title=f"{saga_view.saga.title} — saga",
+        h1_html=f"[Saga] {html.escape(saga_view.saga.title)}",
+        intro_html="",
+        section_html=(
+            f'    <p class="text-sm text-zinc-400 mb-4">{html.escape(summary)}</p>\n\n'
+            f"{current_arc_markup}\n"
+            "    \n"
+            "    <section>\n"
+            "        <h2 class=\"text-sm text-zinc-400 mb-2\">ARCS</h2>\n"
+            "        <ul class=\"space-y-1\">\n"
+            f"{arcs_markup}\n"
+            "        </ul>\n"
+            "    </section>\n"
+            "\n"
+            "    \n"
+            "        <section class=\"mt-6\">\n"
+            "            <h2 class=\"text-sm text-zinc-400 mb-2\">TIMELINE</h2>\n"
+            "            <ul class=\"space-y-1\">\n"
+            f"{timeline_markup}\n"
+            "            </ul>\n"
+            "        </section>\n"
+            "    \n"
+        ),
+        active_section="sagas",
+        footer_attribution=footer_attribution,
+    )
+
+
 def _render_legacy_studio_page(
     config: SiteConfig,
     footer_attribution: FooterAttribution,
@@ -1650,7 +1752,7 @@ def _render_legacy_blog_page(
         )
     nav_items.append('            <a href="/feed.xml">RSS</a>')
 
-    return (
+    rendered = (
         "\n    \n<!doctype html>\n"
         '<html lang="en">\n'
         "<head>\n"
@@ -1901,6 +2003,19 @@ def _render_legacy_blog_page(
         "</body>\n"
         "</html>\n"
     )
+    return _normalize_legacy_shell_spacing(rendered)
+
+
+def _normalize_legacy_shell_spacing(html_text: str) -> str:
+    lines = html_text.splitlines()
+    if len(lines) <= 2:
+        return html_text
+    prefix = lines[:2]
+    suffix = ["         " if not line.strip() else line for line in lines[2:]]
+    result = "\n".join(prefix + suffix)
+    if html_text.endswith("\n"):
+        result += "\n"
+    return result
 
 
 def _render_legacy_saga_summary(summary: SagaSummary, *, base_url: str) -> str:
