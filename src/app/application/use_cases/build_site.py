@@ -660,10 +660,11 @@ def build_search_page(
             "            })\n"
             "            .catch(() => {\n"
             "              searchStatus.textContent = 'Search index could not be loaded.';\n"
+            "              searchRecovery.className = 'search-load-recovery';\n"
             "              searchRecovery.replaceChildren();\n"
             "              const message = document.createElement('p');\n"
-            "              message.className = 'search-empty-recovery-message';\n"
-            "              message.textContent = 'Search is unavailable right now. Try these routes instead.';\n"
+            "              message.className = 'search-load-recovery-message';\n"
+            "              message.textContent = 'Search index is unavailable right now. Try these routes instead.';\n"
             "              searchRecovery.appendChild(message);\n"
             f"              searchRecovery.appendChild(createSearchRecoveryRow('the archives', {json.dumps(_absolute_url(config.base_url, '/archives/'))}));\n"
             f"              searchRecovery.appendChild(createSearchRecoveryRow('the library', {json.dumps(_absolute_url(config.base_url, '/library/'))}));\n"
@@ -1448,7 +1449,15 @@ def _render_document(
         margin: 0;
         padding: 0;
       }}
+      .search-load-recovery {{
+        margin: 0;
+        padding: 0;
+      }}
       .search-empty-recovery-message {{
+        margin: 0 0 0.75rem;
+        color: var(--text-400);
+      }}
+      .search-load-recovery-message {{
         margin: 0 0 0.75rem;
         color: var(--text-400);
       }}
