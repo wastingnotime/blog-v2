@@ -2,17 +2,17 @@
 
 ## Summary
 
-The next slice should add bounded color-scheme metadata so the generated static
+This slice adds bounded color-scheme metadata so the generated static
 publication makes its light-only browser-facing styling contract explicit in
 the shared document head.
 
-Current observed gap:
+Current observed contract:
 
-- generated pages now include theme-color, Apple mobile-web-app, and referrer
+- generated pages include theme-color, Apple mobile-web-app, and referrer
   metadata
-- the shared head still omits `meta name="color-scheme"`
-- the shared CSS already declares `color-scheme: light`, so the next gap is
-  explicit head metadata rather than a new visual system
+- the shared head includes `meta name="color-scheme"`
+- the shared CSS declares `color-scheme: light`, so the head metadata and CSS
+  agree on the same visual contract
 
 ## Impacted Areas
 
@@ -24,7 +24,7 @@ Current observed gap:
 ## Boundary Change
 
 The build gains no new routes or assets. The boundary change is limited to
-additional browser-facing metadata in generated HTML heads.
+browser-facing metadata already present in generated HTML heads.
 
 ## Risks
 
