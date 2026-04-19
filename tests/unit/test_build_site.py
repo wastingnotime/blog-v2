@@ -264,9 +264,11 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert 'href="https://example.com/library/"' in search_html
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
+    assert '<section class="library-discovery-shell">' in library_html
     assert "Other ways in" in library_html
     assert 'href="https://example.com/archives/"' in library_html
     assert 'href="https://example.com/search/"' in library_html
+    assert ".library-discovery-shell {" in library_html
     assert '<ul class="library-topic-list">' in library_html
     assert '<a class="topic-link" href="https://example.com/library/architecture/">#architecture</a>' in library_html
     assert '<a class="breadcrumb-link" href="https://example.com/library/">' in topic_html

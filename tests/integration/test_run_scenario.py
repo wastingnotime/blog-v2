@@ -448,10 +448,12 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "https://wastingnotime.org/search/" not in sitemap_xml
     assert "Topics" in library_html
     assert "The library is the fastest way to move by idea instead of chronology." in library_html
+    assert '<section class="library-discovery-shell">' in library_html
     assert 'class="site-nav-link active" aria-current="page">Library</a>' in library_html
     assert "Other ways in" in library_html
     assert 'href="https://wastingnotime.org/archives/"' in library_html
     assert 'href="https://wastingnotime.org/search/"' in library_html
+    assert ".library-discovery-shell {" in library_html
     assert '<ul class="library-topic-list">' in library_html
     assert '<a class="topic-link" href="https://wastingnotime.org/library/architecture/">#architecture</a>' in library_html
     assert _json_ld_payloads(library_html) == [

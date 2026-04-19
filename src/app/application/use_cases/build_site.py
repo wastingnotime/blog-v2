@@ -916,14 +916,14 @@ def build_library_page(
         f"{tag_markup}\n"
         "          </ul>\n"
         "        </section>\n"
-        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')))}"
+        f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')), section_class='library-discovery-shell')}"
         if library_catalog.tags
         else (
             "        <section>\n"
             f"{_render_markdown(section_page.body_markdown)}\n"
             "        </section>\n"
             "        <p>No tags available yet.</p>\n"
-            f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')))}"
+            f"{_render_discovery_surface(config.base_url, (('Browse the chronology', '/archives/'), ('Search across the publication', '/search/')), section_class='library-discovery-shell')}"
         )
     )
     return _render_document(
@@ -1609,6 +1609,10 @@ def _render_document(
         margin-top: 0.15rem;
         color: var(--text-400);
         font-size: 0.8rem;
+      }}
+      .library-discovery-shell {{
+        display: grid;
+        gap: 0.75rem;
       }}
       .studio-discovery-list {{
         list-style: none;
