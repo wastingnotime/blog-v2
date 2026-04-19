@@ -1047,6 +1047,9 @@ def build_content_page(
     page: Page,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time" and page.slug == "about":
+        return _render_legacy_about_page(footer_attribution)
+
     entry_metadata = project_page_metadata(page)
     return _render_document(
         config=config,
@@ -1258,6 +1261,9 @@ def build_library_page(
     section_page: SectionPage,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        return _render_legacy_library_page(config, library_catalog, footer_attribution)
+
     tag_markup = "\n".join(
         _render_library_tag(tag, base_url=config.base_url) for tag in library_catalog.tags
     )
@@ -1447,8 +1453,8 @@ def _render_legacy_sagas_page(
     )
     return _render_legacy_blog_page(
         title="sagas — work that moves forward in public",
-        h1="sagas — work that moves forward in public",
-        intro=(
+        h1_html=html.escape("sagas — work that moves forward in public"),
+        intro_html=html.escape(
             "Long-running efforts I'm building in public. Each saga is a problem I'm "
             "trying to solve in the real world, told as arcs and episodes — not theory, "
             "but actual work moving forward."
@@ -1475,8 +1481,8 @@ def _render_legacy_studio_page(
 ) -> str:
     return _render_legacy_blog_page(
         title="studio — building systems in public",
-        h1="studio — building systems in public",
-        intro=(
+        h1_html=html.escape("studio — building systems in public"),
+        intro_html=html.escape(
             "Parallel spaces evolving at their own pace. This is where I build in public "
             "— architecture, Go, experiments, and things that might become products."
         ),
@@ -1517,11 +1523,99 @@ def _render_legacy_studio_page(
     )
 
 
+def _render_legacy_about_page(footer_attribution: FooterAttribution) -> str:
+    return _render_legacy_blog_page(
+        title="The story behind wasting no time — architecture, focus, intent",
+        h1_html='The story behind <span class="text-zinc-100">wasting no time</span>',
+        intro_html=(
+            "Parallel sagas evolving at their own pace — each one a story of building, learning, and reflection.<br/>"
+            "I'm Henrique Riccio, a software engineer and architect who enjoys designing systems that age well. "
+            "<strong>wasting no time</strong> is where I build in public, write honestly about the work, and document what it costs to do things with intention."
+        ),
+        section_html=(
+            "    <main>\n"
+            "        <section class=\"page-body\">\n"
+            "\n"
+            "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">what this is</h3>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                <strong>wasting no time</strong> is a personal studio — part reflection, part laboratory. It’s where I document the process of building things that matter, and the ideas that appear between builds.\n"
+            "            </p>\n"
+            "\n"
+            "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">what you’ll find here</h3>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                Long-term efforts, technical notes, and reflections about focus, architecture, and the cost of clarity.\n"
+            "            </p>\n"
+            "\n"
+            "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">why “wasting no time”</h3>\n"
+            "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                The name isn’t about rushing — it’s about intention. Using time with purpose instead of letting others spend it for you.\n"
+            "            </p>\n"
+            "\n"
+            "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">connect</h3>\n"
+            "            <ul class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+            "                <li>GitHub: <a href=\"https://github.com/wastingnotime\">github.com/wastingnotime</a></li>\n"
+            "                <li>LinkedIn: <a href=\"https://linkedin.com/company/wastingnotime\">linkedin.com/company/wastingnotime</a></li>\n"
+            "                <li>Substack: <a href=\"https://wastingnotime.substack.com/\">wastingnotime.substack.com</a></li>\n"
+            "            </ul>\n"
+            "\n"
+            "        </section>\n"
+            "    </main>\n"
+        ),
+        active_section="about",
+        footer_attribution=footer_attribution,
+    )
+
+
+def _render_legacy_library_page(
+    config: SiteConfig,
+    library_catalog: LibraryCatalog,
+    footer_attribution: FooterAttribution,
+) -> str:
+    tag_markup = "\n".join(
+        "                <li>\n"
+        f'                    <a class="topic-link block border border-zinc-800 rounded px-3 py-2 text-zinc-100 transition-colors" href="{_site_path(config.base_url, f"/library/{tag}/")}">\n'
+        f"                        #{html.escape(tag)}\n"
+        "                    </a>\n"
+        "                </li>"
+        for tag in library_catalog.tags
+    )
+    section_html = (
+        "    <main>\n"
+        "        <section>\n"
+        "            <ul class=\"grid gap-2 sm:grid-cols-2\">\n"
+        f"{tag_markup}\n"
+        "            </ul>\n"
+        "        </section>\n"
+        "    </main>\n"
+        if library_catalog.tags
+        else (
+            "    <main>\n"
+            "        <section>\n"
+            "            <p class=\"text-sm text-zinc-500 leading-relaxed\">\n"
+            "                No tags available yet. Add <code>tags</code> to your content to populate this page.\n"
+            "            </p>\n"
+            "        </section>\n"
+            "    </main>\n"
+        )
+    )
+    return _render_legacy_blog_page(
+        title="library — an index of ideas and implementation notes",
+        h1_html=html.escape("library — an index of ideas and implementation notes"),
+        intro_html=(
+            "A living index. Pick a topic and you’ll see every post, every saga episode, and every note I’ve published that touches that idea. "
+            "This is how to navigate depth without scrolling chronologically forever."
+        ),
+        section_html=section_html,
+        active_section="library",
+        footer_attribution=footer_attribution,
+    )
+
+
 def _render_legacy_blog_page(
     *,
     title: str,
-    h1: str,
-    intro: str,
+    h1_html: str,
+    intro_html: str,
     section_html: str,
     active_section: str,
     footer_attribution: FooterAttribution,
@@ -1666,10 +1760,10 @@ def _render_legacy_blog_page(
         '        <nav class="menu text-sm text-zinc-400">\n'
         f"{chr(10).join(nav_items)}\n"
         "        </nav>\n\n"
-        f'        <h1 class="mt-3 text-xl tracking-tight text-zinc-300">{html.escape(h1)}</h1>\n'
+        f'        <h1 class="mt-3 text-xl tracking-tight text-zinc-300">{h1_html}</h1>\n'
         "    </header>\n\n"
         '    <p class="intro text-base text-zinc-200 leading-relaxed mb-8">\n'
-        f"{html.escape(intro)}\n"
+        f"{intro_html}\n"
         "    </p>\n\n"
         f"{section_html}\n"
         '    <footer class="mt-10 text-xs text-zinc-500">\n'

@@ -328,25 +328,15 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "<loc>https://wastingnotime.org/library/architecture/</loc>" in sitemap_xml
     assert "<lastmod>2025-11-14</lastmod>" in sitemap_xml
     assert "https://wastingnotime.org/search/" not in sitemap_xml
-    assert "Topics" in library_html
-    assert "The library is the fastest way to move by idea instead of chronology." in library_html
-    assert 'class="site-nav-link active" aria-current="page">LIBRARY</a>' in library_html
-    assert "Other ways in" in library_html
-    assert 'href="/archives/"' in library_html
-    assert 'href="/search/"' in library_html
-    assert '<ul class="library-topic-list">' in library_html
-    assert '<a class="topic-link" href="/library/architecture/">#architecture</a>' in library_html
-    assert _json_ld_payloads(library_html) == [
-        {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Library",
-            "description": (
-                "Full index of all sagas, arcs, and episodes."
-            ),
-            "url": "https://wastingnotime.org/library/",
-        }
-    ]
+    assert "library — an index of ideas and implementation notes" in library_html
+    assert "A living index. Pick a topic and you’ll see every post, every saga episode, and every note I’ve published that touches that idea." in library_html
+    assert '<a class="active" href="/library/">LIBRARY</a>' in library_html
+    assert 'href="/archives/"' not in library_html
+    assert 'href="/search/"' not in library_html
+    assert '<ul class="grid gap-2 sm:grid-cols-2">' in library_html
+    assert '<a class="topic-link block border border-zinc-800 rounded px-3 py-2 text-zinc-100 transition-colors" href="/library/architecture/">' in library_html
+    assert "#architecture" in library_html
+    assert _json_ld_payloads(library_html) == []
     assert '<ul class="topic-entry-list">' in topic_html
     assert '<a class="breadcrumb-link" href="/library/">' in topic_html
     assert '<a class="topic-entry-link" href="/about/">[page] About</a>' in topic_html
@@ -421,49 +411,18 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".arc-episode-meta {" in arc_html
     assert "Every system begins with a question: <em>why does this exist?</em>" in arc_html
     assert _json_ld_payloads(arc_html) == []
-    assert "Why this site exists, what you’ll find here, and how to reach me." in about_html
-    assert 'class="site-nav-link active" aria-current="page">ABOUT</a>' in about_html
+    assert 'The story behind <span class="text-zinc-100">wasting no time</span>' in about_html
+    assert '<a class="active" href="/about/">ABOUT</a>' in about_html
+    assert "Parallel sagas evolving at their own pace" in about_html
+    assert "<h3 class=\"text-lg text-zinc-100 font-normal mb-1\">what this is</h3>" in about_html
+    assert "<h3 class=\"text-lg text-zinc-100 font-normal mb-1\">what you’ll find here</h3>" in about_html
+    assert "<h3 class=\"text-lg text-zinc-100 font-normal mb-1\">why “wasting no time”</h3>" in about_html
+    assert "<h3 class=\"text-lg text-zinc-100 font-normal mb-1\">connect</h3>" in about_html
     assert 'href="/feed.xml"' in about_html
-    assert 'rel="alternate" type="application/rss+xml" title="Wasting No Time RSS" href="/feed.xml"' in about_html
-    assert '<meta property="og:title" content="About" />' in about_html
-    assert (
-        '<meta property="og:description" content="Why this site exists, what you’ll find here, and how to reach me." />'
-        in about_html
-    )
-    assert '<meta property="og:url" content="https://wastingnotime.org/about/" />' in about_html
-    assert '<meta property="og:type" content="website" />' in about_html
-    assert '<meta property="og:image" content="/social-preview.png" />' in about_html
-    assert '<meta name="apple-mobile-web-app-title" content="Wasting No Time" />' in about_html
-    assert '<meta name="twitter:card" content="summary" />' in about_html
-    assert '<meta name="twitter:title" content="About" />' in about_html
-    assert (
-        '<meta name="twitter:description" content="Why this site exists, what you’ll find here, and how to reach me." />'
-        in about_html
-    )
-    assert '<meta name="twitter:url" content="https://wastingnotime.org/about/" />' in about_html
-    assert '<meta name="twitter:image" content="/social-preview.png" />' in about_html
-    about_structured_data = _json_ld_payloads(about_html)
-    assert len(about_structured_data) == 1
-    assert about_structured_data[0]["@context"] == "https://schema.org"
-    assert about_structured_data[0]["@type"] == "Article"
-    assert about_structured_data[0]["headline"] == "About"
-    assert about_structured_data[0]["description"] == (
-        "Why this site exists, what you’ll find here, and how to reach me."
-    )
-    assert about_structured_data[0]["datePublished"] == "2025-10-25"
-    assert about_structured_data[0]["url"] == "https://wastingnotime.org/about/"
-    assert "(c) 2025 wastingnotime.org - published as a static site" in about_html
-    assert "1 min read" in about_html
-    assert "homepage, saga index, library, archive, and search surfaces" in about_html
-    assert "how to reach me" in about_html
-    assert 'href="/archives/"' in about_html
-    assert 'href="/search/"' in about_html
-    assert 'href="/library/architecture/"' in about_html
-    assert '<span class="entry-tags">' in about_html
-    assert '<a class="entry-tag-chip" href="/library/architecture/">#architecture</a>' in about_html
-    assert '<a class="entry-tag-chip" href="/library/writing/">#writing</a>' in about_html
-    assert ".entry-tags {" in about_html
-    assert ".entry-tag-chip {" in about_html
+    assert '<meta property="og:title"' not in about_html
+    assert '<meta name="twitter:title"' not in about_html
+    assert _json_ld_payloads(about_html) == []
+    assert "© 2025 wastingnotime.org — built with Go" in about_html
     assert 'href="/favicon-32x32.png"' in about_html
     assert "studio — building systems in public" in studio_html
     assert "Parallel spaces evolving at their own pace." in studio_html
