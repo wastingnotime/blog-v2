@@ -710,9 +710,9 @@ def build_episode_page(
         f"Episode {episode.number}"
     )
     parent_navigation = (
-        f'        <nav class="breadcrumbs"><a href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/")}">'
-        f"{html.escape(episode.saga_title)}</a> / "
-        f'<a href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">'
+        f'        <nav class="breadcrumbs"><a class="breadcrumb-link" href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/")}">'
+        f"{html.escape(episode.saga_title)}</a> <span class=\"breadcrumb-separator\">/</span> "
+        f'<a class="breadcrumb-link" href="{_absolute_url(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">'
         f"{html.escape(episode.arc_title)}</a></nav>"
     )
     previous_episode = arc_view.previous_episode[episode.slug]
@@ -1470,7 +1470,17 @@ def _render_document(
         font-weight: 400;
       }}
       .breadcrumbs {{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem;
         margin-bottom: 1rem;
+        color: var(--text-400);
+      }}
+      .breadcrumb-link {{
+        color: var(--text-400);
+      }}
+      .breadcrumb-separator {{
         color: var(--text-400);
       }}
       .entry-meta {{
@@ -1491,6 +1501,17 @@ def _render_document(
         margin-top: 2rem;
         padding-top: 1rem;
         border-top: 1px solid var(--line);
+      }}
+      .nav-grid a {{
+        color: var(--text-100);
+      }}
+      .adjacent-nav-link {{
+        display: inline-block;
+        max-width: 24rem;
+      }}
+      .adjacent-nav-link.next {{
+        margin-left: auto;
+        text-align: right;
       }}
       article {{
         margin-top: 2rem;
@@ -1924,18 +1945,18 @@ def _render_adjacent_navigation(
     next_episode: object,
     base_url: str,
 ) -> str:
-    previous_markup = "<span></span>"
-    next_markup = "<span></span>"
+    previous_markup = '<span class="adjacent-nav-spacer"></span>'
+    next_markup = '<span class="adjacent-nav-spacer"></span>'
 
     if previous_episode is not None:
         previous_markup = (
-            f'<a href="{_absolute_url(base_url, previous_episode.permalink)}">'
+            f'<a class="adjacent-nav-link previous" href="{_absolute_url(base_url, previous_episode.permalink)}">'
             f"&larr; Ep {previous_episode.number:02d} {html.escape(previous_episode.title)}</a>"
         )
 
     if next_episode is not None:
         next_markup = (
-            f'<a href="{_absolute_url(base_url, next_episode.permalink)}">'
+            f'<a class="adjacent-nav-link next" href="{_absolute_url(base_url, next_episode.permalink)}">'
             f"Ep {next_episode.number:02d} {html.escape(next_episode.title)} &rarr;</a>"
         )
 

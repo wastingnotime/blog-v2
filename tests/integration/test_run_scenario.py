@@ -569,6 +569,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert 'href="https://wastingnotime.org/archives/"' in episode_html
     assert 'href="https://wastingnotime.org/search/"' in episode_html
     assert "Other ways in" in episode_html
+    assert '<a class="breadcrumb-link" href="https://wastingnotime.org/sagas/hireflow/">' in episode_html
+    assert '<span class="breadcrumb-separator">/</span>' in episode_html
+    assert '<a class="breadcrumb-link" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/">' in episode_html
     assert 'href="https://wastingnotime.org/favicon-16x16.png"' in episode_html
     assert '<meta property="og:title" content="The First Brick" />' in episode_html
     assert (
@@ -607,6 +610,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         "https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/the-first-brick/"
     )
     assert "Ep 02 Second Iteration" in episode_html
+    assert 'class="adjacent-nav-link next" href="https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/second-iteration/"' in episode_html
+    assert ".breadcrumb-link {" in episode_html
+    assert ".breadcrumb-separator {" in episode_html
+    assert ".adjacent-nav-link {" in episode_html
+    assert ".adjacent-nav-link.next {" in episode_html
     assert "/api/event" not in episode_html
     assert (output_dir / "favicon.ico").read_bytes() == (
         identity_assets_dir / "favicon.ico"
