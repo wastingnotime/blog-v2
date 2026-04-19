@@ -161,7 +161,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert '<p id="search-helper">Type to filter the static index published with the site.</p>' in search_html
     assert 'aria-describedby="search-helper search-status"' in search_html
     assert 'aria-description="Search titles, summaries, and topics."' in search_html
-    assert '<button type="submit">Search</button>' in search_html
+    assert '<button class="search-submit-button" type="submit">Search</button>' in search_html
     assert 'type="search"' in search_html
     assert 'name="q"' in search_html
     assert "<noscript>" in search_html
@@ -227,6 +227,7 @@ def test_build_static_site_generates_library_and_topic_pages() -> None:
     assert ".search-result-list {" in search_html
     assert ".search-page-shell {" in search_html
     assert ".search-query-label {" in search_html
+    assert 'class="search-submit-button"' in search_html
     assert ".visually-hidden {" in search_html
     assert ".search-result-item {" in search_html
     assert ".search-result-header {" in search_html

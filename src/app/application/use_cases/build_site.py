@@ -450,7 +450,7 @@ def build_search_page(
             f'          <form id="search-form" method="get" action="{search_action_url}">\n'
             '            <label class="search-query-label" for="search-query">Search query</label>\n'
             '            <input class="search-query-input" id="search-query" name="q" type="search" placeholder="Search titles, summaries, and topics" autocomplete="off" aria-describedby="search-helper search-status" aria-description="Search titles, summaries, and topics." />\n'
-            '            <button type="submit">Search</button>\n'
+            '            <button class="search-submit-button" type="submit">Search</button>\n'
             "          </form>\n"
             "          <noscript>\n"
             "            <div class=\"search-noscript-recovery\">\n"
