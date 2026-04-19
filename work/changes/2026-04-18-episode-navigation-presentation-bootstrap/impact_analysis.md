@@ -10,7 +10,8 @@ Current observed gap:
 
 - episode pages already have the right breadcrumb destinations and previous/next
   relationships
-- those local navigation controls still render through plain inline links
+- those local navigation controls still render through a plain breadcrumb row
+  and a generic adjacent-nav container
 - the publication therefore feels less intentional at the exact point where a
   reader moves within an arc
 
@@ -25,8 +26,9 @@ Current observed gap:
 The build gains no new route, runtime, or sequence rule. The boundary change is
 limited to presentation on episode routes:
 
-- breadcrumb links get explicit crumb hooks
-- previous and next episode links get explicit adjacent-nav hooks
+- breadcrumb links get explicit crumb-row hooks inside an episode-only shell
+- previous and next episode links get explicit adjacent-nav hooks inside an
+  episode-only shell
 - current sequencing, labels, numbering, and discovery links remain unchanged
 
 ## Risks

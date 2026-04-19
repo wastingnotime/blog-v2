@@ -24,17 +24,17 @@ Recent slices refined section hubs, search, discovery surfaces, and saga-level
 navigation so route movement reads through explicit row contracts. Episode
 pages still have one visible gap:
 
-- breadcrumbs render as plain inline links
-- previous and next episode navigation renders as plain links inside a generic
-  nav container
+- breadcrumbs render as plain inline links inside a generic navigation shell
+- previous and next episode navigation renders as plain links inside the same
+  generic shell
 - the episode page therefore works functionally, but its local navigation feels
   less deliberate than the rest of the publication
 
 This slice restores the minimum continuity needed for the current publication:
 
-- render episode breadcrumbs through explicit crumb hooks
-- render previous and next episode navigation through explicit adjacent-nav
-  hooks
+- render episode breadcrumbs through an explicit breadcrumb-row shell
+- render previous and next episode navigation through a dedicated adjacent-nav
+  shell
 - preserve current destinations, labels, numbering, and route behavior
 
 This slice does not attempt to change episode ordering, add new destinations,
@@ -47,8 +47,10 @@ or redesign the narrative model.
 Given the existing episode and arc view, render deterministic local navigation
 markup such that:
 
-- breadcrumbs have explicit presentation hooks for the saga and arc path
+- breadcrumbs have explicit presentation hooks for the saga and arc path and
+  appear in their own compact row
 - previous and next episode links render through explicit adjacent-nav hooks
+  inside a dedicated nav shell
 - empty previous or next slots remain structurally stable without inventing new
   destinations
 
@@ -69,6 +71,8 @@ site output such that:
   route logic changes.
 - Existing breadcrumb and previous/next episode relationships remain the source
   of truth.
+- The breadcrumb row and adjacent-nav shell should remain episode-only and not
+  bleed into arc or saga pages.
 - Static-hosting compatibility remains a hard constraint.
 
 ## Required Ports
@@ -99,6 +103,6 @@ episode routes to verify:
 
 - episode breadcrumbs render through explicit presentation hooks
 - previous and next episode navigation render through explicit presentation
-  hooks
+  hooks inside an episode-only shell
 - current episode sequencing and discovery behavior remain unchanged
 - deterministic tests cover the bounded navigation-presentation refinement
