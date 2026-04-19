@@ -120,6 +120,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         '<a href="https://wastingnotime.org/library/">Library</a></p>'
         in homepage_html
     )
+    assert '<section class="homepage-discovery-shell">' in homepage_html
     assert '<h2 class="section-label">RECENT</h2>' in homepage_html
     assert '<h2 class="section-label">SAGAS</h2>' in homepage_html
     assert '<h2 class="section-label">LIBRARY</h2>' in homepage_html
@@ -180,6 +181,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert ".homepage-saga-row {" in homepage_html
     assert ".homepage-saga-status {" in homepage_html
     assert ".homepage-paths {" in homepage_html
+    assert ".homepage-discovery-shell {" in homepage_html
     assert ".section-label {" in homepage_html
     assert ".site-nav-link.active::after {" in homepage_html
     assert "article pre {" in homepage_html

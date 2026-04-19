@@ -306,7 +306,7 @@ def build_homepage(
             base_url=config.base_url,
         ),
         body_html=(
-            "        <section>\n"
+            "        <section class=\"homepage-discovery-shell\">\n"
             "          <p class=\"homepage-intro\">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>\n"
             f'          <p class="homepage-paths"><a href="{_absolute_url(config.base_url, "/search/")}">Search</a> / <a href="{_absolute_url(config.base_url, "/archives/")}">Archives</a> / <a href="{_absolute_url(config.base_url, "/library/")}">Library</a></p>\n'
             "        </section>\n"
@@ -1209,6 +1209,10 @@ def _render_document(
         font-size: 0.8rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
+      }}
+      .homepage-discovery-shell {{
+        display: grid;
+        gap: 0.75rem;
       }}
       .homepage-paths a {{
         color: var(--text-400);

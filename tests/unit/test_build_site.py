@@ -438,6 +438,7 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert "Architecture, focus, and growth in public." in html
     assert "Experiments in architecture, focus, and growth, built in public one saga at a time." in html
     assert "This site tracks architecture decisions" not in html
+    assert '<section class="homepage-discovery-shell">' in html
     assert '<p class="homepage-intro">Experiments in architecture, focus, and growth, built in public one saga at a time.</p>' in html
     assert 'href="https://example.com/search/"' in html
     assert 'href="https://example.com/archives/"' in html
@@ -446,6 +447,7 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert '<h2 class="section-label">LIBRARY</h2>' in html
     assert '<a class="homepage-link" href="https://example.com/sagas/hireflow/">HireFlow</a>' in html
     assert "2 episodes - last release 2026-04-13 - in-progress" in html
+    assert ".homepage-discovery-shell {" in html
     assert "Deployment target:" not in html
 
 
