@@ -289,7 +289,7 @@ def test_build_static_site_refines_homepage_editorial_surface() -> None:
     assert '<small class="homepage-meta">2026-04-13 · HireFlow / The Origin Blueprint</small>' in html
     assert '<a class="homepage-link" href="/sagas/hireflow/the-origin-blueprint/second-iteration/">[episode] Second Iteration</a>' in html
     assert '<p class="homepage-summary">Follow-up work.</p>' in html
-    assert '<small class="homepage-saga-status">2 episodes - last release 2026-04-13 - in-progress</small>' in html
+    assert '<small class="homepage-saga-status">— 2 episodes; last release 2026-04-13; in-progress</small>' in html
     assert "<h2>In Public</h2>" not in html
     assert "<h2>Active Sagas</h2>" not in html
 
@@ -433,7 +433,7 @@ def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -
     assert '<h2 class="section-label">RECENT</h2>' in html
     assert '<h2 class="section-label">SAGAS</h2>' in html
     assert '<a class="homepage-link" href="/sagas/hireflow/">HireFlow</a>' in html
-    assert "2 episodes - last release 2026-04-13 - in-progress" in html
+    assert "— 2 episodes; last release 2026-04-13; in-progress" in html
     assert "Deployment target:" not in html
     assert "recent entries shown" not in html
 

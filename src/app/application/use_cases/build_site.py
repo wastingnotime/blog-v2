@@ -1231,13 +1231,9 @@ def _render_document(
         font-size: 0.92rem;
         line-height: 1.6;
       }}
-      .homepage-saga-row {{
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 0.45rem;
-      }}
       .homepage-saga-status {{
+        display: block;
+        margin-top: 0.25rem;
         color: var(--muted);
         font-size: 0.8rem;
       }}
@@ -2083,11 +2079,8 @@ def _render_homepage_saga_summary(
 
     return (
         "          <li>\n"
-        '            <div class="homepage-saga-row">\n'
-            f'              <a class="homepage-link" href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
-        f'              <small class="homepage-saga-status">{html.escape(" - ".join(status_parts))}</small>\n'
-        "            </div>\n"
-        f'            <p class="homepage-summary">{html.escape(summary.summary)}</p>\n'
+        f'            <a class="homepage-link" href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+        f'            <small class="homepage-saga-status">— {html.escape("; ".join(status_parts))}</small>\n'
         "          </li>"
     )
 
