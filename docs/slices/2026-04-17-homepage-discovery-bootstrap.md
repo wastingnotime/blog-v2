@@ -18,7 +18,8 @@ Deterministic homepage discovery update for the expanded publication surface:
   reading paths
 - add bounded affordances for Search and Archives alongside the existing saga
   and library guidance
-- keep the slice limited to homepage discovery copy and links
+- keep the slice limited to homepage discovery copy, links, and a stable shell
+  hook
 
 ## Discovery Scope
 
@@ -44,6 +45,7 @@ current publication:
   paths
 - add direct homepage affordances for `/archives/` and `/search/`
 - preserve the existing recent-content and active-saga structure
+- expose the discovery block through a stable page-shell class
 
 This slice does not attempt a broader homepage redesign, new projections,
 visual-system overhaul, or richer search/archive behavior.
@@ -70,6 +72,7 @@ bounded discovery content such that:
 - chronology, topic browsing, narrative browsing, and search are all visibly
   represented
 - existing recent-entry and saga-summary sections remain intact
+- the discovery block uses a stable shell hook
 
 ## Main Business Rules
 
