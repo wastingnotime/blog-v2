@@ -65,9 +65,12 @@ from src.app.application.use_cases.project_section_hubs import project_sagas_ind
 from src.app.application.use_cases.legacy_arc_pages import render_legacy_arc_page
 from src.app.application.use_cases.legacy_saga_pages import render_legacy_saga_page
 from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
-
-LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parent / "legacy_homepage.html"
-LEGACY_BLOG_SAGAS_SNAPSHOT = Path(__file__).resolve().parent / "legacy_sagas.html"
+from src.app.application.use_cases.legacy_homepage_render import (
+    render_legacy_homepage as render_legacy_homepage_snapshot,
+)
+from src.app.application.use_cases.legacy_sagas_render import (
+    render_legacy_sagas_page as render_legacy_sagas_page_snapshot,
+)
 
 IDENTITY_ASSET_LINKS: tuple[tuple[str, str, str | None], ...] = (
     ("icon", "/favicon.ico", None),
@@ -295,7 +298,7 @@ def build_homepage(
     footer_attribution: FooterAttribution,
 ) -> str:
     if config.title == "Wasting No Time":
-        return LEGACY_BLOG_HOME_SNAPSHOT.read_text(encoding="utf-8")
+        return render_legacy_homepage_snapshot()
 
     recent_items = homepage_surface.recent_entries
     recent_markup = "\n".join(
@@ -348,7 +351,7 @@ def _render_legacy_homepage(
     )
     saga_markup = "\n".join(_render_legacy_home_saga_item(item) for item in saga_items)
     return (
-        "<!doctype html>\n"
+        "\n    \n<!doctype html>\n"
         '<html lang="en">\n'
         "<head>\n"
         '    <meta charset="utf-8" />\n'
@@ -363,7 +366,7 @@ def _render_legacy_homepage(
         "    <style>\n"
         "        html { font-kerning: normal; }\n"
         "\n"
-        "        /* nav links and normal links should look the same */\n"
+        "          \n"
         "        .menu a {\n"
         "            color:#a1a1aa;\n"
         "            text-decoration:none;\n"
@@ -384,7 +387,7 @@ def _render_legacy_homepage(
         "            font-weight:400;\n"
         "        }\n"
         "\n"
-        "        /* global link style */\n"
+        "          \n"
         "        a {\n"
         "            color:#a1a1aa;\n"
         "            text-decoration:none;\n"
@@ -395,19 +398,19 @@ def _render_legacy_homepage(
         "            text-decoration:underline;\n"
         "        }\n"
         "\n"
-        "        /* remove bullets / left padding across lists */\n"
+        "          \n"
         "        ul {\n"
         "            list-style:none;\n"
         "            padding-left:0;\n"
         "            margin:0;\n"
         "        }\n"
         "\n"
-        "        /* hide empty intro paragraphs */\n"
+        "          \n"
         "        .intro:empty {\n"
         "            display:none;\n"
         "        }\n"
         "\n"
-        "        /* utility fallbacks for pages that rely on spacing in lists */\n"
+        "          \n"
         "        .space-y-1 > * + * { margin-top: .25rem; }\n"
         "        .space-y-2 > * + * { margin-top: .5rem; }\n"
         "        .space-y-3 > * + * { margin-top: .75rem; }\n"
@@ -455,8 +458,8 @@ def _render_legacy_homepage(
         "            text-decoration:underline;\n"
         "        }\n"
         "\n"
-        "         \n"
-        "         \n"
+        "          \n"
+        "          \n"
         "\n"
         "         .prose {\n"
         "             max-width: none;\n"
@@ -621,7 +624,7 @@ def _render_legacy_homepage(
         "    </footer>\n"
         "</div>\n"
         "</body>\n"
-        "</html>\n"
+        "</html>\n\n"
     )
 
 
@@ -1570,8 +1573,8 @@ def _render_legacy_sagas_page(
     sagas_index: SagasIndex,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if config.title == "Wasting No Time" and LEGACY_BLOG_SAGAS_SNAPSHOT.exists():
-        return LEGACY_BLOG_SAGAS_SNAPSHOT.read_text(encoding="utf-8")
+    if config.title == "Wasting No Time":
+        return render_legacy_sagas_page_snapshot()
     saga_markup = "\n".join(
         _render_legacy_saga_summary(summary, base_url=config.base_url)
         for summary in sagas_index.sagas
