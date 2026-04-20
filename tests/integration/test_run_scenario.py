@@ -377,7 +377,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta property="og:title"' not in about_html
     assert '<meta name="twitter:title"' not in about_html
     assert _json_ld_payloads(about_html) == []
-    assert "© 2025 blog.wastingnotime.org — built with Go" in about_html
+    assert "© 2026 wastingnotime.org — built with custom python static renderer" in about_html
     assert 'href="/favicon-32x32.png"' in about_html
     assert "studio — building systems in public" in studio_html
     assert "Parallel spaces evolving at their own pace." in studio_html

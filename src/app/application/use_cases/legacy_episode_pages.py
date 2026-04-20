@@ -4499,4 +4499,13 @@ Tag <strong>v0.2.0-e05-trivia-duel</strong><br>
 
 def render_legacy_episode_page(permalink: str) -> str:
     key = permalink.strip("/")
-    return LEGACY_EPISODE_HTML[key].removeprefix("\n").rstrip() + "\n\n"
+    return (
+        LEGACY_EPISODE_HTML[key]
+        .replace(
+            "© 2025 blog.wastingnotime.org — built with Go",
+            "© 2026 wastingnotime.org — built with custom python static renderer",
+        )
+        .removeprefix("\n")
+        .rstrip()
+        + "\n\n"
+    )

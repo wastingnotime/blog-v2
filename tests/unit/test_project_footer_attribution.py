@@ -10,7 +10,7 @@ def test_project_footer_attribution_uses_latest_publication_year() -> None:
 
     assert attribution.year == "2026"
     assert attribution.site_name == "example.com"
-    assert attribution.tagline == "published as a static site"
+    assert attribution.tagline == "built with custom python static renderer"
 
 
 def test_project_footer_attribution_falls_back_when_catalog_is_empty() -> None:

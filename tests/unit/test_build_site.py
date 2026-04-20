@@ -425,9 +425,9 @@ def test_build_static_site_adds_shared_navigation_and_active_section() -> None:
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="/opensearch.xml"' in home_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="/opensearch.xml"' in about_html
     assert 'rel="search" type="application/opensearchdescription+xml" title="Example Search" href="/opensearch.xml"' in saga_html
-    assert "(c) 2026 example.com - published as a static site" in home_html
-    assert "(c) 2026 example.com - published as a static site" in about_html
-    assert "(c) 2026 example.com - published as a static site" in saga_html
+    assert "(c) 2026 example.com - built with custom python static renderer" in home_html
+    assert "(c) 2026 example.com - built with custom python static renderer" in about_html
+    assert "(c) 2026 example.com - built with custom python static renderer" in saga_html
 
 
 def test_build_static_site_renders_editorial_homepage_instead_of_status_card() -> None:

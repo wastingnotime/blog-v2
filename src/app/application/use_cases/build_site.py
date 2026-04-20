@@ -1130,7 +1130,7 @@ def _render_legacy_topic_page(
         for entry in topic_page.entries
     )
     legacy_footer = FooterAttribution(
-        year="2025",
+        year=footer_attribution.year,
         site_name="wastingnotime.org",
         tagline=footer_attribution.tagline,
     )
@@ -1687,7 +1687,7 @@ def _render_legacy_blog_page(
         "    </p>\n\n"
         f"{section_html}\n"
         '    <footer class="mt-10 text-xs text-zinc-500">\n'
-        f"        © {footer_attribution.year} {footer_attribution.site_name} — built with Go\n"
+        f"        © {footer_attribution.year} {footer_attribution.site_name} — {footer_attribution.tagline}\n"
         "    </footer>\n"
         "</div>\n"
         "</body>\n"

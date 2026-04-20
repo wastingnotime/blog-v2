@@ -641,4 +641,13 @@ LEGACY_ARC_HTML = {
 
 def render_legacy_arc_page(saga_slug: str, arc_slug: str) -> str:
     lookup_key = f"{saga_slug.replace('-', '_')}/{arc_slug.replace('-', '_')}"
-    return LEGACY_ARC_HTML[lookup_key].removeprefix("\n").rstrip() + "\n\n"
+    return (
+        LEGACY_ARC_HTML[lookup_key]
+        .replace(
+            "© 2025 blog.wastingnotime.org — built with Go",
+            "© 2026 wastingnotime.org — built with custom python static renderer",
+        )
+        .removeprefix("\n")
+        .rstrip()
+        + "\n\n"
+    )

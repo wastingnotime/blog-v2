@@ -695,4 +695,13 @@ LEGACY_SAGA_HTML = {
 
 def render_legacy_saga_page(slug: str) -> str:
     lookup_key = slug.replace("-", "_")
-    return LEGACY_SAGA_HTML[lookup_key].removeprefix("\n").rstrip() + "\n\n"
+    return (
+        LEGACY_SAGA_HTML[lookup_key]
+        .replace(
+            "© 2025 blog.wastingnotime.org — built with Go",
+            "© 2026 wastingnotime.org — built with custom python static renderer",
+        )
+        .removeprefix("\n")
+        .rstrip()
+        + "\n\n"
+    )
