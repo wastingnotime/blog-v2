@@ -22,6 +22,19 @@ def test_project_footer_attribution_falls_back_when_catalog_is_empty() -> None:
     assert attribution.year == "1970"
 
 
+def test_project_footer_attribution_uses_brand_name_for_localhost() -> None:
+    attribution = project_footer_attribution(
+        SiteConfig(
+            title="Wasting No Time",
+            description="Static site",
+            base_url="http://localhost:8080/",
+        ),
+        _catalog(),
+    )
+
+    assert attribution.site_name == "wastingnotime.org"
+
+
 def _site_config() -> SiteConfig:
     return SiteConfig(
         title="Example",

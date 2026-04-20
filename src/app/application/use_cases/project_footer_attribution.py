@@ -29,7 +29,9 @@ def project_footer_attribution(
 
 def _site_name_from_base_url(base_url: str) -> str:
     parsed = urlparse(base_url)
-    netloc = parsed.netloc or base_url.rstrip("/")
-    if "wastingnotime.org" in netloc:
+    hostname = parsed.hostname or parsed.netloc or base_url.rstrip("/")
+    if hostname in {"localhost", "127.0.0.1", "::1"}:
         return "wastingnotime.org"
-    return netloc
+    if "wastingnotime.org" in (parsed.netloc or hostname):
+        return "wastingnotime.org"
+    return parsed.netloc or hostname
