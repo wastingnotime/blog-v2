@@ -59,12 +59,8 @@ Build-time configuration is optional:
 - `SITE_TITLE`
 - `SITE_DESCRIPTION`
 - `SITE_BASE_URL` - canonical URL used by generated links, feeds, and sitemap output
-- `ANALYTICS_PROVIDER`
-- `PLAUSIBLE_DOMAIN`
-- `PLAUSIBLE_SCRIPT_URL`
-- `PLAUSIBLE_API_HOST`
 
-If analytics variables are omitted, the site is built with analytics disabled.
+The default site build does not require any analytics configuration.
 
 ## Migration Context
 
