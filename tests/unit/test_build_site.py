@@ -315,7 +315,7 @@ def test_build_static_site_generates_section_hub_pages() -> None:
         SiteConfig(
             title="Wasting No Time",
             description="blog-v2 starts from a simpler contract: static output, GitHub Pages deployment, and no first-party /api dependency.",
-            base_url="https://wastingnotime.org/",
+            base_url="https://blog.wastingnotime.org/",
         ),
         _catalog(),
     )

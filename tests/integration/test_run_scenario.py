@@ -110,7 +110,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     ).read_text(encoding="utf-8")
 
     assert nojekyll == "\n"
-    assert cname == "wastingnotime.org\n"
+    assert cname == "blog.wastingnotime.org\n"
     assert homepage_html == render_legacy_homepage()
     assert '<meta name="robots" content="index,follow" />' not in homepage_html
     assert '<meta name="robots" content="noindex,follow" />' in not_found_html
@@ -155,7 +155,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
             "@type": "WebPage",
             "name": "Archives",
             "description": "Chronological archive of published writing and saga episodes.",
-            "url": "https://wastingnotime.org/archives/",
+            "url": "https://blog.wastingnotime.org/archives/",
         }
     ]
     assert "Search the publication" in search_html
@@ -261,7 +261,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "projectSearchUrlState(event.target.value);" in search_html
     assert '<meta name="robots" content="noindex,follow" />' in search_html
     assert '<meta name="robots" content="index,follow" />' not in search_html
-    assert '<link rel="canonical" href="https://wastingnotime.org/search/" />' in search_html
+    assert '<link rel="canonical" href="https://blog.wastingnotime.org/search/" />' in search_html
     assert "/archives/" in search_html
     assert "/library/" in search_html
     assert 'href="/archives/"' in search_html
@@ -273,18 +273,18 @@ def test_static_site_builder_generates_static_routes_from_markdown(
             "@type": "WebPage",
             "name": "Search",
             "description": "Search the publication using the static search index.",
-            "url": "https://wastingnotime.org/search/",
+            "url": "https://blog.wastingnotime.org/search/",
         }
     ]
     assert "<rss version=\"2.0\">" in feed_xml
     assert "<title>wasting no time</title>" in feed_xml
     assert "<description>Latest posts and episodes from wasting no time</description>" in feed_xml
-    assert "<link>https://wastingnotime.org/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/</link>" in feed_xml
+    assert "<link>https://blog.wastingnotime.org/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/</link>" in feed_xml
     assert "<title>Architecture Diagram &amp; Narrative</title>" in feed_xml
     assert "/api/event" not in feed_xml
     assert "User-agent: *" in robots_txt
     assert "Allow: /" in robots_txt
-    assert "Sitemap: https://wastingnotime.org/sitemap.xml" in robots_txt
+    assert "Sitemap: https://blog.wastingnotime.org/sitemap.xml" in robots_txt
     assert "/api/event" not in robots_txt
     assert (
         '<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">'
@@ -297,7 +297,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
         in opensearch_xml
     )
     assert (
-        'template="https://wastingnotime.org/search/?q={searchTerms}"'
+        'template="https://blog.wastingnotime.org/search/?q={searchTerms}"'
         in opensearch_xml
     )
     assert "/api/event" not in opensearch_xml
@@ -326,11 +326,11 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     )
     assert "/api/event" not in search_json
     assert "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" in sitemap_xml
-    assert "<loc>https://wastingnotime.org/</loc>" in sitemap_xml
-    assert "<loc>https://wastingnotime.org/archives/</loc>" in sitemap_xml
-    assert "<loc>https://wastingnotime.org/library/architecture/</loc>" in sitemap_xml
+    assert "<loc>https://blog.wastingnotime.org/</loc>" in sitemap_xml
+    assert "<loc>https://blog.wastingnotime.org/archives/</loc>" in sitemap_xml
+    assert "<loc>https://blog.wastingnotime.org/library/architecture/</loc>" in sitemap_xml
     assert "<lastmod>2025-11-14</lastmod>" in sitemap_xml
-    assert "https://wastingnotime.org/search/" not in sitemap_xml
+    assert "https://blog.wastingnotime.org/search/" not in sitemap_xml
     assert "library — an index of ideas and implementation notes" in library_html
     assert "A living index. Pick a topic and you’ll see every post, every saga episode, and every note I’ve published that touches that idea." in library_html
     assert '<a class="active" href="/library/">LIBRARY</a>' in library_html
@@ -374,7 +374,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<meta property="og:title"' not in about_html
     assert '<meta name="twitter:title"' not in about_html
     assert _json_ld_payloads(about_html) == []
-    assert "© 2025 wastingnotime.org — built with Go" in about_html
+    assert "© 2025 blog.wastingnotime.org — built with Go" in about_html
     assert 'href="/favicon-32x32.png"' in about_html
     assert "studio — building systems in public" in studio_html
     assert "Parallel spaces evolving at their own pace." in studio_html

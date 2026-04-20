@@ -41,7 +41,7 @@ jobs:
 
       - name: build static site
         env:
-          SITE_BASE_URL: https://wastingnotime.org/
+          SITE_BASE_URL: https://blog.wastingnotime.org/
         run: python -m src.app.interfaces.cli.run_scenario
 
       - name: configure pages

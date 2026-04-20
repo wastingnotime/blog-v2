@@ -13,7 +13,7 @@ major change in deployment shape:
 
 - stakeholder request in this repository session
 - `../blog/templates/base.gohtml` currently posts analytics to
-  `https://wastingnotime.org/api/event`
+  `https://blog.wastingnotime.org/api/event`
 - `../blog/.github/workflows/docker-blog.yml` deploys the blog image into AWS
 - `../blog/.github/workflows/docker-analytics-api.yml` deploys the analytics API
 - `../blog/internal/analytics/docs/event-contract.md` documents the AWS-backed

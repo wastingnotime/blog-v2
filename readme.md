@@ -11,7 +11,7 @@ The first architectural reset in this repository is explicit:
 - stop assuming AWS deploy infrastructure is part of the blog runtime
 
 The previous `../blog` repository evolved toward an AWS-hosted container plus
-an analytics ingestion pipeline routed through `https://wastingnotime.org/api`.
+an analytics ingestion pipeline routed through `https://blog.wastingnotime.org/api`.
 This repository intentionally starts from the opposite direction: static output
 first, direct browser rendering, and optional third-party analytics that do not
 require first-party API infrastructure.

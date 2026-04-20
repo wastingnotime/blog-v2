@@ -26,7 +26,7 @@ from the deterministic `?q=` URL parameter.
   - asserts generated search page includes deterministic `?q=` hydration hooks
 - `tests/integration/test_run_scenario.py`
   - asserts generated homepage JSON-LD includes `SearchAction` target rooted at
-    `https://wastingnotime.org/search/?q={search_term_string}`
+    `https://blog.wastingnotime.org/search/?q={search_term_string}`
   - asserts generated `/search/` route contains deterministic `?q=` hydration
     logic while still using `search.json`
 

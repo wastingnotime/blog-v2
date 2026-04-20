@@ -338,7 +338,7 @@ LEGACY_SAGA_HTML = {
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -683,7 +683,7 @@ LEGACY_SAGA_HTML = {
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>

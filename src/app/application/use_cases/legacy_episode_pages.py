@@ -321,7 +321,7 @@ Instead of designing the final form upfront, we allow the system to grow in resp
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -743,7 +743,7 @@ If time itself wakes us, the actor is the <strong>Timer</strong>.</p>
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -1308,7 +1308,7 @@ it gives us confidence that each service has a purpose and a clean responsibilit
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -1935,7 +1935,7 @@ and <em>how to protect each service from accidental entanglement</em>.</p>
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -2518,7 +2518,7 @@ It is a system with intent.</p>
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -2864,7 +2864,7 @@ A spark. A breath. The first steps of something that will keep evolving.</p>
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -3201,7 +3201,7 @@ Next: we’ll describe <strong>how a duel is born</strong> — from a simple API
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -3591,7 +3591,7 @@ And insight becomes the next version of our system.</p>
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -4005,7 +4005,7 @@ Tag <strong>v0.1.0-e04-trivia-duel</strong><br>
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>
@@ -4487,7 +4487,7 @@ Tag <strong>v0.2.0-e05-trivia-duel</strong><br>
 
 
     <footer class="mt-10 text-xs text-zinc-500">
-        © 2025 wastingnotime.org — built with Go
+        © 2025 blog.wastingnotime.org — built with Go
     </footer>
 </div>
 </body>

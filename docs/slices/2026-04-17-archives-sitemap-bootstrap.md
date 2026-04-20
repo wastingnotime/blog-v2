@@ -100,7 +100,7 @@ Given projected publication metadata and the static build contract, render
 - unit test asserting the archive sitemap entry uses the latest published
   content date as `lastmod`
 - integration test asserting generated `dist/sitemap.xml` includes
-  `https://wastingnotime.org/archives/`
+  `https://blog.wastingnotime.org/archives/`
 - integration test asserting `/search/` remains absent from the sitemap so the
   current `noindex` utility-route distinction is preserved
 
@@ -109,7 +109,7 @@ Given projected publication metadata and the static build contract, render
 Run the scenario CLI against the in-repo content set and inspect generated
 artifacts to verify:
 
-- `dist/sitemap.xml` contains `https://wastingnotime.org/archives/`
+- `dist/sitemap.xml` contains `https://blog.wastingnotime.org/archives/`
 - the archive sitemap entry carries the latest published content date available
   in the repository
 - existing homepage, library, saga, topic, and content entries remain present

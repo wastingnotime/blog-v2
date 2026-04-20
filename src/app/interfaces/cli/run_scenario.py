@@ -34,7 +34,7 @@ def load_site_config() -> SiteConfig:
     if provider == "plausible":
         analytics = AnalyticsConfig(
             provider="plausible",
-            domain=_getenv("PLAUSIBLE_DOMAIN", default="wastingnotime.org"),
+            domain=_getenv("PLAUSIBLE_DOMAIN", default="blog.wastingnotime.org"),
             script_url=_getenv(
                 "PLAUSIBLE_SCRIPT_URL",
                 default="https://plausible.io/js/script.js",
@@ -51,7 +51,7 @@ def load_site_config() -> SiteConfig:
                 "Pages deployment, and no first-party /api dependency."
             ),
         ),
-        base_url=_getenv("SITE_BASE_URL", default="https://wastingnotime.org/"),
+        base_url=_getenv("SITE_BASE_URL", default="https://blog.wastingnotime.org/"),
         analytics=analytics,
     )
 

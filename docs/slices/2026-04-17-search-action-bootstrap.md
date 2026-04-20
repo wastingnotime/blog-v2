@@ -115,7 +115,7 @@ Run the scenario CLI against the in-repo content set and inspect generated
 artifacts to verify:
 
 - `dist/index.html` contains one homepage `WebSite` JSON-LD payload with a
-  `SearchAction` target rooted at `https://wastingnotime.org/search/?q=`
+  `SearchAction` target rooted at `https://blog.wastingnotime.org/search/?q=`
 - `dist/search/index.html` still references `search.json` and now contains the
   client-side logic required to read an initial `q` query value
 - the same filtering behavior remains available for interactive typing after

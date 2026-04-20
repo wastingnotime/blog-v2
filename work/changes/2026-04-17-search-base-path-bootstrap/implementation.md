@@ -31,7 +31,7 @@ action derive from `SiteConfig.base_url`.
     deterministic scenarios
 - `tests/integration/test_run_scenario.py`
   - updated existing scenario assertion to require
-    `action="https://wastingnotime.org/search/"`
+    `action="https://blog.wastingnotime.org/search/"`
   - added
     `test_static_site_builder_uses_prefixed_base_url_for_search_form_action`
     using `SITE_BASE_URL=https://example.com/blog/` and validating generated

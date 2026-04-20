@@ -7,7 +7,7 @@ GitHub Pages output matches the repository's configured custom-domain target.
 
 Current observed gap:
 
-- the build defaults to `https://wastingnotime.org/`
+- the build defaults to `https://blog.wastingnotime.org/`
 - the GitHub Pages workflow publishes `dist/` directly
 - the generated artifact set still lacks a root `CNAME`
 

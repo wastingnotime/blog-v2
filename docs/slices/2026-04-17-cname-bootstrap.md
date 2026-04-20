@@ -22,13 +22,13 @@ output:
 ## Discovery Scope
 
 The repository now generates a much more complete static publication surface,
-and the default site configuration still targets `https://wastingnotime.org/`.
+and the default site configuration still targets `https://blog.wastingnotime.org/`.
 The GitHub Pages workflow deploys `dist/` directly, but the generated artifact
 set still does not include a `CNAME` file.
 
 That gap is visible in current repository artifacts:
 
-- `load_site_config()` defaults `SITE_BASE_URL` to `https://wastingnotime.org/`
+- `load_site_config()` defaults `SITE_BASE_URL` to `https://blog.wastingnotime.org/`
 - `.github/workflows/gh-pages.yml` uploads `dist/` as the Pages artifact
 - the generated `dist/` includes route, metadata, and identity artifacts, but
   no root `CNAME`
@@ -89,7 +89,7 @@ such that:
   host base URL
 - unit test asserting the artifact content is just the expected host name
 - integration test asserting generated `dist/CNAME` exists in the scenario
-  output and matches `wastingnotime.org`
+  output and matches `blog.wastingnotime.org`
 - integration test asserting the slice does not alter existing static HTML
   assumptions or introduce same-origin `/api` usage
 
@@ -99,7 +99,7 @@ Run the scenario CLI with the default in-repo configuration and inspect
 `dist/CNAME` to verify:
 
 - the artifact exists at the publication root
-- its content is exactly `wastingnotime.org`
+- its content is exactly `blog.wastingnotime.org`
 - the rest of the generated static artifact set remains unchanged
 
 ## Done Criteria

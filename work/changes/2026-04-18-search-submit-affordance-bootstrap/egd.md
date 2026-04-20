@@ -30,7 +30,7 @@ The slice expectation is narrow:
 ## Observed Behavior
 
 - the generated search form now includes `<button type="submit">Search</button>`
-- the form action remains rooted at `https://wastingnotime.org/search/`
+- the form action remains rooted at `https://blog.wastingnotime.org/search/`
 - the existing labeled input, helper text, live status region, results
   container, and recovery blocks remain present
 - focused unit and integration evidence passed: `37 passed`
