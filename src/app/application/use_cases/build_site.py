@@ -1103,7 +1103,12 @@ def build_episode_page(
         try:
             return render_legacy_episode_page(episode.permalink)
         except KeyError:
-            pass
+            return _render_legacy_episode_fallback(
+                config=config,
+                episode=episode,
+                arc_view=arc_view,
+                footer_attribution=footer_attribution,
+            )
     entry_metadata = project_episode_metadata(episode)
     metadata = (
         f"{episode.date} · {episode.saga_title} / {episode.arc_title} · "
@@ -1156,6 +1161,104 @@ def build_episode_page(
                 adjacent_navigation,
             ]
         ),
+    )
+
+
+def _render_legacy_episode_fallback(
+    config: SiteConfig,
+    episode: Episode,
+    arc_view: ArcView,
+    footer_attribution: FooterAttribution,
+) -> str:
+    previous_episode = arc_view.previous_episode.get(episode.slug)
+    next_episode = arc_view.next_episode.get(episode.slug)
+    previous_link = ""
+    next_link = ""
+    if previous_episode is not None:
+        previous_link = (
+            f'<a class="hover:underline" href="{_site_path(config.base_url, previous_episode.permalink)}">'
+            f"← [Ep {previous_episode.number:02d}] {html.escape(previous_episode.title)}</a>"
+        )
+    if next_episode is not None:
+        next_link = (
+            f'<a class="hover:underline" href="{_site_path(config.base_url, next_episode.permalink)}">'
+            f"[Ep {next_episode.number:02d}] {html.escape(next_episode.title)} →</a>"
+        )
+    return (
+        "<!doctype html>\n"
+        '<html lang="en">\n'
+        "<head>\n"
+        '    <meta charset="utf-8" />\n'
+        '    <meta name="viewport" content="width=device-width, initial-scale=1" />\n'
+        f"    <title>{html.escape(episode.title)} — {html.escape(episode.saga_title)}</title>\n"
+        '    <link rel="icon" href="/favicon.ico">\n'
+        '    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n'
+        '    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n'
+        '    <link rel="apple-touch-icon" href="/apple-touch-icon.png">\n'
+        '    <script src="https://cdn.tailwindcss.com"></script>\n'
+        '    <script>tailwind.config={theme:{extend:{fontFamily:{mono:["ui-monospace","SFMono-Regular","Menlo","Monaco","Consolas","Liberation Mono","Courier New","monospace"]}}}};</script>\n'
+        '    <style>\n'
+        '        html { font-kerning: normal; }\n\n'
+        '        .menu a { color:#a1a1aa; text-decoration:none; transition: color .15s ease; }\n'
+        '        .menu a:hover { color:#fff; text-decoration:underline; }\n'
+        '        .menu a.active { color:#fff; font-weight:500; }\n'
+        '        .menu a.active::after { content:"•"; margin-left:0.4em; opacity:0.6; font-weight:400; }\n\n'
+        '        a { color:#a1a1aa; text-decoration:none; transition: color .15s ease; }\n'
+        '        a:hover { color:#fff; text-decoration:underline; }\n\n'
+        '        ul { list-style:none; padding-left:0; margin:0; }\n\n'
+        '        .intro:empty { display:none; }\n\n'
+        '        .space-y-1 > * + * { margin-top: .25rem; }\n'
+        '        .space-y-2 > * + * { margin-top: .5rem; }\n'
+        '        .space-y-3 > * + * { margin-top: .75rem; }\n'
+        '        .space-y-6 > * + * { margin-top: 1.5rem; }\n\n'
+        '        .breadcrumb { font-size:0.9rem; color:#888; margin-bottom:1.5rem; }\n'
+        '        .breadcrumb a { color:#aaa; text-decoration:none; }\n'
+        '        .breadcrumb a:hover { text-decoration:underline; color:#fff; }\n'
+        '        .breadcrumb .sep { margin:0 .4rem; color:#555; }\n\n'
+        '        .arc-name,\n'
+        '        .episode-title { color:#fff; font-weight:500; margin:0 0 1rem 0; font-size:1.1rem; }\n'
+        '        .topic-link { border-width:1px; border-color: rgb(39 39 42); border-style: solid; border-radius:.25rem; padding:.5rem .75rem; color: rgb(244 244 245); }\n'
+        '    </style>\n'
+        "</head>\n"
+        '<body class="bg-black text-zinc-100 font-mono selection:bg-white/20">\n'
+        '<div class="max-w-3xl mx-auto px-4 py-6">\n'
+        '    <header class="mb-6">\n'
+        '        <nav class="menu text-sm text-zinc-400">\n'
+        '            <a class="" href="/">HOME</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="" href="/studio/">STUDIO</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="active" href="/sagas/">SAGAS</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="" href="/library/">LIBRARY</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a class="" href="/about/">ABOUT</a>\n'
+        '            <span class="mx-2 text-zinc-600" aria-hidden="true">/</span>\n'
+        '            <a href="/feed.xml">RSS</a>\n'
+        "        </nav>\n\n"
+        f'        <h1 class="mt-3 text-xl tracking-tight text-zinc-300">[Ep {episode.number:02d}] {html.escape(episode.title)} — {html.escape(episode.arc_title)} / {html.escape(episode.saga_title)}</h1>\n'
+        "    </header>\n\n"
+        '    <p class="intro text-base text-zinc-200 leading-relaxed mb-8">\n'
+        "    </p>\n\n"
+        '    <nav class="breadcrumb">\n'
+        f'        <a href="{_site_path(config.base_url, "/sagas/" + episode.saga_slug + "/")}">← {html.escape(episode.saga_title)}</a>\n'
+        '        <span class="sep">/</span>\n'
+        f'        <a href="{_site_path(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">{html.escape(episode.arc_title)}</a>\n'
+        "    </nav>\n"
+        f'    <h2 class="episode-title">{html.escape(episode.title)}</h2>\n'
+        '    <div class="text-xs text-zinc-500 mb-3">\n'
+        f'        {html.escape(episode.date)} · <a class="hover:underline" href="{_site_path(config.base_url, "/sagas/" + episode.saga_slug + "/" + episode.arc_slug + "/")}">back to arc</a>\n'
+        "    </div>\n"
+        f'    <p class="text-sm text-zinc-400 mb-4">{html.escape(episode.summary)}</p>\n\n'
+        f'    <article class="prose prose-invert max-w-none">\n{_render_markdown(episode.body_markdown)}\n    </article>\n\n'
+        '    <nav class="mt-8 text-xs text-zinc-400 flex justify-between">\n'
+        f"        {previous_link or '<span></span>'}\n"
+        f"        {next_link or '<span></span>'}\n"
+        "    </nav>\n\n"
+        f'    <footer class="mt-10 text-xs text-zinc-500">\n        © {footer_attribution.year} {footer_attribution.site_name} — {footer_attribution.tagline}\n    </footer>\n'
+        "</div>\n"
+        "</body>\n"
+        "</html>\n"
     )
 
 
