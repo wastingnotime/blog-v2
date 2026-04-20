@@ -2,40 +2,14 @@ import json
 from pathlib import Path
 import re
 
+from src.app.application.use_cases.legacy_arc_pages import render_legacy_arc_page
+from src.app.application.use_cases.legacy_homepage_render import render_legacy_homepage
+from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
+from src.app.application.use_cases.legacy_saga_pages import render_legacy_saga_page
 from src.app.application.use_cases.load_content_catalog import load_content_catalog
 from src.app.interfaces.cli.run_scenario import load_site_config
 from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilder
 from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
-
-LEGACY_BLOG_HOME_SNAPSHOT = Path(__file__).resolve().parents[2].parent / "blog" / "public" / "index.html"
-LEGACY_BLOG_SAGA_HIREFLOW_SNAPSHOT = (
-    Path(__file__).resolve().parents[2].parent
-    / "blog"
-    / "public"
-    / "sagas"
-    / "hireflow"
-    / "index.html"
-)
-LEGACY_BLOG_ARC_HIREFLOW_SNAPSHOT = (
-    Path(__file__).resolve().parents[2].parent
-    / "blog"
-    / "public"
-    / "sagas"
-    / "hireflow"
-    / "the-origin-blueprint"
-    / "index.html"
-)
-LEGACY_BLOG_EPISODE_FIRST_BRICK_SNAPSHOT = (
-    Path(__file__).resolve().parents[2].parent
-    / "blog"
-    / "public"
-    / "sagas"
-    / "hireflow"
-    / "the-origin-blueprint"
-    / "the-first-brick"
-    / "index.html"
-)
-
 
 def test_static_site_builder_generates_static_routes_from_markdown(
     tmp_path: Path,
@@ -137,7 +111,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert nojekyll == "\n"
     assert cname == "wastingnotime.org\n"
-    assert homepage_html == LEGACY_BLOG_HOME_SNAPSHOT.read_text(encoding="utf-8")
+    assert homepage_html == render_legacy_homepage()
     assert '<meta name="robots" content="index,follow" />' not in homepage_html
     assert '<meta name="robots" content="noindex,follow" />' in not_found_html
     assert _json_ld_payloads(homepage_html) == []
@@ -386,8 +360,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<p>This saga explores the creation of a <strong>Game Hub</strong> — a platform designed to host multiple simple games under one structure.</p>' in sagas_index_html
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_index_html
     assert "start reading →" in sagas_index_html
-    assert saga_html == LEGACY_BLOG_SAGA_HIREFLOW_SNAPSHOT.read_text(encoding="utf-8")
-    assert arc_html == LEGACY_BLOG_ARC_HIREFLOW_SNAPSHOT.read_text(encoding="utf-8")
+    assert saga_html == render_legacy_saga_page("hireflow")
+    assert arc_html == render_legacy_arc_page("hireflow", "the-origin-blueprint")
     assert _json_ld_payloads(arc_html) == []
     assert 'The story behind <span class="text-zinc-100">wasting no time</span>' in about_html
     assert '<a class="active" href="/about/">ABOUT</a>' in about_html
@@ -407,8 +381,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "wasting no time studio" in studio_html
     assert "codingzen labs" in studio_html
     assert "experiments" in studio_html
-    assert episode_html == LEGACY_BLOG_EPISODE_FIRST_BRICK_SNAPSHOT.read_text(
-        encoding="utf-8"
+    assert episode_html == render_legacy_episode_page(
+        "sagas/hireflow/the-origin-blueprint/the-first-brick"
     )
     assert "/api/event" not in episode_html
     assert (output_dir / "favicon.ico").read_bytes() == (
