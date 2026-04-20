@@ -41,49 +41,14 @@ jobs:
           SITE_BASE_URL: https://wastingnotime.org/
         run: python -m src.app.interfaces.cli.run_scenario
 
-      - name: detect pages site
-        id: pages-site
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python - <<'PY'
-          import os
-          import urllib.error
-          import urllib.request
-
-          repo = os.environ["GITHUB_REPOSITORY"]
-          token = os.environ["GH_TOKEN"]
-          request = urllib.request.Request(
-              f"https://api.github.com/repos/{repo}/pages",
-              headers={
-                  "Accept": "application/vnd.github+json",
-                  "Authorization": f"Bearer {token}",
-                  "X-GitHub-Api-Version": "2022-11-28",
-                  "User-Agent": "blog-v2-ci",
-              },
-          )
-          enabled = False
-          try:
-              with urllib.request.urlopen(request) as response:
-                  enabled = response.status == 200
-          except urllib.error.HTTPError as exc:
-              enabled = False
-          output_path = os.environ["GITHUB_OUTPUT"]
-          with open(output_path, "a", encoding="utf-8") as handle:
-              handle.write(f"enabled={'true' if enabled else 'false'}\n")
-          PY
-
       - name: configure pages
-        if: steps.pages-site.outputs.enabled == 'true'
         uses: actions/configure-pages@v5
 
       - name: upload artifact
-        if: steps.pages-site.outputs.enabled == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
       - name: deploy
-        if: steps.pages-site.outputs.enabled == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
