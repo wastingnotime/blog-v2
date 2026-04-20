@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
+PAGES_API="repos/${REPO}/pages"
+
+if gh api "$PAGES_API" >/dev/null 2>&1; then
+  METHOD="PUT"
+  ACTION="update"
+else
+  METHOD="POST"
+  ACTION="create"
+fi
+
+gh api -X "$METHOD" "$PAGES_API" \
+  -H "Accept: application/vnd.github+json" \
+  -f build_type=workflow
+
+echo "GitHub Pages ${ACTION}d for ${REPO} with build_type=workflow."

@@ -22,6 +22,7 @@ require first-party API infrastructure.
 pip install -e .
 pytest
 python -m src.app.interfaces.cli.run_scenario
+./scripts/gh-pages-bootstrap
 ./scripts/mrl-serve
 ```
 
@@ -32,6 +33,13 @@ Local dev server:
 - `./scripts/mrl-serve` builds `dist/`, serves it on `http://localhost:8080/`, and auto-reloads the browser when watched files change.
 - Override `MRL_SERVE_PORT`, `MRL_SERVE_HOST`, `MRL_SERVE_OUTPUT_DIR`, `MRL_SERVE_CONTENT_ROOT`, and `MRL_SERVE_ASSETS_DIR` when needed.
 - If you want local canonical URLs too, set `SITE_BASE_URL=http://localhost:8080/`.
+
+One-time GitHub Pages bootstrap:
+
+- Run `./scripts/gh-pages-bootstrap` once from the repo root after `gh auth login`.
+- The command uses `gh api` to create or update the repository Pages site with `build_type=workflow`.
+- You need repository admin or Pages settings permission for that call.
+- If Pages is deleted or reset later, run the same command again.
 
 ## Current Slice
 
