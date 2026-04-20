@@ -6,7 +6,7 @@ arc: "The First Breath"
 studio: "WastingNoTime Studio"
 status: "in progress"
 number: 2
-summary: "The spark of Trivia Duel marks the moment when play meets architecture. Beneath the simplicity of two minds facing a question, patterns of state, timing, and fairness begin to unfold - the quiet architecture behind every duel."
+summary: "The spark of Trivia Duel marks the moment when play meets architecture. Beneath the simplicity of two minds facing a question, patterns of state, timing, and fairness begin to unfold — the quiet architecture behind every duel."
 date: "2025-11-07"
 tags:
   - trivia-duel

@@ -137,7 +137,7 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<div class="archive-entry-row">' in archive_html
     assert '<a class="archive-entry-link" href="/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/">[episode] Architecture Diagram &amp; Narrative</a>' in archive_html
     assert 'class="archive-entry-meta">2025-12-29 · HireFlow / The Origin Blueprint</small>' in archive_html
-    assert 'class="archive-entry-summary">We consolidate the Origin Blueprint into a coherent MVP architecture. This episode presents the system map, explains the architectural intent, and defines what &#x27;done&#x27; means for Hireflow&#x27;s first milestone.</p>' in archive_html
+    assert 'class="archive-entry-summary">We consolidate the Origin Blueprint into a coherent MVP architecture. This episode presents the system map, explains the architectural intent, and defines what ‘done’ means for Hireflow’s first milestone.</p>' in archive_html
     assert "[episode] Architecture Diagram &amp; Narrative" in archive_html
     assert "[page] About" in archive_html
     assert archive_html.index("[episode] Architecture Diagram &amp; Narrative") < archive_html.index("[page] About")
@@ -340,19 +340,20 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<a class="topic-link block border border-zinc-800 rounded px-3 py-2 text-zinc-100 transition-colors" href="/library/architecture/">' in library_html
     assert "#architecture" in library_html
     assert _json_ld_payloads(library_html) == []
-    assert "Entries tagged with architecture." in topic_html
-    assert '<h2 class="text-sm text-zinc-400 mb-2">Entries</h2>' in topic_html
-    assert '<a class="block text-zinc-100" href="/about/">[page] About</a>' in topic_html
-    assert 'class="block text-zinc-500 text-xs mt-0.5">2025-10-25</span>' in topic_html
-    assert '<a class="block text-zinc-100" href="/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/">[episode] Architecture Diagram &amp; Narrative</a>' in topic_html
-    assert 'class="block text-zinc-500 text-xs mt-0.5">2025-12-29 · HireFlow / The Origin Blueprint</span>' in topic_html
-    assert 'We consolidate the Origin Blueprint into a coherent MVP architecture.' in topic_html
-    assert "[page] About" in topic_html
-    assert "[episode] Architecture Diagram &amp; Narrative" in topic_html
-    assert "/archives/" in topic_html
-    assert "/search/" in topic_html
-    assert '<ul class="topic-entry-list">' not in topic_html
-    assert '<a class="breadcrumb-link" href="/library/">' not in topic_html
+    assert '<title>architecture — library — wasting no time</title>' in topic_html
+    assert '<h1 class="mt-3 text-xl tracking-tight text-zinc-300">#architecture</h1>' in topic_html
+    assert '<section class="space-y-4">' in topic_html
+    assert '<ul class="space-y-4">' in topic_html
+    assert '<li class="border border-zinc-800 rounded p-3 hover:border-white/30 transition-colors">' in topic_html
+    assert '<div class="flex flex-col gap-1">' in topic_html
+    assert '<a class="text-white hover:underline" href="/sagas/hireflow/the-origin-blueprint/architecture-diagram-and-narrative/">Architecture Diagram &amp; Narrative</a>' in topic_html
+    assert '<div class="text-xs text-zinc-500">2025-12-29</div>' in topic_html
+    assert '<div class="text-xs text-zinc-500">HireFlow / The Origin Blueprint —</div>' in topic_html
+    assert '<p class="text-sm text-zinc-400">We consolidate the Origin Blueprint into a coherent MVP architecture.' in topic_html
+    assert "[page] About" not in topic_html
+    assert "Entries tagged with architecture." not in topic_html
+    assert "other ways in" not in topic_html
+    assert '<main>' not in topic_html
     assert _json_ld_payloads(topic_html) == []
     assert "sagas — work that moves forward in public" in sagas_index_html
     assert '<p><strong>HireFlow</strong> is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach.' in sagas_index_html

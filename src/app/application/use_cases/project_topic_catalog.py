@@ -34,8 +34,8 @@ def project_topic_catalog(catalog: ContentCatalog) -> LibraryCatalog:
             tag=tag,
             entries=tuple(
                 sorted(
-                    entries,
-                    key=lambda entry: (entry.date, entry.title),
+                    sorted(entries, key=lambda entry: entry.title),
+                    key=lambda entry: entry.date,
                     reverse=True,
                 )
             ),

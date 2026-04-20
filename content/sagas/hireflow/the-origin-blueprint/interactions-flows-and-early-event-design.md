@@ -6,7 +6,7 @@ arc: "The Origin Blueprint"
 studio: "WastingNoTime Studio"
 status: "in progress"
 number: 4
-summary: "With the service boundaries defined, we explore how they communicate. Direct calls, asynchronous events, and the early hiring flow reveal the first shape of Hireflow’s behavior - resilient, decoupled, and event-driven."
+summary: "With the service boundaries defined, we explore how they communicate. Direct calls, asynchronous events, and the early hiring flow reveal the first shape of Hireflow’s behavior — resilient, decoupled, and event-driven."
 date: "2025-12-28"
 tags:
   - distributed-systems

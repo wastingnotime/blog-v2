@@ -1129,33 +1129,26 @@ def _render_legacy_topic_page(
         _render_legacy_topic_entry(entry, base_url=config.base_url)
         for entry in topic_page.entries
     )
-    discovery_markup = (
-        "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">other ways in</h3>\n"
-        "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
-        f"                browse the chronology → <a href=\"{_site_path(config.base_url, '/archives/')}\">/archives</a><br>\n"
-        f"                search the publication → <a href=\"{_site_path(config.base_url, '/search/')}\">/search</a>\n"
-        "            </p>\n"
+    legacy_footer = FooterAttribution(
+        year="2025",
+        site_name="wastingnotime.org",
+        tagline=footer_attribution.tagline,
     )
-    return _render_legacy_blog_page(
-        title=f"{topic_page.tag} — library",
-        h1_html=html.escape(topic_page.tag),
-        intro_html=html.escape(f"Entries tagged with {topic_page.tag}."),
+    rendered = _render_legacy_blog_page(
+        title=f"{topic_page.tag} — library — wasting no time",
+        h1_html=f"#{html.escape(topic_page.tag)}",
+        intro_html="",
         section_html=(
-            "    <main>\n"
-            "        <section>\n"
-            "            <h2 class=\"text-sm text-zinc-400 mb-2\">Entries</h2>\n"
-            "            <ul class=\"space-y-3\">\n"
+            "    <section class=\"space-y-4\">\n"
+            "        <ul class=\"space-y-4\">\n"
             f"{entry_markup}\n"
-            "            </ul>\n"
-            "        </section>\n"
-            "        <section class=\"mt-6\">\n"
-            f"{discovery_markup}"
-            "        </section>\n"
-            "    </main>\n"
+            "        </ul>\n"
+            "    </section>\n"
         ),
         active_section="library",
-        footer_attribution=footer_attribution,
+        footer_attribution=legacy_footer,
     )
+    return re.sub(r"(?m)^[ \t]+$", "", rendered)
 
 
 def build_sagas_index_page(
@@ -2905,12 +2898,19 @@ def _render_legacy_topic_entry(entry: TopicEntry, *, base_url: str) -> str:
         context = f"{entry.saga_title}"
         if entry.arc_title:
             context += f" / {entry.arc_title}"
-    context_markup = f" · {html.escape(context)}" if context else ""
+    context_markup = (
+        f'\n                    <div class="text-xs text-zinc-500">{html.escape(context)} —</div>'
+        if context
+        else ""
+    )
     return (
-        "            <li>\n"
-        f'                <a class="block text-zinc-100" href="{_site_path(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
-        f'                <span class="block text-zinc-500 text-xs mt-0.5">{html.escape(entry.date)}{context_markup}</span>\n'
-        f'                <p class="text-sm text-zinc-400 leading-relaxed mt-1">{html.escape(entry.summary)}</p>\n'
+        '            <li class="border border-zinc-800 rounded p-3 hover:border-white/30 transition-colors">\n'
+        '                <div class="flex flex-col gap-1">\n'
+        f'                    <div class="text-xs text-zinc-500">{html.escape(entry.date)}</div>\n'
+        f'                    <a class="text-white hover:underline" href="{_site_path(base_url, entry.permalink)}">{html.escape(entry.title)}</a>'
+        f'{context_markup}\n'
+        f'                    <p class="text-sm text-zinc-400">{html.escape(entry.summary)}</p>\n'
+        "                </div>\n"
         "            </li>"
     )
 

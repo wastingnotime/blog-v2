@@ -6,7 +6,7 @@ arc: "the-first-breath"
 studio: "WastingNoTime Studio"
 status: "in progress"
 number: 4
-summary: "The first endpoint of Trivia Duel - /duel/start - defines how intention becomes structure. A simple request opens the door for matchmaking, concurrency, and the quiet choreography behind a duel."
+summary: "The first endpoint of Trivia Duel — /duel/start — defines how intention becomes structure. A simple request opens the door for matchmaking, concurrency, and the quiet choreography behind a duel."
 date: "2025-11-24"
 tags:
   - trivia-duel
@@ -31,7 +31,7 @@ POST /duel/start
 ```
 
 It’s the handshake between a player’s curiosity and the system’s logic.  
-And the funny thing about beginnings is - they look simple, but they set the tone for everything that follows.
+And the funny thing about beginnings is — they look simple, but they set the tone for everything that follows.
 
 #### Defining What “Start” Means
 

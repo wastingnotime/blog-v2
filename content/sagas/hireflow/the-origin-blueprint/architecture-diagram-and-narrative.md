@@ -6,7 +6,7 @@ arc: "The Origin Blueprint"
 studio: "WastingNoTime Studio"
 status: "in progress"
 number: 5
-summary: "We consolidate the Origin Blueprint into a coherent MVP architecture. This episode presents the system map, explains the architectural intent, and defines what 'done' means for Hireflow's first milestone."
+summary: "We consolidate the Origin Blueprint into a coherent MVP architecture. This episode presents the system map, explains the architectural intent, and defines what ‘done’ means for Hireflow’s first milestone."
 date: "2025-12-29"
 tags:
   - distributed-systems
