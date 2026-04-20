@@ -3,8 +3,8 @@
 ## Summary
 
 Implemented a bounded topic-page presentation refinement by rendering topic
-entries through explicit editorial row hooks on `/library/<tag>/` without
-changing topic discovery, topic ordering, or topic routes.
+pages through the legacy blog shell on `/library/<tag>/` without changing
+topic discovery, topic ordering, or topic routes.
 
 ## Main Changes
 
@@ -13,10 +13,10 @@ changing topic discovery, topic ordering, or topic routes.
 - added `work/changes/2026-04-18-topic-entry-presentation-bootstrap/impact_analysis.md`
   to record the topic-page-only boundary and risks
 - updated `src/app/application/use_cases/build_site.py` so topic pages now:
-  - render entries inside `topic-entry-list`
-  - render each entry through explicit `topic-entry-link`,
-    `topic-entry-meta`, and `topic-entry-summary` hooks
-  - preserve the same discovered entry ordering, routes, and supporting context
+  - render through the legacy blog shell instead of the generic document frame
+  - keep the same discovered entry ordering, routes, and supporting context
+  - render entry rows with the older compact blog rhythm rather than the newer
+    generic topic list
 - updated unit and integration assertions to cover the topic-entry row
   treatment while leaving library-index chips unchanged
 

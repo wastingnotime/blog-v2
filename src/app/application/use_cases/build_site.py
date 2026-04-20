@@ -1081,6 +1081,8 @@ def build_topic_page(
     topic_page: TopicPage,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        return _render_legacy_topic_page(config, topic_page, footer_attribution)
     entry_markup = "\n".join(
         _render_topic_entry(entry, base_url=config.base_url) for entry in topic_page.entries
     )
@@ -1115,6 +1117,44 @@ def build_topic_page(
                 ),
             ]
         ),
+    )
+
+
+def _render_legacy_topic_page(
+    config: SiteConfig,
+    topic_page: TopicPage,
+    footer_attribution: FooterAttribution,
+) -> str:
+    entry_markup = "\n".join(
+        _render_legacy_topic_entry(entry, base_url=config.base_url)
+        for entry in topic_page.entries
+    )
+    discovery_markup = (
+        "            <h3 class=\"text-lg text-zinc-100 font-normal mb-1\">other ways in</h3>\n"
+        "            <p class=\"text-sm text-zinc-400 leading-relaxed mb-4\">\n"
+        f"                browse the chronology → <a href=\"{_site_path(config.base_url, '/archives/')}\">/archives</a><br>\n"
+        f"                search the publication → <a href=\"{_site_path(config.base_url, '/search/')}\">/search</a>\n"
+        "            </p>\n"
+    )
+    return _render_legacy_blog_page(
+        title=f"{topic_page.tag} — library",
+        h1_html=html.escape(topic_page.tag),
+        intro_html=html.escape(f"Entries tagged with {topic_page.tag}."),
+        section_html=(
+            "    <main>\n"
+            "        <section>\n"
+            "            <h2 class=\"text-sm text-zinc-400 mb-2\">Entries</h2>\n"
+            "            <ul class=\"space-y-3\">\n"
+            f"{entry_markup}\n"
+            "            </ul>\n"
+            "        </section>\n"
+            "        <section class=\"mt-6\">\n"
+            f"{discovery_markup}"
+            "        </section>\n"
+            "    </main>\n"
+        ),
+        active_section="library",
+        footer_attribution=footer_attribution,
     )
 
 
@@ -2855,6 +2895,22 @@ def _render_topic_entry(entry: TopicEntry, *, base_url: str) -> str:
         f'              <a class="topic-entry-link" href="{_site_path(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
         f'              <small class="topic-entry-meta">{html.escape(entry.date)}{context_markup}</small>\n'
         f'              <p class="topic-entry-summary">{html.escape(entry.summary)}</p>\n'
+        "            </li>"
+    )
+
+
+def _render_legacy_topic_entry(entry: TopicEntry, *, base_url: str) -> str:
+    context = ""
+    if entry.saga_title:
+        context = f"{entry.saga_title}"
+        if entry.arc_title:
+            context += f" / {entry.arc_title}"
+    context_markup = f" · {html.escape(context)}" if context else ""
+    return (
+        "            <li>\n"
+        f'                <a class="block text-zinc-100" href="{_site_path(base_url, entry.permalink)}">[{html.escape(entry.kind)}] {html.escape(entry.title)}</a>\n'
+        f'                <span class="block text-zinc-500 text-xs mt-0.5">{html.escape(entry.date)}{context_markup}</span>\n'
+        f'                <p class="text-sm text-zinc-400 leading-relaxed mt-1">{html.escape(entry.summary)}</p>\n'
         "            </li>"
     )
 
