@@ -32,7 +32,7 @@ Local dev server:
 
 - `./scripts/mrl-serve` builds `dist/`, serves it on `http://localhost:8080/`, and auto-reloads the browser when watched files change.
 - Override `MRL_SERVE_PORT`, `MRL_SERVE_HOST`, `MRL_SERVE_OUTPUT_DIR`, `MRL_SERVE_CONTENT_ROOT`, and `MRL_SERVE_ASSETS_DIR` when needed.
-- If you want local canonical URLs too, set `SITE_BASE_URL=http://localhost:8080/`.
+- Set `SITE_BASE_URL=http://localhost:8080/` if you want local canonical URLs and sitemap links to point at the dev server.
 
 One-time GitHub Pages bootstrap:
 
@@ -58,7 +58,7 @@ Build-time configuration is optional:
 
 - `SITE_TITLE`
 - `SITE_DESCRIPTION`
-- `SITE_BASE_URL`
+- `SITE_BASE_URL` - canonical URL used by generated links, feeds, and sitemap output
 - `ANALYTICS_PROVIDER`
 - `PLAUSIBLE_DOMAIN`
 - `PLAUSIBLE_SCRIPT_URL`
