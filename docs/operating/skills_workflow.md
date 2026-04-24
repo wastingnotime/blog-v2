@@ -336,6 +336,12 @@ Each phase should:
 - write explicit artifacts
 - avoid depending on conversational memory
 
+Operational closure rule:
+
+- once a completed change has been verified, create a git commit before moving on
+- keep the commit focused on that completed change whenever possible
+- do not leave a finished slice or doc change uncommitted across the next task boundary
+
 ---
 
 ## Skill Design Rules

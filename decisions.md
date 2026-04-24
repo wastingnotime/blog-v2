@@ -39,6 +39,27 @@ Any additional implementation guidance, migration note, or follow-up.
 
 Add entries as the repository evolves.
 
+## DEC-0006 - Commit After Each Completed Change
+
+- Date: 2026-04-24
+- Status: accepted
+- Owners: both
+
+### Context
+The workflow benefits from treating git commits as the closure point for a completed slice or documentation change. Without that rule, finished work can remain uncommitted while attention moves to the next task, which weakens traceability and makes it harder to preserve a clean artifact trail.
+
+### Decision
+After each completed change, create the commit before starting the next task. The commit should stay scoped to the finished slice or documentation change whenever practical.
+
+### Consequences
+The repository gains a tighter record of completed work, fewer mixed-purpose working trees, and clearer checkpoints for review or rollback. The tradeoff is a slightly higher commit cadence, which is intentional.
+
+### Alternatives considered
+Batch several completed changes into a later commit. This was rejected because it delays closure and blurs the boundary between finished and unfinished work.
+
+### Notes
+This rule applies to ordinary repository work, not to an in-progress multi-file edit that is still part of one unfinished change.
+
 ## DEC-0001 - Separate MRL Core From Implementation Packs
 
 - Date: 2026-03-29

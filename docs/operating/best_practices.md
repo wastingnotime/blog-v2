@@ -66,6 +66,8 @@ Use this test:
 - if it is a chosen shape, decide it in `refine`
 - if it is only needed to make the current slice executable, implement it in `build`
 
+After a completed change is verified, commit it before starting the next slice or doc change.
+
 ---
 
 ## Example

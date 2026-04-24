@@ -72,6 +72,12 @@ Capture the feedback, friction, surprises, and drift created by exposure.
 
 Each phase should read explicit files, write explicit files, and avoid depending on prior conversational memory.
 
+Operational commit rule:
+
+- after each completed change, record the result in git before starting the next task
+- keep commits scoped to one slice or doc change whenever possible
+- treat the commit as part of closing the change, not as an optional follow-up
+
 Typical artifact chain:
 
 ```text
