@@ -1,20 +1,38 @@
 # blog-v2
 
-## Purpose
+## What This Repository Is
 
-`blog-v2` is the next version of the `../blog` site.
+`blog-v2` is the current repository for the Wasting No Time publication.
+It is the static-first successor to `../blog`, with the goal of keeping the
+site simple to ship, easy to browse, and deterministic to build.
 
-The first architectural reset in this repository is explicit:
+The repository's direction is intentionally different from the predecessor:
 
 - publish as a static site on GitHub Pages
 - remove any dependency on a same-origin `/api` path
-- stop assuming AWS deploy infrastructure is part of the blog runtime
+- avoid assuming AWS deploy infrastructure is part of the blog runtime
 
-The previous `../blog` repository evolved toward an AWS-hosted container plus
-an analytics ingestion pipeline routed through `https://blog.wastingnotime.org/api`.
-This repository intentionally starts from the opposite direction: static output
-first, direct browser rendering, and optional third-party analytics that do not
-require first-party API infrastructure.
+The old `../blog` repository evolved toward an AWS-hosted container plus an
+analytics ingestion pipeline routed through `https://blog.wastingnotime.org/api`.
+`blog-v2` starts from the opposite direction: static output first, direct
+browser rendering, and optional third-party analytics that do not require
+first-party API infrastructure.
+
+## Role of MRL
+
+This repository uses Model Refinement Lab as the operating method for changing
+the site.
+
+MRL is not the product here. The product is the publication itself. MRL is the
+workflow that keeps the site evolution explicit through artifacts, slices, and
+evaluations so changes stay traceable and reviewable.
+
+In practice, that means:
+
+- semantic docs capture the site model and constraints
+- slice docs define one bounded change at a time
+- code and tests implement the current slice
+- decisions and commits preserve the repository history of each completed change
 
 ## Commands
 
