@@ -39,6 +39,34 @@ Any additional implementation guidance, migration note, or follow-up.
 
 Add entries as the repository evolves.
 
+## DEC-0007 - Split Code And Content Licensing
+
+- Date: 2026-04-26
+- Status: accepted
+- Owners: both
+
+### Context
+The repository contains both software used to transform and publish the site and authored blog material intended as publication content. A single MIT license for the whole repository would make the content easier to reuse commercially and without reciprocal content terms than intended.
+
+### Decision
+Use split licensing for `blog-v2`:
+
+- code, build tooling, tests, and operating workflow documents are licensed under MPL-2.0
+- blog content, publication assets, semantic artifacts, slice artifacts, and generated publication output derived from that content are licensed under CC BY-NC-SA 4.0
+
+The root `LICENSE` file records the scope rules and points to full license texts under `LICENSES/`.
+
+### Consequences
+The site generator remains open source under a file-level copyleft license, while the published editorial material has attribution, non-commercial, and share-alike terms. Contributors and downstream users must pay attention to file scope instead of assuming one repository-wide license.
+
+### Alternatives considered
+Keep MIT for the whole repository. This was rejected because MIT is shaped for software reuse and does not express the intended terms for blog content.
+
+Use CC BY 4.0 for content and MIT for code. This would maximize reuse, but it would allow commercial content reuse and would not require shared terms for adaptations.
+
+### Notes
+If future files need different terms, add explicit file-level notices and update the root `LICENSE` scope instead of relying on implicit exceptions.
+
 ## DEC-0006 - Commit After Each Completed Change
 
 - Date: 2026-04-24

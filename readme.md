@@ -80,6 +80,15 @@ Build-time configuration is optional:
 
 The default site build does not require any analytics configuration.
 
+## License
+
+This repository uses split licensing:
+
+- code, build tooling, tests, and operating workflow documents are licensed under MPL-2.0
+- blog content, publication assets, semantic artifacts, slice artifacts, and generated publication output derived from that content are licensed under CC BY-NC-SA 4.0
+
+See [LICENSE](/home/henrique/repos/github/wastingnotime/blog-v2/LICENSE), [LICENSES/MPL-2.0.txt](/home/henrique/repos/github/wastingnotime/blog-v2/LICENSES/MPL-2.0.txt), and [LICENSES/CC-BY-NC-SA-4.0.txt](/home/henrique/repos/github/wastingnotime/blog-v2/LICENSES/CC-BY-NC-SA-4.0.txt).
+
 ## Migration Context
 
 The repository artifacts for this migration are:
