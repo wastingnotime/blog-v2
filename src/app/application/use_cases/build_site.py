@@ -1721,7 +1721,7 @@ def _render_legacy_saga_summary(summary: SagaSummary, *, base_url: str) -> str:
     if summary.title == "HireFlow":
         body_html = (
             "                            <div class=\"text-sm text-zinc-400 leading-relaxed mb-4 space-y-2\">\n"
-            "                                <p><strong>HireFlow</strong> is a hands-on laboratory where we build a hiring platform from scratch using a microservices approach.<br>\n"
+            "                                <p><strong>HireFlow</strong> was a hands-on laboratory where we built a hiring platform from scratch using a microservices approach.<br>\n"
             "Not to follow the hype—but to understand how these systems behave when reality hits:</p>\n"
             "<ul>\n"
             "<li>when the database goes down</li>\n"
@@ -1730,10 +1730,10 @@ def _render_legacy_saga_summary(summary: SagaSummary, *, base_url: str) -> str:
             "<li>when refactoring is necessary</li>\n"
             "<li>when complexity emerges naturally</li>\n"
             "</ul>\n"
-            "<p>Every arc explores a different facet of architecture: boundaries, data ownership, slicing strategies, refactoring, resilience, and the design forces that shape distributed systems.</p>\n"
-            "<p>This saga embraces an idea that guides the whole studio:<br>\n"
+            "<p>The saga explored the facets that mattered for its architectural purpose: boundaries, data ownership, slicing strategies, resilience, orchestration, and the design forces that shape distributed systems.</p>\n"
+            "<p>This saga embraced an idea that guides the whole studio:<br>\n"
             "<strong>a system reveals its truth only when we build it.</strong></p>\n"
-            "<p>Let’s build HireFlow together—and learn from its evolution.</p>\n"
+            "<p>HireFlow reached its intended demonstration point at M2. It is complete because the system already said what it needed to say.</p>\n"
             "\n"
             "                            </div>\n"
         )
