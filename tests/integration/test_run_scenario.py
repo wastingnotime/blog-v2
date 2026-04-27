@@ -360,7 +360,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert '<li>when the database goes down</li>' in sagas_index_html
     assert '<strong>a system reveals its truth only when we build it.</strong>' in sagas_index_html
     assert 'Let’s build HireFlow together—and learn from its evolution.' in sagas_index_html
-    assert '<p>This saga explores the creation of a <strong>Game Hub</strong> — a platform designed to host multiple simple games under one structure.</p>' in sagas_index_html
+    assert '<p>This saga explored the creation of a <strong>Game Hub</strong> - a platform designed to host multiple simple games under one structure.</p>' in sagas_index_html
+    assert "Game Hub is paused, not erased." in sagas_index_html
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_index_html
     assert "start reading →" in sagas_index_html
     assert saga_html == render_legacy_saga_page("hireflow")

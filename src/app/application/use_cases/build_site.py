@@ -915,7 +915,7 @@ def build_saga_page(
     footer_attribution: FooterAttribution,
 ) -> str:
     if config.title == "Wasting No Time":
-        if saga_view.saga.slug in {"hireflow", "game-hub"}:
+        if saga_view.saga.slug == "hireflow":
             return render_legacy_saga_page(saga_view.saga.slug)
     arc_markup = "\n".join(
         _render_arc_summary(arc, base_url=config.base_url) for arc in saga_view.arcs
@@ -975,10 +975,11 @@ def build_arc_page(
     footer_attribution: FooterAttribution,
 ) -> str:
     if config.title == "Wasting No Time":
-        try:
-            return render_legacy_arc_page(arc_view.arc.saga_slug, arc_view.arc.slug)
-        except KeyError:
-            pass
+        if arc_view.arc.saga_slug != "game-hub":
+            try:
+                return render_legacy_arc_page(arc_view.arc.saga_slug, arc_view.arc.slug)
+            except KeyError:
+                pass
     episode_markup = "\n".join(
         _render_arc_episode(episode, base_url=config.base_url)
         for episode in arc_view.episodes
@@ -1740,18 +1741,19 @@ def _render_legacy_saga_summary(summary: SagaSummary, *, base_url: str) -> str:
     elif summary.title == "Game Hub":
         body_html = (
             "                            <div class=\"text-sm text-zinc-400 leading-relaxed mb-4 space-y-2\">\n"
-            "                                <p>This saga explores the creation of a <strong>Game Hub</strong> — a platform designed to host multiple simple games under one structure.</p>\n"
+            "                                <p>This saga explored the creation of a <strong>Game Hub</strong> - a platform designed to host multiple simple games under one structure.</p>\n"
             "<p>It starts from nothing but an idea:</p>\n"
             "<blockquote>\n"
             "<p>“Can we turn learning architecture into play?”</p>\n"
             "</blockquote>\n"
-            "<p>Through this saga we’ll:</p>\n"
+            "<p>Through its first arc, the saga explored:</p>\n"
             "<ul>\n"
-            "<li>Design the foundation of a multiplayer-ready game hub.</li>\n"
-            "<li>Experiment with Go, APIs, and lightweight cloud components.</li>\n"
-            "<li>Treat each iteration as a story — from prototype to principle.</li>\n"
+            "<li>the foundation of a multiplayer-ready game hub</li>\n"
+            "<li>Go, APIs, and lightweight cloud components</li>\n"
+            "<li>play as a way to understand state, timing, matchmaking, and coordination</li>\n"
             "</ul>\n"
-            "<p>In <em>WastingNoTime</em>, the Game Hub acts as a living metaphor for system design: each game is a service, each duel a message, and each player a request looking for response.</p>\n"
+            "<p>In <em>WastingNoTime</em>, the Game Hub remains a useful artifact: each game as a service, each duel as a message, and each player as a request looking for response.</p>\n"
+            "<p>Game Hub is paused, not erased.</p>\n"
             "\n"
             "                            </div>\n"
         )

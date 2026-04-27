@@ -331,7 +331,8 @@ def test_build_static_site_generates_section_hub_pages() -> None:
     assert "<li>when the database goes down</li>" in sagas_html
     assert "<strong>a system reveals its truth only when we build it.</strong>" in sagas_html
     assert "Let’s build HireFlow together—and learn from its evolution." in sagas_html
-    assert "<p>This saga explores the creation of a <strong>Game Hub</strong> — a platform designed to host multiple simple games under one structure.</p>" in sagas_html
+    assert "<p>This saga explored the creation of a <strong>Game Hub</strong> - a platform designed to host multiple simple games under one structure.</p>" in sagas_html
+    assert "Game Hub is paused, not erased." in sagas_html
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_html
     assert "<h3 class=\"text-lg text-zinc-100 font-normal mb-1\">" in sagas_html
     assert "start reading →" in sagas_html
@@ -479,18 +480,19 @@ def test_build_static_site_renders_narrative_container_body_content() -> None:
 def test_build_static_site_renders_legacy_saga_detail_snapshots() -> None:
     pages = build_static_site(load_site_config(), _catalog())
     assert pages["sagas/hireflow/index.html"] == render_legacy_saga_page("hireflow")
-    assert pages["sagas/game-hub/index.html"] == render_legacy_saga_page("game-hub")
     assert pages["sagas/hireflow/the-origin-blueprint/index.html"] == render_legacy_arc_page(
         "hireflow",
         "the-origin-blueprint",
     )
-    assert pages["sagas/game-hub/the-first-breath/index.html"] == render_legacy_arc_page(
-        "game-hub",
-        "the-first-breath",
-    )
     assert pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"] == render_legacy_episode_page(
         "sagas/hireflow/the-origin-blueprint/the-first-brick"
     )
+
+    game_hub_saga = pages["sagas/game-hub/index.html"]
+    game_hub_arc = pages["sagas/game-hub/the-first-breath/index.html"]
+    assert game_hub_saga != render_legacy_saga_page("game-hub")
+    assert '<a class="saga-arc-link" href="/sagas/game-hub/the-first-breath/">The First Breath</a>' in game_hub_saga
+    assert "[Ep 01] The First Steps" in game_hub_arc
 
 
 def test_build_static_site_uses_shared_discovery_surface_with_route_specific_links() -> None:
@@ -1109,14 +1111,15 @@ def _catalog() -> ContentCatalog:
                 date="2026-04-10",
                 status="in progress",
                 body_markdown=(
-                    "This saga explores the creation of a **Game Hub** — a platform designed to host multiple simple games under one structure.\n\n"
+                    "This saga explored the creation of a **Game Hub** - a platform designed to host multiple simple games under one structure.\n\n"
                     "It starts from nothing but an idea:\n"
                     "> “Can we turn learning architecture into play?”\n\n"
-                    "Through this saga we’ll:\n"
-                    "- Design the foundation of a multiplayer-ready game hub.\n"
-                    "- Experiment with Go, APIs, and lightweight cloud components.\n"
-                    "- Treat each iteration as a story — from prototype to principle.\n\n"
-                    "In *WastingNoTime*, the Game Hub acts as a living metaphor for system design: each game is a service, each duel a message, and each player a request looking for response."
+                    "Through its first arc, the saga explored:\n"
+                    "- the foundation of a multiplayer-ready game hub\n"
+                    "- Go, APIs, and lightweight cloud components\n"
+                    "- play as a way to understand state, timing, matchmaking, and coordination\n\n"
+                    "In *WastingNoTime*, the Game Hub remains a useful artifact: each game as a service, each duel as a message, and each player as a request looking for response.\n\n"
+                    "Game Hub is paused, not erased."
                 ),
             ),
         ),
