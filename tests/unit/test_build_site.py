@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 import re
 
-from src.app.application.use_cases.legacy_arc_pages import render_legacy_arc_page
 from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
 from src.app.application.use_cases.legacy_saga_pages import render_legacy_saga_page
 from src.app.application.use_cases.build_site import build_static_site
@@ -479,14 +478,15 @@ def test_build_static_site_renders_narrative_container_body_content() -> None:
 
 def test_build_static_site_renders_legacy_saga_detail_snapshots() -> None:
     pages = build_static_site(load_site_config(), _catalog())
-    assert pages["sagas/hireflow/index.html"] == render_legacy_saga_page("hireflow")
-    assert pages["sagas/hireflow/the-origin-blueprint/index.html"] == render_legacy_arc_page(
-        "hireflow",
-        "the-origin-blueprint",
-    )
     assert pages["sagas/hireflow/the-origin-blueprint/the-first-brick/index.html"] == render_legacy_episode_page(
         "sagas/hireflow/the-origin-blueprint/the-first-brick"
     )
+
+    hireflow_saga = pages["sagas/hireflow/index.html"]
+    hireflow_arc = pages["sagas/hireflow/the-origin-blueprint/index.html"]
+    assert hireflow_saga != render_legacy_saga_page("hireflow")
+    assert '<a class="saga-arc-link" href="/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in hireflow_saga
+    assert "[Ep 01] The First Brick" in hireflow_arc
 
     game_hub_saga = pages["sagas/game-hub/index.html"]
     game_hub_arc = pages["sagas/game-hub/the-first-breath/index.html"]

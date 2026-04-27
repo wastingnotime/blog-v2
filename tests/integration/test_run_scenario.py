@@ -2,10 +2,7 @@ import json
 from pathlib import Path
 import re
 
-from src.app.application.use_cases.legacy_arc_pages import render_legacy_arc_page
-from src.app.application.use_cases.legacy_homepage_render import render_legacy_homepage
 from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
-from src.app.application.use_cases.legacy_saga_pages import render_legacy_saga_page
 from src.app.application.use_cases.load_content_catalog import load_content_catalog
 from src.app.interfaces.cli.run_scenario import load_site_config
 from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilder
@@ -111,10 +108,31 @@ def test_static_site_builder_generates_static_routes_from_markdown(
 
     assert nojekyll == "\n"
     assert cname == "blog.wastingnotime.org\n"
-    assert homepage_html == render_legacy_homepage()
-    assert '<meta name="robots" content="index,follow" />' not in homepage_html
+    assert '<meta name="robots" content="index,follow" />' in homepage_html
     assert '<meta name="robots" content="noindex,follow" />' in not_found_html
-    assert _json_ld_payloads(homepage_html) == []
+    assert _json_ld_payloads(homepage_html) == [
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Wasting No Time",
+            "description": (
+                "blog-v2 starts from a simpler contract: static output, GitHub "
+                "Pages deployment, and no first-party /api dependency."
+            ),
+            "potentialAction": {
+                "@type": "SearchAction",
+                "query-input": "required name=search_term_string",
+                "target": (
+                    "https://blog.wastingnotime.org/search/"
+                    "?q={search_term_string}"
+                ),
+            },
+            "url": "https://blog.wastingnotime.org/",
+        }
+    ]
+    assert "Now Airing" not in homepage_html
+    assert "6 episodes; last release 2026-04-27; complete" in homepage_html
+    assert "6 episodes; last release 2026-04-27; paused / dormant" in homepage_html
     assert (output_dir / "sagas" / "hireflow" / "index.html").exists()
     assert "/api/event" not in homepage_html
     assert "Deployment target:" not in homepage_html
@@ -364,8 +382,9 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "Game Hub is paused, not erased." in sagas_index_html
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_index_html
     assert "start reading →" in sagas_index_html
-    assert saga_html == render_legacy_saga_page("hireflow")
-    assert arc_html == render_legacy_arc_page("hireflow", "the-origin-blueprint")
+    assert "Closure - When the System Is Enough" in saga_html
+    assert "6 episodes · last 2026-04-27" in saga_html
+    assert "[Ep 06] Closure - When the System Is Enough" in arc_html
     assert _json_ld_payloads(arc_html) == []
     assert 'The story behind <span class="text-zinc-100">wasting no time</span>' in about_html
     assert '<a class="active" href="/about/">ABOUT</a>' in about_html

@@ -62,12 +62,7 @@ from src.app.application.use_cases.project_route_robots_policy import (
     project_route_robots_policy,
 )
 from src.app.application.use_cases.project_section_hubs import project_sagas_index
-from src.app.application.use_cases.legacy_arc_pages import render_legacy_arc_page
-from src.app.application.use_cases.legacy_saga_pages import render_legacy_saga_page
 from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
-from src.app.application.use_cases.legacy_homepage_render import (
-    render_legacy_homepage as render_legacy_homepage_snapshot,
-)
 from src.app.application.use_cases.legacy_sagas_render import (
     render_legacy_sagas_page as render_legacy_sagas_page_snapshot,
 )
@@ -297,9 +292,6 @@ def build_homepage(
     homepage_surface: HomepageSurface,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if config.title == "Wasting No Time":
-        return render_legacy_homepage_snapshot()
-
     recent_items = homepage_surface.recent_entries
     recent_markup = "\n".join(
         _render_recent_item(item, base_url=config.base_url) for item in recent_items
@@ -914,9 +906,6 @@ def build_saga_page(
     saga_view: SagaView,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if config.title == "Wasting No Time":
-        if saga_view.saga.slug == "hireflow":
-            return render_legacy_saga_page(saga_view.saga.slug)
     arc_markup = "\n".join(
         _render_arc_summary(arc, base_url=config.base_url) for arc in saga_view.arcs
     )
@@ -974,12 +963,6 @@ def build_arc_page(
     arc_view: ArcView,
     footer_attribution: FooterAttribution,
 ) -> str:
-    if config.title == "Wasting No Time":
-        if arc_view.arc.saga_slug != "game-hub":
-            try:
-                return render_legacy_arc_page(arc_view.arc.saga_slug, arc_view.arc.slug)
-            except KeyError:
-                pass
     episode_markup = "\n".join(
         _render_arc_episode(episode, base_url=config.base_url)
         for episode in arc_view.episodes
