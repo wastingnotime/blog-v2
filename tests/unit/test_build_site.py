@@ -115,6 +115,10 @@ def test_build_static_site_renders_arc_page_and_episode_navigation() -> None:
     assert "Ep 02 Second Iteration" in first_episode_html
     assert 'class="adjacent-nav-link previous" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/"' in second_episode_html
     assert "Ep 01 The First Brick" in second_episode_html
+    assert (
+        '<a href="https://example.com/releases/v1">release tag</a>'
+        in second_episode_html
+    )
     assert ".breadcrumb-link {" in first_episode_html
     assert ".breadcrumb-separator {" in first_episode_html
     assert ".episode-breadcrumbs {" in first_episode_html
@@ -1166,7 +1170,7 @@ def _catalog() -> ContentCatalog:
                 arc_slug="the-origin-blueprint",
                 arc_title="The Origin Blueprint",
                 number=2,
-                body_markdown="More episode body.",
+                body_markdown="More episode body with [release tag](https://example.com/releases/v1).",
                 tags=("architecture",),
             ),
             Episode(

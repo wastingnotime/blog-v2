@@ -18,6 +18,8 @@ tags:
 
 ### Closure - When the System Is Enough
 
+Related tag: [`v0.4.0-m3-partial-observability-and-security`](https://github.com/wastingnotime/hireflow/tree/v0.4.0-m3-partial-observability-and-security)
+
 HireFlow ends at the point it was built to reach.
 
 It reached sufficiency.

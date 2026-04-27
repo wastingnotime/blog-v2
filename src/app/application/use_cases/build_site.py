@@ -3067,6 +3067,11 @@ def _render_inline(text: str) -> str:
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
     escaped = re.sub(r"\*(.+?)\*", r"<em>\1</em>", escaped)
     escaped = re.sub(r"`(.+?)`", r"<code>\1</code>", escaped)
+    escaped = re.sub(
+        r"\[([^\]]+)\]\((https?://[^)\s]+|/[^)\s]*)\)",
+        r'<a href="\2">\1</a>',
+        escaped,
+    )
     return escaped
 
 
