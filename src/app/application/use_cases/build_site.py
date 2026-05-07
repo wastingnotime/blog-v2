@@ -292,6 +292,13 @@ def build_homepage(
     homepage_surface: HomepageSurface,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        return _render_legacy_homepage(
+            config=config,
+            homepage_surface=homepage_surface,
+            footer_attribution=footer_attribution,
+        )
+
     recent_items = homepage_surface.recent_entries
     recent_markup = "\n".join(
         _render_recent_item(item, base_url=config.base_url) for item in recent_items
@@ -329,6 +336,164 @@ def build_homepage(
             "          </ul>\n"
             "        </section>\n"
         ),
+    )
+
+
+def _render_legacy_homepage(
+    *,
+    config: SiteConfig,
+    homepage_surface: HomepageSurface,
+    footer_attribution: FooterAttribution,
+) -> str:
+    recent_markup = "\n".join(
+        _render_legacy_homepage_recent_item(item, base_url=config.base_url)
+        for item in homepage_surface.recent_entries
+    )
+    saga_markup = "\n".join(
+        _render_legacy_homepage_saga_summary(summary, base_url=config.base_url)
+        for summary in homepage_surface.saga_summaries
+    )
+    title = "wasting no time — architecture, focus, and growth in public"
+    summary = (
+        "Experiments in architecture, focus, and growth — built in public, "
+        "one saga at a time."
+    )
+    section_html = (
+        "    <main>\n"
+        "        <section>\n"
+        "            <h2 class=\"text-sm text-zinc-400 mb-2\">RECENT</h2>\n"
+        "            <ul class=\"space-y-3\">\n"
+        f"{recent_markup}\n"
+        "            </ul>\n"
+        "        </section>\n"
+        "\n"
+        "        <section class=\"mt-6\">\n"
+        "            <h2 class=\"text-sm text-zinc-400 mb-2\">SAGAS</h2>\n"
+        "            <ul class=\"space-y-1\">\n"
+        f"{saga_markup}\n"
+        "            </ul>\n"
+        "        </section>\n"
+        "    </main>\n"
+    )
+    rendered = _render_legacy_blog_page(
+        title=title,
+        h1_html=html.escape(title),
+        intro_html=html.escape(summary),
+        section_html=section_html,
+        active_section="home",
+        footer_attribution=footer_attribution,
+    )
+    return _inject_legacy_homepage_metadata(
+        rendered,
+        config=config,
+        title=title,
+        description=summary,
+    )
+
+
+def _inject_legacy_homepage_metadata(
+    rendered: str,
+    *,
+    config: SiteConfig,
+    title: str,
+    description: str,
+) -> str:
+    canonical_path = "/"
+    canonical_url = _absolute_url(config.base_url, canonical_path)
+    feed_url = _site_path(config.base_url, "/feed.xml")
+    manifest_url = _site_path(config.base_url, "/site.webmanifest")
+    browserconfig_url = _site_path(config.base_url, "/browserconfig.xml")
+    opensearch_url = _site_path(config.base_url, "/opensearch.xml")
+    social_preview_url = _site_path(config.base_url, "/social-preview.png")
+    metadata = "\n".join(
+        (
+            f'    <meta name="robots" content="{html.escape(project_route_robots_policy(canonical_path))}" />',
+            f'    <meta name="description" content="{html.escape(description)}" />',
+            f'    <meta name="generator" content="blog-v2 static builder" />',
+            f'    <meta name="author" content="{html.escape(_site_host(config.base_url))}" />',
+            f'    <meta name="application-name" content="{html.escape(config.title)}" />',
+            '    <meta name="color-scheme" content="dark" />',
+            '    <meta name="referrer" content="strict-origin-when-cross-origin" />',
+            '    <meta name="format-detection" content="telephone=no" />',
+            f'    <meta name="theme-color" content="{THEME_COLOR}" />',
+            f'    <meta name="msapplication-TileColor" content="{THEME_COLOR}" />',
+            f'    <meta name="msapplication-config" content="{html.escape(browserconfig_url)}" />',
+            '    <meta name="apple-mobile-web-app-capable" content="yes" />',
+            f'    <meta name="apple-mobile-web-app-title" content="{html.escape(config.title)}" />',
+            '    <meta name="apple-mobile-web-app-status-bar-style" content="black" />',
+            f'    <link rel="canonical" href="{html.escape(canonical_url)}" />',
+            _render_open_graph_metadata(
+                site_title=config.title,
+                title=title,
+                description=description,
+                canonical_url=canonical_url,
+                social_preview_url=social_preview_url,
+            ),
+            _render_twitter_card_metadata(
+                title=title,
+                description=description,
+                canonical_url=canonical_url,
+                social_preview_url=social_preview_url,
+            ),
+            _render_structured_data_script(
+                _project_website_structured_data(
+                    site_title=config.title,
+                    site_description=config.description,
+                    base_url=config.base_url,
+                )
+            ),
+            f'    <link rel="alternate" type="application/rss+xml" title="{html.escape(config.title)} RSS" href="{html.escape(feed_url)}" />',
+            f'    <link rel="search" type="application/opensearchdescription+xml" title="{html.escape(config.title)} Search" href="{html.escape(opensearch_url)}" />',
+            f'    <link rel="manifest" href="{html.escape(manifest_url)}" />',
+        )
+    )
+    title_markup = f"    <title>{html.escape(title)}</title>\n"
+    return rendered.replace(title_markup, f"{title_markup}{metadata}\n", 1)
+
+
+def _render_legacy_homepage_recent_item(
+    item: RecentContent,
+    *,
+    base_url: str,
+) -> str:
+    context = ""
+    if item.saga_title:
+        context = f" · {item.saga_title}"
+        if item.arc_title:
+            context += f" / {item.arc_title}"
+
+    return (
+        "                <li>\n"
+        f'                    <a href="{_site_path(base_url, item.permalink)}">\n'
+        f"                        [{html.escape(item.kind.capitalize())}] {html.escape(item.title)}\n"
+        "                    </a>\n"
+        "                    <span class=\"block text-zinc-500 text-xs mt-0.5\">\n"
+        f"                        {html.escape(item.date)}{html.escape(context)}\n"
+        "                    </span>\n"
+        "                    <p class=\"text-sm text-zinc-400 leading-relaxed mt-1\">\n"
+        f"                        {html.escape(item.summary)}\n"
+        "                    </p>\n"
+        "                </li>"
+    )
+
+
+def _render_legacy_homepage_saga_summary(
+    summary: HomepageSagaSummary,
+    *,
+    base_url: str,
+) -> str:
+    episode_label = "episode" if summary.episode_count == 1 else "episodes"
+    status_parts = [f"{summary.episode_count} {episode_label}"]
+    if summary.last_release_date:
+        status_parts.append(f"last release {summary.last_release_date}")
+    status_parts.append(summary.status)
+    return (
+        "                <li>\n"
+        f'                    <a href="{_site_path(base_url, summary.permalink)}">{html.escape(summary.title)}</a>\n'
+        "                    <span class=\"homepage-saga-status text-zinc-500 text-xs\">\n"
+        f"                        — {html.escape('; '.join(status_parts))}\n"
+        "                    </span>\n"
+        "                </li>"
     )
 
 
@@ -1441,6 +1606,56 @@ def _render_legacy_blog_page(
         '    <script>tailwind.config={theme:{extend:{fontFamily:{mono:["ui-monospace","SFMono-Regular","Menlo","Monaco","Consolas","Liberation Mono","Courier New","monospace"]}}}};</script>\n'
         "    <style>\n"
         "        html { font-kerning: normal; }\n"
+        "\n"
+        "        body.bg-black { background:#000; }\n"
+        "        .text-zinc-100 { color:#f4f4f5; }\n"
+        "        .text-zinc-200 { color:#e4e4e7; }\n"
+        "        .text-zinc-300 { color:#d4d4d8; }\n"
+        "        .text-zinc-400 { color:#a1a1aa; }\n"
+        "        .text-zinc-500 { color:#71717a; }\n"
+        "        .text-zinc-600 { color:#52525b; }\n"
+        "        .font-mono { font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace; }\n"
+        "        .max-w-3xl { max-width:48rem; }\n"
+        "        .mx-auto { margin-left:auto; margin-right:auto; }\n"
+        "        .px-4 { padding-left:1rem; padding-right:1rem; }\n"
+        "        .py-6 { padding-top:1.5rem; padding-bottom:1.5rem; }\n"
+        "        .mt-0\\.5 { margin-top:.125rem; }\n"
+        "        .mt-1 { margin-top:.25rem; }\n"
+        "        .mt-2 { margin-top:.5rem; }\n"
+        "        .mt-3 { margin-top:.75rem; }\n"
+        "        .mt-6 { margin-top:1.5rem; }\n"
+        "        .mt-8 { margin-top:2rem; }\n"
+        "        .mt-10 { margin-top:2.5rem; }\n"
+        "        .mb-1 { margin-bottom:.25rem; }\n"
+        "        .mb-2 { margin-bottom:.5rem; }\n"
+        "        .mb-3 { margin-bottom:.75rem; }\n"
+        "        .mb-4 { margin-bottom:1rem; }\n"
+        "        .mb-6 { margin-bottom:1.5rem; }\n"
+        "        .mb-8 { margin-bottom:2rem; }\n"
+        "        .mx-2 { margin-left:.5rem; margin-right:.5rem; }\n"
+        "        .block { display:block; }\n"
+        "        .grid { display:grid; }\n"
+        "        .flex { display:flex; }\n"
+        "        .flex-col { flex-direction:column; }\n"
+        "        .justify-between { justify-content:space-between; }\n"
+        "        .gap-1 { gap:.25rem; }\n"
+        "        .gap-2 { gap:.5rem; }\n"
+        "        .rounded { border-radius:.25rem; }\n"
+        "        .border { border-width:1px; border-style:solid; }\n"
+        "        .border-zinc-800 { border-color:#27272a; }\n"
+        "        .p-3 { padding:.75rem; }\n"
+        "        .px-3 { padding-left:.75rem; padding-right:.75rem; }\n"
+        "        .py-2 { padding-top:.5rem; padding-bottom:.5rem; }\n"
+        "        .text-xs { font-size:.75rem; line-height:1rem; }\n"
+        "        .text-sm { font-size:.875rem; line-height:1.25rem; }\n"
+        "        .text-base { font-size:1rem; line-height:1.5rem; }\n"
+        "        .text-lg { font-size:1.125rem; line-height:1.75rem; }\n"
+        "        .text-xl { font-size:1.25rem; line-height:1.75rem; }\n"
+        "        .font-normal { font-weight:400; }\n"
+        "        .tracking-tight { letter-spacing:-.025em; }\n"
+        "        .leading-relaxed { line-height:1.625; }\n"
+        "        .transition-colors { transition:color .15s ease,border-color .15s ease; }\n"
+        "        @media (min-width:640px) { .sm\\:grid-cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)); } }\n"
         "\n"
         "        .menu a {\n"
         "            color:#a1a1aa;\n"
