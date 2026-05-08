@@ -383,7 +383,8 @@ def test_static_site_builder_generates_static_routes_from_markdown(
     assert "<h2 class=\"text-sm text-zinc-400 mb-2\">active sagas</h2>" in sagas_index_html
     assert "start reading →" in sagas_index_html
     assert "Closure - When the System Is Enough" in saga_html
-    assert "6 episodes · last 2026-04-27" in saga_html
+    assert '<h2 class="text-sm text-zinc-400 mb-1">CURRENT ARC</h2>' in saga_html
+    assert 'class="text-zinc-500 text-xs">— 6 eps; last 2026-04-27</span>' in saga_html
     assert "[Ep 06] Closure - When the System Is Enough" in arc_html
     assert _json_ld_payloads(arc_html) == []
     assert 'The story behind <span class="text-zinc-100">wasting no time</span>' in about_html

@@ -1071,6 +1071,9 @@ def build_saga_page(
     saga_view: SagaView,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        return _render_legacy_saga_page(config, saga_view, footer_attribution)
+
     arc_markup = "\n".join(
         _render_arc_summary(arc, base_url=config.base_url) for arc in saga_view.arcs
     )
@@ -1128,6 +1131,9 @@ def build_arc_page(
     arc_view: ArcView,
     footer_attribution: FooterAttribution,
 ) -> str:
+    if config.title == "Wasting No Time":
+        return _render_legacy_arc_page_dynamic(config, arc_view, footer_attribution)
+
     episode_markup = "\n".join(
         _render_arc_episode(episode, base_url=config.base_url)
         for episode in arc_view.episodes
@@ -1172,6 +1178,147 @@ def build_arc_page(
             ]
         ),
     )
+
+
+def _render_legacy_saga_page(
+    config: SiteConfig,
+    saga_view: SagaView,
+    footer_attribution: FooterAttribution,
+) -> str:
+    intro_html = html.escape(saga_view.saga.summary)
+    current_arc = saga_view.arcs[0] if saga_view.arcs else None
+    current_arc_markup = ""
+    if current_arc is not None:
+        current_arc_episodes = [
+            entry
+            for entry in saga_view.timeline
+            if entry.arc_title == current_arc.title
+        ]
+        latest_episode_links = "\n".join(
+            (
+                "        <a class=\"hover:underline\" href=\""
+                f"{_site_path(config.base_url, entry.permalink)}\">Ep {entry.number:02d}</a>"
+            )
+            for entry in current_arc_episodes[:3]
+        )
+        current_arc_markup = (
+            "        <section class=\"mb-5\">\n"
+            "            <h2 class=\"text-sm text-zinc-400 mb-1\">CURRENT ARC</h2>\n"
+            "            <div>\n"
+            f"                <a class=\"hover:underline\" href=\"{_site_path(config.base_url, current_arc.permalink)}\">[Arc] {html.escape(current_arc.title)}</a>\n"
+        )
+        if latest_episode_links:
+            current_arc_markup += (
+                "\n"
+                "                <span class=\"text-zinc-500 text-xs\">— latest:\n"
+                f"{latest_episode_links}\n"
+                "      </span>\n"
+            )
+        current_arc_markup += (
+            "\n"
+            "            </div>\n"
+            "        </section>\n"
+            "    \n"
+        )
+
+    arcs_markup = "\n".join(
+        (
+            "                <li>\n"
+            f'                    <a class="hover:underline" href="{_site_path(config.base_url, arc.permalink)}">[Arc] {html.escape(arc.title)}</a>\n'
+            "                    <span class=\"text-zinc-500 text-xs\">"
+            f"— {arc.episode_count} eps; last {html.escape(arc.last_release_date or '—')}"
+            "</span>\n"
+            "                </li>"
+        )
+        for arc in saga_view.arcs
+    )
+    timeline_markup = "\n".join(
+        (
+            "                <li>\n"
+            f'                    <a class="hover:underline" href="{_site_path(config.base_url, entry.permalink)}">[Ep {entry.number:02d}] {html.escape(entry.title)}</a>\n'
+            "                    <span class=\"text-zinc-500 text-xs\">"
+            f"— {html.escape(entry.arc_title)} / {html.escape(entry.date)}"
+            "</span>\n"
+            "                </li>"
+        )
+        for entry in saga_view.timeline
+    )
+    body_sections = (
+        f"{_render_markdown(saga_view.saga.body_markdown)}\n"
+        f"{current_arc_markup}"
+        "    <section>\n"
+        "        <h2 class=\"text-sm text-zinc-400 mb-2\">ARCS</h2>\n"
+        "        <ul class=\"space-y-1\">\n"
+        f"{arcs_markup}\n"
+        "        </ul>\n"
+        "    </section>\n\n"
+        "    \n"
+        "    <section class=\"mt-6\">\n"
+        "        <h2 class=\"text-sm text-zinc-400 mb-2\">TIMELINE</h2>\n"
+        "        <ul class=\"space-y-1\">\n"
+        f"{timeline_markup}\n"
+        "        </ul>\n"
+        "    </section>\n"
+    )
+    rendered = _render_legacy_blog_page(
+        title=f"[Saga] {saga_view.saga.title}",
+        h1_html=html.escape(f"[Saga] {saga_view.saga.title}"),
+        intro_html="",
+        section_html=(
+            "    <main>\n"
+            f"        <p class=\"text-sm text-zinc-400 mb-4\">{intro_html}</p>\n"
+            f"{body_sections}"
+            "    </main>\n"
+        ),
+        active_section="sagas",
+        footer_attribution=footer_attribution,
+    )
+    return re.sub(r"(?m)^[ \t]+$", "", rendered)
+
+
+def _render_legacy_arc_page_dynamic(
+    config: SiteConfig,
+    arc_view: ArcView,
+    footer_attribution: FooterAttribution,
+) -> str:
+    episode_markup = "\n".join(
+        (
+            "                <li>\n"
+            f'                    <a class="hover:underline" href="{_site_path(config.base_url, episode.permalink)}">[Ep {episode.number:02d}] {html.escape(episode.title)}</a>\n'
+            "                    <span class=\"text-zinc-500 text-xs\">"
+            f"— {html.escape(episode.date)}"
+            "</span>\n"
+            "                </li>"
+        )
+        for episode in arc_view.episodes
+    )
+    rendered = _render_legacy_blog_page(
+        title=f"[Arc] {arc_view.arc.title} — {arc_view.arc.saga_title}",
+        h1_html=html.escape(f"[Arc] {arc_view.arc.title} — {arc_view.arc.saga_title}"),
+        intro_html="",
+        section_html=(
+            "    <nav class=\"breadcrumb\">\n"
+            f"        <a href=\"{_site_path(config.base_url, '/sagas/' + arc_view.arc.saga_slug + '/')}\">← {html.escape(arc_view.arc.saga_title)}</a>\n"
+            "    </nav>\n"
+            f"    <h2 class=\"arc-name\">{html.escape(arc_view.arc.title)}</h2>\n"
+            f"    <p class=\"text-sm text-zinc-400 mb-4\">{html.escape(arc_view.arc.summary)}</p>\n"
+            f"    <section>\n{_render_markdown(arc_view.arc.body_markdown)}\n"
+            "    </section>\n"
+            "    <section>\n"
+            "        <h2 class=\"text-sm text-zinc-400 mb-2\">EPISODES</h2>\n"
+            "        <ul class=\"space-y-1\">\n"
+            f"{episode_markup}\n"
+            "        </ul>\n"
+            "    </section>\n"
+            "    <nav class=\"mt-6 text-xs text-zinc-400 flex justify-between\">\n"
+            "        <span></span>\n"
+            "        \n"
+            "    </nav>\n"
+        ),
+        active_section="sagas",
+        footer_attribution=footer_attribution,
+    )
+    return re.sub(r"(?m)^[ \t]+$", "", rendered)
 
 
 def build_library_page(

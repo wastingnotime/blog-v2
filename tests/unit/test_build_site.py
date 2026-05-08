@@ -2,9 +2,8 @@ import json
 from pathlib import Path
 import re
 
-from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
-from src.app.application.use_cases.legacy_saga_pages import render_legacy_saga_page
 from src.app.application.use_cases.build_site import build_static_site
+from src.app.application.use_cases.legacy_episode_pages import render_legacy_episode_page
 from src.app.domain.models.content import (
     Arc,
     ContentCatalog,
@@ -484,15 +483,29 @@ def test_build_static_site_renders_legacy_saga_detail_snapshots() -> None:
 
     hireflow_saga = pages["sagas/hireflow/index.html"]
     hireflow_arc = pages["sagas/hireflow/the-origin-blueprint/index.html"]
-    assert hireflow_saga != render_legacy_saga_page("hireflow")
-    assert '<a class="saga-arc-link" href="/sagas/hireflow/the-origin-blueprint/">The Origin Blueprint</a>' in hireflow_saga
-    assert "[Ep 01] The First Brick" in hireflow_arc
+    assert '<body class="bg-black text-zinc-100 font-mono selection:bg-white/20">' in hireflow_saga
+    assert '<h1 class="mt-3 text-xl tracking-tight text-zinc-300">[Saga] HireFlow</h1>' in hireflow_saga
+    assert '<p class="text-sm text-zinc-400 mb-4">Architecture in public.</p>' in hireflow_saga
+    assert '<h2 class="text-sm text-zinc-400 mb-1">CURRENT ARC</h2>' in hireflow_saga
+    assert '<a class="hover:underline" href="/sagas/hireflow/the-origin-blueprint/">[Arc] The Origin Blueprint</a>' in hireflow_saga
+    assert '<h2 class="text-sm text-zinc-400 mb-2">TIMELINE</h2>' in hireflow_saga
+    assert '© 2026 wastingnotime.org — built with custom python static renderer' in hireflow_saga
+
+    assert '<h1 class="mt-3 text-xl tracking-tight text-zinc-300">[Arc] The Origin Blueprint — HireFlow</h1>' in hireflow_arc
+    assert '<nav class="breadcrumb">' in hireflow_arc
+    assert '<h2 class="arc-name">The Origin Blueprint</h2>' in hireflow_arc
+    assert '<p class="text-sm text-zinc-400 mb-4">How the saga starts.</p>' in hireflow_arc
+    assert '<h2 class="text-sm text-zinc-400 mb-2">EPISODES</h2>' in hireflow_arc
+    assert '<a class="hover:underline" href="/sagas/hireflow/the-origin-blueprint/the-first-brick/">[Ep 01] The First Brick</a>' in hireflow_arc
+    assert '<p>Arc body.</p>' in hireflow_arc
+    assert '© 2026 wastingnotime.org — built with custom python static renderer' in hireflow_arc
 
     game_hub_saga = pages["sagas/game-hub/index.html"]
     game_hub_arc = pages["sagas/game-hub/the-first-breath/index.html"]
-    assert game_hub_saga != render_legacy_saga_page("game-hub")
-    assert '<a class="saga-arc-link" href="/sagas/game-hub/the-first-breath/">The First Breath</a>' in game_hub_saga
-    assert "[Ep 01] The First Steps" in game_hub_arc
+    assert '<h1 class="mt-3 text-xl tracking-tight text-zinc-300">[Saga] Game Hub</h1>' in game_hub_saga
+    assert '<a class="hover:underline" href="/sagas/game-hub/the-first-breath/">[Arc] The First Breath</a>' in game_hub_saga
+    assert '<h1 class="mt-3 text-xl tracking-tight text-zinc-300">[Arc] The First Breath — Game Hub</h1>' in game_hub_arc
+    assert '<h2 class="arc-name">The First Breath</h2>' in game_hub_arc
 
 
 def test_build_static_site_uses_shared_discovery_surface_with_route_specific_links() -> None:
