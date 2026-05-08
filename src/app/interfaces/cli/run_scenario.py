@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 from src.app.application.use_cases.load_content_catalog import load_content_catalog
-from src.app.domain.models.site_config import AnalyticsConfig, SiteConfig
+from src.app.domain.models.site_config import SiteConfig
 from src.app.infrastructure.builders.static_site_builder import StaticSiteBuilder
 from src.app.infrastructure.content.markdown_content_loader import MarkdownContentLoader
 
@@ -28,20 +28,6 @@ def main() -> None:
 
 
 def load_site_config() -> SiteConfig:
-    provider = os.getenv("ANALYTICS_PROVIDER", "").strip().lower()
-    analytics = None
-
-    if provider == "plausible":
-        analytics = AnalyticsConfig(
-            provider="plausible",
-            domain=_getenv("PLAUSIBLE_DOMAIN", default="blog.wastingnotime.org"),
-            script_url=_getenv(
-                "PLAUSIBLE_SCRIPT_URL",
-                default="https://plausible.io/js/script.js",
-            ),
-            api_host=os.getenv("PLAUSIBLE_API_HOST"),
-        )
-
     return SiteConfig(
         title=_getenv("SITE_TITLE", default="Wasting No Time"),
         description=_getenv(
@@ -52,7 +38,6 @@ def load_site_config() -> SiteConfig:
             ),
         ),
         base_url=_getenv("SITE_BASE_URL", default="https://blog.wastingnotime.org/"),
-        analytics=analytics,
     )
 
 
