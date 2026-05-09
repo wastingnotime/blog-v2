@@ -39,6 +39,34 @@ Any additional implementation guidance, migration note, or follow-up.
 
 Add entries as the repository evolves.
 
+## DEC-0008 - Scope Dependabot To GitHub Actions And Python Metadata
+
+- Date: 2026-05-08
+- Status: accepted
+- Owners: both
+
+### Context
+The repository had no Dependabot configuration, so version updates for GitHub Actions and Python package metadata were not being tracked automatically. The project currently has no runtime Python dependencies, but it does have a GitHub Actions workflow and a `pyproject.toml` manifest that can grow over time.
+
+### Decision
+Enable Dependabot for two ecosystems only:
+
+- `github-actions` at the repository root
+- `pip` at the repository root, to cover the Python manifest and any future package pins
+
+Schedule both updaters weekly.
+
+### Consequences
+GitHub Actions updates and Python dependency updates will surface through automated pull requests instead of relying on manual review. The `pip` updater is mostly dormant today because the manifest has no runtime dependencies, but it establishes the update path for future Python pins without expanding to unrelated ecosystems.
+
+### Alternatives considered
+Track only GitHub Actions. This was rejected because the Python manifest is part of the repository contract and should be ready for dependency updates if they are introduced later.
+
+Add broader ecosystem coverage. This was rejected because the repository does not currently use those ecosystems, so extra updaters would add noise without value.
+
+### Notes
+If the repository adopts a lockfile or another Python dependency manager later, update Dependabot to match the chosen workflow instead of layering multiple overlapping Python updaters.
+
 ## DEC-0007 - Split Code And Content Licensing
 
 - Date: 2026-04-26
