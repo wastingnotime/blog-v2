@@ -33,16 +33,24 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: set up uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: true
+
+      - name: create virtual environment
+        run: uv venv
+
       - name: install
-        run: python -m pip install -e . pytest
+        run: uv pip install -e . pytest
 
       - name: test
-        run: python -m pytest
+        run: uv run pytest
 
       - name: build static site
         env:
           SITE_BASE_URL: https://blog.wastingnotime.org/
-        run: python -m src.app.interfaces.cli.run_scenario
+        run: uv run python -m src.app.interfaces.cli.run_scenario
 
       - name: configure pages
         uses: actions/configure-pages@v6
