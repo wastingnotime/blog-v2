@@ -49,6 +49,7 @@ uv run python -m src.app.interfaces.cli.run_scenario
 `uv` is the preferred local Python workflow for this repository.
 If you already have an active virtual environment, `uv pip install -e .`
 and `uv run ...` still work inside it.
+The GitHub Pages workflow also uses `uv` for install, test, and build steps.
 
 The scenario runner generates a minimal static site into `dist/`.
 
