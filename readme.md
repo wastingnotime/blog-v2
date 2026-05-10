@@ -37,12 +37,18 @@ In practice, that means:
 ## Commands
 
 ```bash
-pip install -e .
-pytest
-python -m src.app.interfaces.cli.run_scenario
+uv venv
+source .venv/bin/activate
+uv pip install -e .
+uv run pytest
+uv run python -m src.app.interfaces.cli.run_scenario
 ./scripts/gh-pages-bootstrap
 ./scripts/mrl-serve
 ```
+
+`uv` is the preferred local Python workflow for this repository.
+If you already have an active virtual environment, `uv pip install -e .`
+and `uv run ...` still work inside it.
 
 The scenario runner generates a minimal static site into `dist/`.
 
