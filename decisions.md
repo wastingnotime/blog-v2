@@ -39,6 +39,27 @@ Any additional implementation guidance, migration note, or follow-up.
 
 Add entries as the repository evolves.
 
+## DEC-0009 - Keep The Pipeline On GitHub-Hosted Runners
+
+- Date: 2026-05-14
+- Status: accepted
+- Owners: both
+
+### Context
+The repository has an open campaign issue requesting that the pipeline remain GitHub-hosted by default unless a specific non-cost reason justifies a different runner model.
+
+### Decision
+Keep all current GitHub Actions workflows on GitHub-hosted runners. The existing workflows already use `ubuntu-latest`, and no `self-hosted` runner is configured in the repository. Preserve this default unless a future change introduces a concrete non-cost requirement that cannot be satisfied on GitHub-hosted infrastructure.
+
+### Consequences
+The build, test, and publish pipeline stays portable and does not depend on private runtime adjacency. Future workflow changes should treat GitHub-hosted runners as the default and document any exception explicitly.
+
+### Alternatives considered
+Move selected jobs to self-hosted runners. This was rejected because the repository does not currently need private adjacency or other runner-specific capabilities.
+
+### Notes
+This decision is satisfied by the current workflow configuration in `.github/workflows/quality.yml`, `.github/workflows/gh-pages.yml`, `.github/workflows/notify-discord-on-issue-open.yml`, and `.github/workflows/notify-discord-on-issue-close.yml`.
+
 ## DEC-0008 - Scope Dependabot To GitHub Actions And Python Metadata
 
 - Date: 2026-05-08
