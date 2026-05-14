@@ -1,0 +1,57 @@
+name: security scans
+
+on:
+  pull_request:
+    branches: ["main"]
+
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+
+      - name: scan repository secrets
+        uses: trufflesecurity/trufflehog@v3.95.3
+        with:
+          path: .
+          version: 3.95.2
+
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+
+      - name: scan GitHub Actions with checkov
+        continue-on-error: true
+        uses: bridgecrewio/checkov-action@v12.3102.0
+        with:
+          directory: .github/workflows
+          framework: github_actions
+          soft_fail: true
+
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+
+      - name: scan repository configuration with trivy
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .github/workflows
+          scanners: config
+          exit-code: "1"
+          format: table
+          severity: HIGH,CRITICAL

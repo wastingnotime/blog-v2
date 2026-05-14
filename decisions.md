@@ -39,6 +39,34 @@ Any additional implementation guidance, migration note, or follow-up.
 
 Add entries as the repository evolves.
 
+## DEC-0010 - Split Workflow Linting From Repository Security Scans
+
+- Date: 2026-05-14
+- Status: accepted
+- Owners: both
+
+### Context
+The repository now has enough GitHub Actions surface area to benefit from the same broad checks used in `infra-platform`, but it does not have Terraform or container infrastructure to justify copy-pasting the exact same scan targets.
+
+### Decision
+Split the workflow checks into two jobs-oriented workflows:
+
+- `workflow-lint.yml` runs `actionlint` only when GitHub Actions files change
+- `security-scans.yml` runs repository secret scanning plus `checkov` and `trivy` against the repository's GitHub Actions configuration
+
+Keep `checkov` and `trivy` report-style rather than blocking for now, because they are being used here to validate workflow configuration rather than a Terraform estate.
+
+### Consequences
+Workflow linting becomes narrower and runs only when relevant files change. Secret scanning becomes automatic on pull requests and main-branch pushes, while the broader config checks stay available without implying that this repository has a Terraform or container security surface like `infra-platform`.
+
+### Alternatives considered
+Keep a single catch-all `quality.yml`. This was rejected because it mixed workflow linting with repository security scans and made the triggering rules harder to reason about.
+
+Mirror the `infra-platform` workflow targets exactly. This was rejected because `blog-v2` does not contain the same Terraform or swarm deployment surface.
+
+### Notes
+The workflows live in `.github/workflows/workflow-lint.yml` and `.github/workflows/security-scans.yml`.
+
 ## DEC-0009 - Keep The Pipeline On GitHub-Hosted Runners
 
 - Date: 2026-05-14
@@ -58,7 +86,7 @@ The build, test, and publish pipeline stays portable and does not depend on priv
 Move selected jobs to self-hosted runners. This was rejected because the repository does not currently need private adjacency or other runner-specific capabilities.
 
 ### Notes
-This decision is satisfied by the current workflow configuration in `.github/workflows/quality.yml`, `.github/workflows/gh-pages.yml`, `.github/workflows/notify-discord-on-issue-open.yml`, and `.github/workflows/notify-discord-on-issue-close.yml`.
+This decision is satisfied by the current workflow configuration in `.github/workflows/workflow-lint.yml`, `.github/workflows/security-scans.yml`, `.github/workflows/gh-pages.yml`, `.github/workflows/notify-discord-on-issue-open.yml`, and `.github/workflows/notify-discord-on-issue-close.yml`.
 
 ## DEC-0008 - Scope Dependabot To GitHub Actions And Python Metadata
 
